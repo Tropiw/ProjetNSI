@@ -53,14 +53,15 @@ class Circle:
     def __init__(self, position, radius, color):
         self.position = pygame.Vector2(position) #vecteur convertie coordonnées (100,200) en x=100 et y =200
         self.ancienne_position = self.position
+        print(self.ancienne_position)
         self.radius = radius
         self.color = color
         self.background = 0
     
     def draw(self, screen):
-        #self.background = pygame.Surface((self.radius*2,self.radius*2))
-        #self.background.blit(screen, (self.ancienne_position.y-(self.radius*2),self.ancienne_position.x-(self.radius*2)) )
-        #screen.blit(self.background, self.ancienne_position)
+        self.background = pygame.Surface((self.radius*2,self.radius*2))
+        self.background.blit( screen, self.ancienne_position )
+        screen.blit(self.background, (self.position.x-self.radius,self.position.y-self.radius))
         pygame.draw.circle(screen, self.color, (int(self.position.x), int(self.position.y)), self.radius)
 
     def update(self):
