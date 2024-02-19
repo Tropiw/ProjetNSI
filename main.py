@@ -5,6 +5,7 @@ class Main:
     def __init__(self, fps=60, width=1280, height=720):
         pygame.init()
         self.screen = pygame.display.set_mode((width, height))
+        self.screen_debug = pygame.Surface((1280,720))
         self.clock = pygame.time.Clock()
         self.clock.tick(fps)
         self.running = True
@@ -31,36 +32,38 @@ class Main:
             obj.update()  # Appel à la méthode update de chaque objet
         
     def mapdebug(self):
-        image.tile.blit_tile(self.screen,(5,5),(0,0))
-        image.tile.blit_tile(self.screen,(6,5),(1200,0))
-        image.tile.blit_tile(self.screen,(6,6),(1200,640))
-        image.tile.blit_tile(self.screen,(5,6),(0,640)) #Les coins 
+        image.tile.blit_tile(self.screen_debug,(5,5),(0,0))
+        image.tile.blit_tile(self.screen_debug,(6,5),(1200,0))
+        image.tile.blit_tile(self.screen_debug,(6,6),(1200,640))
+        image.tile.blit_tile(self.screen_debug,(5,6),(0,640)) #Les coins 
         for i in range(14):
-            image.tile.blit_tile(self.screen,(3,6),((i+1)*80,0))
-            image.tile.blit_tile(self.screen,(3,4),((i+1)*80,640)) # Les bord en haut et en bas
+            image.tile.blit_tile(self.screen_debug,(3,6),((i+1)*80,0))
+            image.tile.blit_tile(self.screen_debug,(3,4),((i+1)*80,640)) # Les bord en haut et en bas
             for j in range(7):
-                image.tile.blit_tile(self.screen,(4,5),(0,(j+1)*80))
-                image.tile.blit_tile(self.screen,(2,5),(1200,(j+1)*80)) #Les bord sur les cotés 
-                image.tile.blit_tile(self.screen,(12,4),((i+1)*80,(j+1)*80)) #Le milieux
+                image.tile.blit_tile(self.screen_debug,(4,5),(0,(j+1)*80))
+                image.tile.blit_tile(self.screen_debug,(2,5),(1200,(j+1)*80)) #Les bord sur les cotés 
+                image.tile.blit_tile(self.screen_debug,(12,4),((i+1)*80,(j+1)*80)) #Le milieux
+        
+        self.screen.blit(self.screen_debug,(0,0))
 
     def render(self):
         for obj in self.objects:
-            
-            obj.draw(self.screen)
+            obj.draw(self.screen,self.screen_debug)
 
 
 class Circle:
     def __init__(self, position, radius, color):
         self.position = pygame.Vector2(position) #vecteur convertie coordonnées (100,200) en x=100 et y =200
-        self.ancienne_position = self.position
+        self.ancienne_position = (-int(self.position.x-radius),-int(self.position.y-radius))
         print(self.ancienne_position)
         self.radius = radius
         self.color = color
         self.background = 0
     
-    def draw(self, screen):
+    def draw(self, screen, screen_ref):
         self.background = pygame.Surface((self.radius*2,self.radius*2))
-        self.background.blit( screen, self.ancienne_position )
+        self.background.blit( screen_ref,self.ancienne_position) 
+        print(self.ancienne_position)
         screen.blit(self.background, (self.position.x-self.radius,self.position.y-self.radius))
         pygame.draw.circle(screen, self.color, (int(self.position.x), int(self.position.y)), self.radius)
 
@@ -75,20 +78,20 @@ class Player(Circle):
     def update(self):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_z]:
-            if self.position.y > 80:
-                self.ancienne_position.y = self.position.y
+            if self.position.y > 80 :
+                self.ancienne_position = (-int(self.position.x-self.radius),-int(self.position.y-self.radius))
                 self.position.y -= self.speed
         if keys[pygame.K_s]:
-            if self.position.y < 590:
-                self.ancienne_position.y = self.position.y
+            if self.position.y < 640 - self.radius:
+                self.ancienne_position = (-int(self.position.x-self.radius),-int(self.position.y-self.radius))
                 self.position.y += self.speed
         if keys[pygame.K_q]:
-            if self.position.x > 130:
-                self.ancienne_position.x = self.position.x
+            if self.position.x > 80 + self.radius:
+                self.ancienne_position = (-int(self.position.x-self.radius),-int(self.position.y-self.radius))
                 self.position.x -= self.speed
         if keys[pygame.K_d]:
-            if self.position.x < 1150:
-                self.ancienne_position.x = self.position.x
+            if self.position.x < 1200 - self.radius:
+                self.ancienne_position = (-int(self.position.x-self.radius+2),-int(self.position.y-self.radius+2))
                 self.position.x += self.speed
             
 class Ennemy(Circle):
@@ -97,13 +100,15 @@ class Ennemy(Circle):
         self.speed = speed
     
     def update(self):
-        self.position.x += self.speed
+        if self.position.x < 1200 - self.radius:
+            self.ancienne_position = (-int(self.position.x-self.radius+1),-int(self.position.y-self.radius))
+            self.position.x += self.speed
 
 # Exemple d'utilisation
 jeu = Main()
 
 # Créer le joueur
-player = Player((100, 100), 50, (255, 0, 0))
+player = Player((100, 100), 30, (255, 0, 0),3)
 
 # Créer l'obstacle (cercle immobile)
 obstacle = Circle((200, 200), 30, (0, 255, 0))
