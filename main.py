@@ -2,6 +2,7 @@ import pygame
 import Imagesetter as image
 
 class Main:
+    DEBUG_MAP = [((5,5),(0,0)),((3,6),(80,0)),((3,6),(160,0)),((4,5),(0,80)),((11,0),(80,80))]
     def __init__(self, fps=60, width=1280, height=720):
         pygame.init()
         self.screen = pygame.display.set_mode((width, height))
@@ -13,6 +14,7 @@ class Main:
     def start(self):
         while self.running:
             self.handle_events()
+            self.mapdebug()
             self.update()
             self.render()
             pygame.display.flip()
@@ -29,11 +31,18 @@ class Main:
         for obj in self.objects:
             obj.update()  # Appel à la méthode update de chaque objet
         
+    def mapdebug(self):
+        image.tile.blit_tile(self.screen,(5,5),(0,0))
+        for i in range(14):
+            image.tile.blit_tile(self.screen,(3,6),((i+1)*80,0))
+        image.tile.blit_tile(self.screen,(6,5),(1200,0))
+
+
 
     def render(self):
-        self.screen.fill((255, 255, 255))
         for obj in self.objects:
             obj.draw(self.screen)
+
 
 class Circle:
     def __init__(self, position, radius, color):
