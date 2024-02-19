@@ -2,7 +2,6 @@ import pygame
 import Imagesetter as image
 
 class Main:
-    DEBUG_MAP = [((5,5),(0,0)),((3,6),(80,0)),((3,6),(160,0)),((4,5),(0,80)),((11,0),(80,80))]
     def __init__(self, fps=60, width=1280, height=720):
         pygame.init()
         self.screen = pygame.display.set_mode((width, height))
@@ -12,9 +11,9 @@ class Main:
         self.objects = []  # Liste pour stocker les objets à dessiner
         
     def start(self):
+        self.mapdebug()
         while self.running:
             self.handle_events()
-            self.mapdebug()
             self.update()
             self.render()
             pygame.display.flip()
@@ -33,24 +32,35 @@ class Main:
         
     def mapdebug(self):
         image.tile.blit_tile(self.screen,(5,5),(0,0))
+        image.tile.blit_tile(self.screen,(6,5),(1200,0))
+        image.tile.blit_tile(self.screen,(6,6),(1200,640))
+        image.tile.blit_tile(self.screen,(5,6),(0,640)) #Les coins 
         for i in range(14):
             image.tile.blit_tile(self.screen,(3,6),((i+1)*80,0))
-        image.tile.blit_tile(self.screen,(6,5),(1200,0))
-
-
+            image.tile.blit_tile(self.screen,(3,4),((i+1)*80,640)) # Les bord en haut et en bas
+            for j in range(7):
+                image.tile.blit_tile(self.screen,(4,5),(0,(j+1)*80))
+                image.tile.blit_tile(self.screen,(2,5),(1200,(j+1)*80)) #Les bord sur les cotés 
+                image.tile.blit_tile(self.screen,(12,4),((i+1)*80,(j+1)*80)) #Le milieux
 
     def render(self):
         for obj in self.objects:
+            
             obj.draw(self.screen)
 
 
 class Circle:
     def __init__(self, position, radius, color):
         self.position = pygame.Vector2(position) #vecteur convertie coordonnées (100,200) en x=100 et y =200
+        self.ancienne_position = self.position
         self.radius = radius
         self.color = color
+        self.background = 0
     
     def draw(self, screen):
+        #self.background = pygame.Surface((self.radius*2,self.radius*2))
+        #self.background.blit(screen, (self.ancienne_position.y-(self.radius*2),self.ancienne_position.x-(self.radius*2)) )
+        #screen.blit(self.background, self.ancienne_position)
         pygame.draw.circle(screen, self.color, (int(self.position.x), int(self.position.y)), self.radius)
 
     def update(self):
@@ -64,13 +74,21 @@ class Player(Circle):
     def update(self):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_z]:
-            self.position.y -= self.speed
+            if self.position.y > 80:
+                self.ancienne_position.y = self.position.y
+                self.position.y -= self.speed
         if keys[pygame.K_s]:
-            self.position.y += self.speed
+            if self.position.y < 590:
+                self.ancienne_position.y = self.position.y
+                self.position.y += self.speed
         if keys[pygame.K_q]:
-            self.position.x -= self.speed
+            if self.position.x > 130:
+                self.ancienne_position.x = self.position.x
+                self.position.x -= self.speed
         if keys[pygame.K_d]:
-            self.position.x += self.speed
+            if self.position.x < 1150:
+                self.ancienne_position.x = self.position.x
+                self.position.x += self.speed
             
 class Ennemy(Circle):
     def __init__(self, position, radius, color, speed=1):
