@@ -1,4 +1,5 @@
 import pygame
+import Imagesetter as image
 
 class Main:
     def __init__(self, fps=60, width=1280, height=720):
@@ -22,7 +23,8 @@ class Main:
             
     def render(self, *objects):
         for obj in objects:
-            obj.draw(self.screen)
+            self.screen.blit(obj, (0,0))
+
 
 class Circle:
     def __init__(self, position, radius, color):
@@ -34,8 +36,10 @@ class Circle:
         pygame.draw.circle(screen, self.color, self.position, self.radius)
 
 # Exemple d'utilisation
+DEBUG = image.tile('Graphic\Dungeon Gathering Free Version\Set 1.1.png')
+DEBUG_MAP = [DEBUG.load(2,2)]
 jeu = Main(60)
 circle1 = Circle((100, 100), 50, (255, 0, 0))
 circle2 = Circle((200, 200), 30, (0, 255, 0))
-jeu.objects = [circle1, circle2]  # Stockez les objets à dessiner dans une liste
+jeu.objects = [DEBUG_MAP]  # Stockez les objets à dessiner dans une liste
 jeu.start()
