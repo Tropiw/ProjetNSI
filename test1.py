@@ -8,8 +8,24 @@ class Main:
         self.clock = pygame.time.Clock()
         self.clock.tick(fps)
         self.running = True
-        self.objects = []  # Liste pour stocker les objets à dessiner
+        self.objects = []  # Liste pour stocker les objets à dessinerse
+        self.map = []
+        self._init_map()
         
+    def _init_map(self):
+         # Dessinez votre carte ici sur self.screen
+        image.tile.blit_tile(self.screen,(5,5),(0,0))
+        image.tile.blit_tile(self.screen,(6,5),(1200,0))
+        image.tile.blit_tile(self.screen,(6,6),(1200,640))
+        image.tile.blit_tile(self.screen,(5,6),(0,640)) #Les coins 
+        for i in range(14):
+            image.tile.blit_tile(self.screen,(3,6),((i+1)*80,0))
+            image.tile.blit_tile(self.screen,(3,4),((i+1)*80,640)) # Les bord en haut et en bas
+            for j in range(7):
+                image.tile.blit_tile(self.screen,(4,5),(0,(j+1)*80))
+                image.tile.blit_tile(self.screen,(2,5),(1200,(j+1)*80)) #Les bord sur les cotés 
+                image.tile.blit_tile(self.screen,(12,4),((i+1)*80,(j+1)*80)) #Le milieux
+
     def start(self):
         while self.running:
             self.handle_events()

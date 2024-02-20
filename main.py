@@ -22,7 +22,7 @@ class Main:
             
         pygame.quit()
             
-    def handle_events(self):          #le jeu s'arrête quand on clique sur fermer
+    def handle_events(self):          # Le jeu s'arrête quand on clique sur fermer
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
@@ -53,7 +53,7 @@ class Main:
 
 class Circle:
     def __init__(self, position, radius, color):
-        self.position = pygame.Vector2(position) #vecteur convertie coordonnées (100,200) en x=100 et y =200
+        self.position = pygame.Vector2(position) # Vecteur convertie coordonnées (100,200) en x=100 et y =200
         self.ancienne_position = (-int(self.position.x-radius),-int(self.position.y-radius))
         print(self.ancienne_position)
         self.radius = radius
@@ -103,6 +103,7 @@ class Ennemy(Circle):
         if self.position.x < 1200 - self.radius:
             self.ancienne_position = (-int(self.position.x-self.radius+1),-int(self.position.y-self.radius))
             self.position.x += self.speed
+            
 
 # Exemple d'utilisation
 jeu = Main()
