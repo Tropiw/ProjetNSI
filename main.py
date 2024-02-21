@@ -1,5 +1,6 @@
 import pygame
 import Imagesetter as image
+import menu as menu
 
 class Main:
     def __init__(self, fps=60, width=1280, height=720):
@@ -17,12 +18,20 @@ class Main:
         self.objects = []  # Liste pour stocker les objets à dessiner
         
     def start(self):
+        mode = 'TITLE'
         self.mapdebug()
         while self.running:
-            self.screen.blit(self.screen_debug,(0,0))
-            self.handle_events()
-            self.update()
-            self.render()
+            if mode == 'TITLE' :
+                keys = pygame.key.get_pressed()
+                title = menu.menu()
+                collision = title.render_main_menu(self.screen)
+                if keys[pygame.K_q]:
+                    mode = 'START'
+            else:
+                self.screen.blit(self.screen_debug,(0,0))
+                self.handle_events()
+                self.update()
+                self.render()
             pygame.display.flip()
             self.clock.tick(60)  # Limiter le taux de rafraîchissement
         pygame.quit()
