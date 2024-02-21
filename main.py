@@ -21,17 +21,18 @@ class Main:
         mode = 'TITLE'
         self.mapdebug()
         while self.running:
-            if mode == 'TITLE' :
+            '''if mode == 'TITLE' :
+                pass
                 keys = pygame.key.get_pressed()
                 title = menu.menu()
                 collision = title.render_main_menu(self.screen)
                 if keys[pygame.K_q]:
-                    mode = 'START'
-            else:
-                self.screen.blit(self.screen_debug,(0,0))
-                self.handle_events()
-                self.update()
-                self.render()
+                    mode = 'START' 
+            else:'''            #ça fait crash python, c'est surement le if
+            self.screen.blit(self.screen_debug,(0,0))
+            self.handle_events()
+            self.update()
+            self.render()
             pygame.display.flip()
             self.clock.tick(60)  # Limiter le taux de rafraîchissement
         pygame.quit()
