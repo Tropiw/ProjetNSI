@@ -2,6 +2,7 @@ import pygame
 import Imagesetter as image
 import menu as menu
 import personnage as perso
+import map as map
 
 class Main:
     def __init__(self, fps=60, width=1280, height=720):
@@ -20,21 +21,24 @@ class Main:
         self.objects = []  # Liste pour stocker les objets à dessiner
         
     def start(self):
+        
         self.mapdebug()
         title = menu.menu()
         collision = title.render_main_menu(self.screen)
+        self.clock.tick(60)
         while self.running:
-            mouse_pos = pygame.mouse.get_pos()
-            self.handle_events()
-            pygame.display.flip()
+            '''mouse_pos = pygame.mouse.get_pos()
+            if title.in_rect(mouse.pos,collision):
+            '''
             
-            '''else:            #ça fait crash python, c'est surement le ifZ
-                self.screen.blit(self.screen_debug,(0,0))
-                self.handle_events()
-                self.update()
-                self.render()
-                pygame.display.flip()
-                self.clock.tick(60)  # Limiter le taux de rafraîchissement'''
+            #else:            #ça fait crash python, c'est surement le ifZ
+            self.screen.blit(self.screen_debug,(0,0))
+            self.handle_events()
+            self.update()
+            self.render()
+            pygame.display.flip()
+              # Limiter le taux de rafraîchissement
+            self.handle_events()
         pygame.quit()
             
     def handle_events(self):          # Le jeu s'arrête quand on clique sur fermer
@@ -64,82 +68,18 @@ class Main:
             obj.draw(self.screen,self.screen_debug)
 
 
-class Circle:
-    def __init__(self, position, radius, color):
-        self.position = pygame.Vector2(position) # Vecteur convertie coordonnées (100,200) en x=100 et y =200
-        self.radius = radius
-        self.color = color
-        self.background = 0
-    
-    def draw(self, screen, screen_ref):
-        self.background = pygame.Surface((self.radius*2,self.radius*2))
-        screen.blit(self.background, (self.position.x-self.radius,self.position.y-self.radius))
-        pygame.draw.circle(screen, self.color, (int(self.position.x), int(self.position.y)), self.radius)
-
-    def update(self):
-        pass  # Les cercles n'ont pas besoin d'être mis à jour
-
-class Player(Circle):
-    def __init__(self, position, radius, color, speed=10):
-        super().__init__(position, radius, color) #'super'-->  héritage fonction circle
-        self.speed = speed
-
-    def update(self):
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_z]:
-            if self.position.y > 110 :
-                self.position.y -= self.speed
-        if keys[pygame.K_s]:
-            if self.position.y < 640 - self.radius:
-                self.position.y += self.speed
-        if keys[pygame.K_q]:
-            if self.position.x > 80 + self.radius:
-                self.position.x -= self.speed
-        if keys[pygame.K_d]:
-            if self.position.x < 1200 - self.radius:
-                self.position.x += self.speed
-                
-class Ennemy(Circle):
-    def __init__(self, position, radius, color, speed=1):
-        super().__init__(position, radius, color)
-        self.speed = speed
-    
-    def update(self):
-        if self.position.x < 1200 - self.radius:
-            self.position.x += self.speed
-            
-class Player2(Circle):
-    def __init__(self, position, radius, color, speed=10):
-        super().__init__(position, radius, color) #'super'-->  héritage fonction circle
-        self.speed = speed
-
-    def update(self):
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_UP]:
-            if self.position.y > 110 :
-                self.position.y -= self.speed
-        if keys[pygame.K_DOWN]:
-            if self.position.y < 640 - self.radius:
-                self.position.y += self.speed
-        if keys[pygame.K_LEFT]:
-            if self.position.x > 80 + self.radius:
-                self.position.x -= self.speed
-        if keys[pygame.K_RIGHT]:
-            if self.position.x < 1200 - self.radius:
-                self.position.x += self.speed
-
 
 # Exemple d'utilisation
 jeu = Main()
 
 # Créer le joueur
-player = Player((100, 500), 30, (255, 0, 0),8)
-player2 = Player2((100, 500), 30, (255, 150, 0),8)
+player = perso.Player((100, 500), 30, (255, 0, 0),0.8,1)
+player2 = perso.Player((100, 500), 30, (255, 150, 0),0.8,2)
 # Créer l'obstacle (cercle immobile)
-obstacle = Circle((200, 200), 30, (0, 255, 0))
+obstacle = perso.Circle((200, 200), 30, (0, 255, 0))
 
 # Créer l'ennemi
-ennemi = Ennemy((500,200), 25,(56,23,145))
+ennemi = perso.Ennemy((500,200), 25,(56,23,145))
 
 
 # Liste d'objets à afficher

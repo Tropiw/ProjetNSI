@@ -16,30 +16,34 @@ class Circle:
         pass  # Les cercles n'ont pas besoin d'être mis à jour
 
 class Player(Circle):
-    def __init__(self, position, radius, color, speed=10):
+    def __init__(self, position, radius, color, speed=1 ,player = 1):
         super().__init__(position, radius, color) #'super'-->  héritage fonction circle
         self.speed = speed
+        self.player = player
+        if player == 1:
+            self.movement = [pygame.K_z,pygame.K_s,pygame.K_q,pygame.K_d] #attribuer les touches au joueur 1
+        else:
+            self.movement= [pygame.K_UP,pygame.K_DOWN,pygame.K_LEFT,pygame.K_RIGHT] #attribuer les touches au joueur 2
 
-    def update(self):
+    def update(self):                               #attribution des touche du joueur au mouvement 
         keys = pygame.key.get_pressed()
-        if keys[pygame.K_z]:
+        if keys[self.movement[0]]:
             if self.position.y > 110 :
                 self.position.y -= self.speed
-        if keys[pygame.K_s]:
+        if keys[self.movement[1]]:
             if self.position.y < 640 - self.radius:
                 self.position.y += self.speed
-        if keys[pygame.K_q]:
+        if keys[self.movement[2]]:
             if self.position.x > 80 + self.radius:
                 self.position.x -= self.speed
-        if keys[pygame.K_d]:
+        if keys[self.movement[3]]:
             if self.position.x < 1200 - self.radius:
                 self.position.x += self.speed
                 
             
 class Player2(Player):
-    def __init__(self, position, radius, color, speed=10):
-        super().__init__(position, radius, color, speed=10) #'super'-->  héritage fonction circle
-        self.speed = speed
+    def __init__(self, position, radius, color, speed=1):
+        super().__init__(position, radius, color, speed) #'super'-->  héritage fonction circle
 
     def update(self):
         keys = pygame.key.get_pressed()
@@ -58,7 +62,7 @@ class Player2(Player):
                 
                 
 class Ennemy(Circle):
-    def __init__(self, position, radius, color, speed=1):
+    def __init__(self, position, radius, color, speed=0.1):
         super().__init__(position, radius, color)
         self.speed = speed
     

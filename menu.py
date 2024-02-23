@@ -21,3 +21,10 @@ class menu:
         print("DEBUG : affichage du bouton.")   
         screen.blit(text,(pos[0]-(w/2),pos[1]-(h/2)))                                       #le bouton sur l'ecran
         return pygame.rect.Rect((pos[0]-(w/2)+3,pos[1]-(h/2)+3),(w,h))                      #pour la collision 
+    
+    def in_rect(self,mouse_pos,collision):
+        print(collision)
+
+
+pomme = menu()
+'''pomme.in_rect(0,0,pygame.rect.Rect(10,10,(0,0)))'''
