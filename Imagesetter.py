@@ -2,11 +2,11 @@ from PIL import Image
 import pygame
 
 class tile:
-    SIZE = 16 # width and length
 
-    def __init__(self, fichier, x = None, y = None):
+    def __init__(self, fichier, x = None, y = None,size = 16):
         self.cache_tile = {} #cache des tiles 
         self.img_set = Image.open(fichier)
+        self.size = size
         if x != None and y!= None:
             self.load(x, y)
         else:
@@ -19,10 +19,10 @@ class tile:
     def load(self,i, j):
         pil_image = self.img_set.crop(
             (
-                i * tile.SIZE, #gauche
-                j * tile.SIZE, #haut
-                (i+1)*tile.SIZE, #droite
-                (j+1)*tile.SIZE #bas
+                i * self.size, #gauche
+                j * self.size, #haut
+                (i+1)*self.size, #droite
+                (j+1)*self.size #bas
             ))
         image_data = pil_image.tobytes()        #Permet de convertir une image pillow en surface pygame
         image_dimensions = pil_image.size
@@ -39,3 +39,5 @@ class tile:
             
     def blit_tile(self,screen,tile,pos):   
         screen.blit(self.cache_tile[tile],pos)
+
+    

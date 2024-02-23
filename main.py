@@ -1,6 +1,7 @@
 import pygame
 import Imagesetter as image
 import menu as menu
+import personnage as perso
 
 class Main:
     def __init__(self, fps=60, width=1280, height=720):
@@ -20,12 +21,13 @@ class Main:
         
     def start(self):
         self.mapdebug()
+        title = menu.menu()
+        collision = title.render_main_menu(self.screen)
         while self.running:
+            mouse_pos = pygame.mouse.get_pos()
             self.handle_events()
-            keys = pygame.key.get_pressed()
-            title = menu.menu()
-            collision = title.render_main_menu(self.screen)
-                    
+            pygame.display.flip()
+            
             '''else:            #ça fait crash python, c'est surement le ifZ
                 self.screen.blit(self.screen_debug,(0,0))
                 self.handle_events()
@@ -147,3 +149,4 @@ jeu.objects = [player, obstacle, ennemi, player2]
 jeu.start()
 
 
+#.convert_alpha()
