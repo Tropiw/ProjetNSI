@@ -8,9 +8,7 @@ class menu:
         pass            #si on trouve un truc a mettre la dedans ca peut etre bien en vrai
 
     def render_main_menu(self,screen):
-        if not pygame.font.get_fonts():         #au cas oú
-            pygame.font.init()
-        titre = menu.FONT_TITLE.render("Clash of Dungeon",True, (0,0,0))    #le texte du titre
+        titre = menu.FONT_TITLE.render("Clash  of  Dungeon",True, (0,0,0))    #le texte du titre
         w, h = titre.get_size()                                             #pour le placement 
         screen.blit(titre,(640-(w/2),180-(h/2)))                            #le titre sur l'ecran
         return self.render_button('START',(640,360),screen)                 #le bouton
@@ -22,4 +20,3 @@ class menu:
         pygame.draw.rect(screen,(200,200,200),((pos[0]-(w/2),pos[1]-(h/2)),(w,h)))          #arriere plan de l'arriere plan du bouton
         screen.blit(text,(pos[0]-(w/2),pos[1]-(h/2)))                                       #le bouton sur l'ecran
         return pygame.rect.Rect((pos[0]-(w/2)+3,pos[1]-(h/2)+3),(w,h))                      #pour la collision 
-        
