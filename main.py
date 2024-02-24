@@ -47,7 +47,10 @@ class Main:
         
     def render(self):
         for obj in self.objects:
-            obj.draw(self.screen, self.screen_debug)
+            if isinstance(obj, perso.Player):  # Vérifie si l'objet est une instance de Player
+                obj.draw(self.screen)
+            else:
+                obj.draw(self.screen, self.screen_debug)
 
 
 
@@ -55,9 +58,20 @@ class Main:
 # Exemple d'utilisation
 jeu = Main()
 
+# peros
+# Chargement de l'image du personnage
+player_image_path = "Graphic\perso\Sprites\Prototype\Prototype_Worksheet.png"
+
+# Taille d'une tile sur l'image (en pixels)
+tile_size = (32, 32)
+
+# Création de l'instance du joueur
+player_sprite = perso.Player(player_image_path, (100, 100), tile_size,1)
+player_sprite2 = perso.Player(player_image_path, (100, 100), tile_size,2)
+
 # Créer le joueur
-player = perso.Player((100, 500), 30, (255, 0, 0),0.8,1)
-player2 = perso.Player((100, 500), 30, (255, 150, 0),0.8,2)
+player = perso.circle_Player((100, 500), 30, (255, 0, 0),0.8,1)
+player2 = perso.circle_Player((100, 500), 30, (255, 150, 0),0.8,2)
 # Créer l'obstacle (cercle immobile)
 obstacle = perso.Circle((200, 200), 30, (0, 255, 0))
 
@@ -66,7 +80,7 @@ ennemi = perso.Ennemy((500,200), 25,(56,23,145))
 
 
 # Liste d'objets à afficher
-jeu.objects = [player, obstacle, ennemi, player2]
+jeu.objects = [ obstacle, ennemi, player_sprite, player_sprite2]
 
 # Lancer le jeu
 jeu.start()
