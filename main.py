@@ -2,7 +2,7 @@ import pygame
 import Imagesetter as image
 import menu as menu
 import personnage as perso
-import map as map
+import map_module as map_module
 
 class Main:
     def __init__(self, fps=60, width=1280, height=720):
@@ -21,24 +21,19 @@ class Main:
         self.objects = []  # Liste pour stocker les objets à dessiner
         
     def start(self):
+        testmap = map_module.Dongeon(self.screen_debug) # Appeller
+        testmap.map2()  # Appeler la méthode map2() du module map 
         
-        self.mapdebug()
         title = menu.menu()
         collision = title.render_main_menu(self.screen)
         self.clock.tick(60)
         while self.running:
-            '''mouse_pos = pygame.mouse.get_pos()
-            if title.in_rect(mouse.pos,collision):
-            '''
-            
-            #else:            #ça fait crash python, c'est surement le ifZ
+            # Votre code de boucle principale ici
             self.screen.blit(self.screen_debug,(0,0))
             self.handle_events()
             self.update()
             self.render()
             pygame.display.flip()
-              # Limiter le taux de rafraîchissement
-            self.handle_events()
         pygame.quit()
             
     def handle_events(self):          # Le jeu s'arrête quand on clique sur fermer
@@ -50,22 +45,10 @@ class Main:
         for obj in self.objects:
             obj.update()  # Appel à la méthode update de chaque objet
         
-    def mapdebug(self):
-        self.tile_set.blit_tile(self.screen_debug,(5,5),(0,0))
-        self.tile_set.blit_tile(self.screen_debug,(6,5),(1200,0))
-        self.tile_set.blit_tile(self.screen_debug,(6,6),(1200,640))
-        self.tile_set.blit_tile(self.screen_debug,(5,6),(0,640)) #Les coins 
-        for i in range(14):
-            self.tile_set.blit_tile(self.screen_debug,(3,6),((i+1)*80,0))
-            self.tile_set.blit_tile(self.screen_debug,(3,4),((i+1)*80,640)) # Les bord en haut et en bas
-            for j in range(7):
-                self.tile_set.blit_tile(self.screen_debug,(4,5),(0,(j+1)*80))
-                self.tile_set.blit_tile(self.screen_debug,(2,5),(1200,(j+1)*80)) #Les bord sur les cotés 
-                self.tile_set.blit_tile(self.screen_debug,(12,4),((i+1)*80,(j+1)*80)) #Le milieux
-
     def render(self):
         for obj in self.objects:
-            obj.draw(self.screen,self.screen_debug)
+            obj.draw(self.screen, self.screen_debug)
+
 
 
 

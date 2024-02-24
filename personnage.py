@@ -7,7 +7,7 @@ class Circle:
         self.color = color
         self.background = 0
     
-    def draw(self, screen, screen_ref):
+    def draw(self, screen, screen_debug):
         self.background = pygame.Surface((self.radius*2,self.radius*2))
         screen.blit(self.background, (self.position.x-self.radius,self.position.y-self.radius))
         pygame.draw.circle(screen, self.color, (int(self.position.x), int(self.position.y)), self.radius)

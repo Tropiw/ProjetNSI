@@ -2,16 +2,15 @@ import pygame
 import Imagesetter as image
 
 class Dongeon:
-    def __init__(self):
-        self.tile_set11 = image.tile('ProjetNSI\Graphic\Dungeon Gathering Free Version\Set 1.1.png')
-        self.tile_structure = image.tile('ProjetNSI\Graphic\Dungeon Gathering Free Version\Structure.png',0,0)
+    def __init__(self, screen_debug):
+        self.tile_set = image.tile(r'Graphic\Dungeon Gathering Free Version\Set 1.1.png')
+        self.tile_structure = image.tile(r'Graphic\Dungeon Gathering Free Version\Structure.png',0,0)
         for i in range(15):
             for j in range(7):
                 self.tile_set.load(i,j)
-
-        self.screen_debug = pygame.Surface((1280,720))
+        self.screen_debug = screen_debug
     
-    def map_debug(self):
+    def map1(self):
         self.tile_set.blit_tile(self.screen_debug,(5,5),(0,0))
         self.tile_set.blit_tile(self.screen_debug,(6,5),(1200,0))
         self.tile_set.blit_tile(self.screen_debug,(6,6),(1200,640))
@@ -38,35 +37,5 @@ class Dongeon:
                 self.tile_set.blit_tile(self.screen_debug,(14,3),((i+1)*80,(j+1)*80)) #Le milieuxKUG
         self.tile_set.blit_tile(self.screen_debug,(5,3),(560,0))
         self.tile_set.blit_tile(self.screen_debug,(6,3),(640,0))
-        sssself.tile_structure(self.screen_debug,(640,0))
+        self.tile_set.blit_tile(self.screen_debug,(12,4),((i+1)*80,(j+1)*80)) #Le milieux
         
-                
-# Example file showing a basic pygame "game loop"
-import pygame
-
-# pygame setup
-pygame.init()
-screen = pygame.display.set_mode((1280, 720))
-clock = pygame.time.Clock()
-running = True
-pomme = Dongeon()
-
-while running:
-    # poll for events
-    # pygame.QUIT event means the user clicked X to close your window
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-
-    # fill the screen with a color to wipe away anything from last frame
-    pomme.map2()
-    screen.blit(pomme.screen_debug, (0,0))
-
-    # RENDER YOUR GAME HERE
-
-    # flip() the display to put your work on screen
-    pygame.display.flip()
-
-    clock.tick(60)  # limits FPS to 60
-
-pygame.quit()
