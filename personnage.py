@@ -16,12 +16,23 @@ class Player(pygame.sprite.Sprite):
             self.movement = [pygame.K_z, pygame.K_s, pygame.K_q, pygame.K_d]  # attribuer les touches au joueur 1
         else:
             self.movement = [pygame.K_UP, pygame.K_DOWN, pygame.K_LEFT, pygame.K_RIGHT]  # attribuer les touches au joueur 2
+        self.sfx_move = pygame.mixer.Sound(r"SFX\ahh.mp3")
+        self.is_moving = False
 
     def update(self):
         keys = pygame.key.get_pressed()
         if keys[self.movement[0]]:  # Touche Z ou flèche haut
             if self.rect.y > 26:
                 self.rect.y -= 5
+                if not self.is_moving:
+                    self.sfx_move.play()
+                    self.is_moving = True
+
+        # Gestion de l'événement KEYUP
+        else:
+            if self.is_moving:
+                self.sfx_move.stop()
+                self.is_moving = False
         if keys[self.movement[1]]:  # Touche S ou flèche bas
             if self.rect.y < 502:
                 self.rect.y += 5

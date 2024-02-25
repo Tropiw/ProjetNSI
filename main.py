@@ -92,6 +92,12 @@ slime2 = perso.Image(r'Graphic\slime2.png',position=(800, 425),zoom=0.5)
 # Liste d'objets à afficher
 jeu.objects = [ slime2, ennemy, obstacle, obstacle2, obstacle3, player, player2, pilier, pilier2 ]
 
+#Musique
+pygame.mixer.init()
+pygame.mixer.music.load(r'SFX\robot rock.mp3')
+pygame.mixer.music.play(loops=-1, fade_ms=2000)
+pygame.mixer.music.set_volume(0.01)
+
 # Lancer le jeu
 jeu.start()
 
