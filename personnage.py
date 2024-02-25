@@ -6,9 +6,6 @@ class Player(pygame.sprite.Sprite):
         super().__init__()
         self.image = pygame.image.load(image_path).convert_alpha()
         self.rect = pygame.Rect(position[0], position[1], tile_size[0], tile_size[1])
-        # rect pour gerer la position puis les collision facilement 
-        # position[0], position[1] pour recuperer position x,y 
-        # tile_size[0], tile_size[1] pour taille x,y de la tile (32x32 ici)
         self.tile_size = tile_size
         self.player = player
         if player == 1:
@@ -17,68 +14,75 @@ class Player(pygame.sprite.Sprite):
             self.movement = [pygame.K_UP, pygame.K_DOWN, pygame.K_LEFT, pygame.K_RIGHT]  # attribuer les touches au joueur 2
         self.sfx_move = pygame.mixer.Sound(r"SFX\footstep mc (2).mp3")
         self.is_moving = False
-        self.animation_list = []
+        self.is_sound_playing = False  # Variable pour suivre l'état du son de marche
+        self.animation_lists = {"idle": [], "walk": []}
         self.animation_step = 3
         self.last_update = pygame.time.get_ticks()
         self.animation_cooldown = 500
         self.frame = 0
-        # Charger la feuille de sprites
-        self.sprite_sheet = pygame.image.load(image_path).convert_alpha()
-        
-        # Découpez votre sprite sheet et ajoutez les tiles à la liste animation_list
-        for x in range(self.animation_step):
+        self.load_animation_frames(tile_size)
+        self.current_animation = 'idle'
+
+    def load_animation_frames(self, tile_size):
+        # Chargement des animations immobile (y = 0)
+        for x in range(3):
             tile_rect = pygame.Rect(x * tile_size[0], 0, tile_size[0], tile_size[1])
-            self.animation_list.append(self.sprite_sheet.subsurface(tile_rect))
+            self.animation_lists["idle"].append(self.image.subsurface(tile_rect))
+        # Chargement des animations marche a droite (y = 1)
+        for x in range(3):
+            tile_rect = pygame.Rect(x * tile_size[0], 32, tile_size[0], tile_size[1])
+            self.animation_lists["walk"].append(self.image.subsurface(tile_rect))
+
+    def detect_movement(self):
+        keys = pygame.key.get_pressed()
+        self.is_moving = any(keys[movement_key] for movement_key in self.movement)
 
     def update(self):
+        self.detect_movement()
         keys = pygame.key.get_pressed()
 
         # Mouvement vers le haut
-        if keys[self.movement[0]]:  
+        if keys[self.movement[0]]:
             if self.rect.y > 26:
                 self.rect.y -= 5
-            if not self.is_moving:
-                self.sfx_move.play(loops=-1)
-                self.is_moving = True
         # Mouvement vers le bas
         elif keys[self.movement[1]]:
             if self.rect.y < 502:
                 self.rect.y += 5
-            if not self.is_moving:
-                self.sfx_move.play(loops=-1)
-                self.is_moving = True
         # Mouvement vers la gauche
         elif keys[self.movement[2]]:
             if self.rect.x > 20:
                 self.rect.x -= 5
-            if not self.is_moving:
-                self.sfx_move.play(loops=-1)
-                self.is_moving = True
         # Mouvement vers la droite
         elif keys[self.movement[3]]:
             if self.rect.x < 1070:
                 self.rect.x += 5
-            if not self.is_moving:
-                self.sfx_move.play(loops=-1)
-                self.is_moving = True
-        else:
-            if self.is_moving:
-                self.sfx_move.stop()
-                self.is_moving = False
-                
-        now = pygame.time.get_ticks()
-        if now - self.last_update > self.animation_cooldown: # Vérifier s'il faut mettre à jour l'animation à nouveau
-            self.frame = (self.frame + 1) % self.animation_step # Boucle l'animation au lieu de vérifier si on est à la fin de la liste d'animation
-            self.last_update = now
 
+        # Jouer le son de marche si le joueur commence à se déplacer
+        if self.is_moving:
+            if not self.is_sound_playing:  # Vérifie si le son n'est pas déjà en train de jouer
+                self.sfx_move.play(loops=-1)  # Joue le son en boucle (-1) en cas de maintient prolongé de la touche 
+                self.is_sound_playing = True  # Met à jour l'état du son
+        else:
+            if self.is_sound_playing:  # Si le joueur s'arrête de se déplacer
+                self.sfx_move.stop()  # Arrête le son
+                self.is_sound_playing = False  # Met à jour l'état du son
+
+        # Mise à jour de l'animation
+        now = pygame.time.get_ticks()
+        if now - self.last_update > self.animation_cooldown: # Vérification cooldown animation pour éviter une animation top rapide
+            self.frame = (self.frame + 1) % self.animation_step # Si l'on arrive à la dernière image, on boucle l'animation
+            self.last_update = now # Remettre à jour pour le cooldown
 
     def draw(self, screen):
-        w = self.animation_list[self.frame].get_width()
-        h = self.animation_list[self.frame].get_height()
-        image_upscaled = pygame.transform.scale(self.animation_list[self.frame], (w * 6, h * 6)) # Grandir la tile du perso car trop petite
+        # Dessiner l'animation appropriée en fonction de l'état actuel du joueur
+        current_animation = 'walk' if self.is_moving else 'idle'
+        current_frame = self.animation_lists[current_animation][self.frame]
+        w, h = current_frame.get_width(), current_frame.get_height()
+        image_upscaled = pygame.transform.scale(current_frame, (w * 6, h * 6))
         screen.blit(image_upscaled, self.rect.topleft)
-        
-        
+
+
 
 class Obstacle(pygame.sprite.Sprite): # Décor dynamique
     def __init__(self, image_path, position, tile_size, tile_position):
@@ -133,4 +137,5 @@ class Image: # Décor statique
         
     def update(self):
         pass # pas besoin mais obligatoire
+
 
