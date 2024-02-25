@@ -90,7 +90,7 @@ pilier2 = perso.Image(image_path, position=(1125, 100))  # Positionnez l'image Ã
 slime2 = perso.Image(r'Graphic\slime2.png',position=(800, 425),zoom=0.5)
 
 # Liste d'objets Ã  afficher
-jeu.objects = [ player, player2, obstacle, ennemy,obstacle2, pilier, pilier2, obstacle3, slime2]
+jeu.objects = [ slime2, ennemy, obstacle, obstacle2, obstacle3, player, player2, pilier, pilier2 ]
 
 # Lancer le jeu
 jeu.start()
