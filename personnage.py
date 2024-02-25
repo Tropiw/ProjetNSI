@@ -15,27 +15,57 @@ class Player(pygame.sprite.Sprite):
         self.sfx_move = pygame.mixer.Sound(r"SFX\footstep mc (2).mp3")
         self.is_moving = False
         self.is_sound_playing = False  # Variable pour suivre l'état du son de marche
-        self.animation_lists = {"idle": [], "walk": []}
+        self.animation_lists = {"idle": [], "walk_right": [], "walk_left": [], "walk_up": [], "walk_down": []}
         self.animation_step = 3
         self.last_update = pygame.time.get_ticks()
-        self.animation_cooldown = 500
+        self.animation_cooldown = 100
         self.frame = 0
         self.load_animation_frames(tile_size)
         self.current_animation = 'idle'
 
     def load_animation_frames(self, tile_size):
-        # Chargement des animations immobile (y = 0)
+        # Chargement des animations immobile (1ère ligne = 0*32)
         for x in range(3):
             tile_rect = pygame.Rect(x * tile_size[0], 0, tile_size[0], tile_size[1])
             self.animation_lists["idle"].append(self.image.subsurface(tile_rect))
-        # Chargement des animations marche a droite (y = 1)
+            
+        # Chargement des animations marche a droite (5ème ligne = 4*32)
         for x in range(3):
-            tile_rect = pygame.Rect(x * tile_size[0], 32, tile_size[0], tile_size[1])
-            self.animation_lists["walk"].append(self.image.subsurface(tile_rect))
+            tile_rect = pygame.Rect(x * tile_size[0], 4*32, tile_size[0], tile_size[1])
+            self.animation_lists["walk_right"].append(self.image.subsurface(tile_rect))
+            
+        # Chargement des animations marche a gauche (5ème ligne = 4*32) --> miroir animation droite
+        for x in range(3):
+            tile_rect = pygame.Rect(x * tile_size[0], 4*32, tile_size[0], tile_size[1])
+            walk_right_frame = self.image.subsurface(tile_rect) #stocke les animations 
+            # Refléter horizontalement les frames de marche vers la droite pour les adapter au côté gauche
+            walk_left_frame = pygame.transform.flip(walk_right_frame, True, False)
+            self.animation_lists["walk_left"].append(walk_left_frame)
+
+        # Chargement des animations marche haut (6ème ligne = 5*32)
+        for x in range(3):
+            tile_rect = pygame.Rect(x * tile_size[0], 5*32, tile_size[0], tile_size[1])
+            self.animation_lists["walk_up"].append(self.image.subsurface(tile_rect))
+            
+        # Chargement des animations marche a bas (4ème ligne = 3*32)
+        for x in range(3):
+            tile_rect = pygame.Rect(x * tile_size[0], 3*32, tile_size[0], tile_size[1])
+            self.animation_lists["walk_down"].append(self.image.subsurface(tile_rect))
 
     def detect_movement(self):
         keys = pygame.key.get_pressed()
         self.is_moving = any(keys[movement_key] for movement_key in self.movement)
+
+        if keys[self.movement[0]]:  # Vers le haut
+            self.current_animation = 'walk_up'
+        elif keys[self.movement[1]]:  # Vers le bas
+            self.current_animation = 'walk_down'
+        elif keys[self.movement[2]]:  # Vers la gauche
+            self.current_animation = 'walk_left'
+        elif keys[self.movement[3]]:  # Vers la droite
+            self.current_animation = 'walk_right'
+        else:
+            self.current_animation = 'idle'
 
     def update(self):
         self.detect_movement()
@@ -75,12 +105,22 @@ class Player(pygame.sprite.Sprite):
             self.last_update = now # Remettre à jour pour le cooldown
 
     def draw(self, screen):
-        # Dessiner l'animation appropriée en fonction de l'état actuel du joueur
-        current_animation = 'walk' if self.is_moving else 'idle'
+        # Sélectionner l'animation appropriée en fonction de la direction du mouvement
+        if self.is_moving:
+            current_animation = self.current_animation
+        else:
+            current_animation = 'idle'
+
+        # Obtenir le cadre actuel de l'animation
         current_frame = self.animation_lists[current_animation][self.frame]
+
+        # Redimensionner l'image du cadre
         w, h = current_frame.get_width(), current_frame.get_height()
         image_upscaled = pygame.transform.scale(current_frame, (w * 6, h * 6))
+
+        # Dessiner l'image redimensionnée à la position du joueur
         screen.blit(image_upscaled, self.rect.topleft)
+
 
 
 
