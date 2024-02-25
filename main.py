@@ -68,11 +68,11 @@ player2 = perso.Player(r"Graphic\perso\Sprites\Prototype\worksheet_blue.png", (6
 
 
 # obstacles
-obstacle = perso.Obstacle(r"Graphic\Dungeon Gathering Free Version\Set 1.1.png",
+obstacle = image.Obstacle(r"Graphic\Dungeon Gathering Free Version\Set 1.1.png",
                           (100, 500), (16, 16), (8, 6))
-obstacle2 = perso.Obstacle(r"Graphic\Dungeon Gathering Free Version\Set 1.1.png",
+obstacle2 = image.Obstacle(r"Graphic\Dungeon Gathering Free Version\Set 1.1.png",
                           (200, 500), (16, 16), (8, 6))
-obstacle3 = perso.Obstacle(r"Graphic\Dungeon Gathering Free Version\Set 1.1.png",
+obstacle3 = image.Obstacle(r"Graphic\Dungeon Gathering Free Version\Set 1.1.png",
                           (400, 500), (16, 16), (9, 6))
 
 
@@ -82,10 +82,10 @@ ennemy = perso.Ennemy(r"Graphic\Slime\slime-Sheet.png", (100,300), (34,25), (0,0
 
 #Pilier
 image_path = "Graphic\Dungeon Gathering Free Version\Structure.png"
-pilier = perso.Image(image_path, position=(100, 100))  # Positionnez l'image à (100, 100) sur l'écran
-pilier2 = perso.Image(image_path, position=(1125, 100))  # Positionnez l'image à (100, 100) sur l'écran
+pilier = image.Image_statique(image_path, position=(100, 100))  # Positionnez l'image à (100, 100) sur l'écran
+pilier2 = image.Image_statique(image_path, position=(1125, 100))  # Positionnez l'image à (100, 100) sur l'écran
 
-slime2 = perso.Image(r'Graphic\slime2.png',position=(800, 425),zoom=0.5)
+slime2 = image.Image_statique(r'Graphic\slime2.png',position=(800, 425),zoom=0.2)
 
 # Liste d'objets à afficher
 jeu.objects = [ slime2, ennemy, obstacle, obstacle2, obstacle3, player, player2, pilier, pilier2 ]

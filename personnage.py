@@ -121,33 +121,12 @@ class Player(pygame.sprite.Sprite):
         # Dessiner l'image redimensionnée à la position du joueur
         screen.blit(image_upscaled, self.rect.topleft)
 
-
-
-
-class Obstacle(pygame.sprite.Sprite): # Décor dynamique
-    def __init__(self, image_path, position, tile_size, tile_position):
-        super().__init__()
-        self.image = pygame.image.load(image_path).convert_alpha()
-        self.rect = pygame.Rect(position[0], position[1], tile_size[0], tile_size[1])
-        self.tile_size = tile_size
-        self.tile_position = tile_position
-
-    def draw(self, screen):
-        tile_image = self.image.subsurface(pygame.Rect(self.tile_position[0] * self.tile_size[0],
-                                                       self.tile_position[1] * self.tile_size[1],
-                                                       self.tile_size[0], self.tile_size[1]))
-        # Redimensionner la tuile à la taille désirée
-        scaled_tile_image = pygame.transform.scale(tile_image, (128, 128))
-
-        # Afficher la tuile à la position du joueur
-        screen.blit(scaled_tile_image, self.rect.topleft)
-
     
     # UTILISATION
     # obstacle_tile_position = (3, 4)  # Position de la tuile pour cet obstacle
     # obstacle = Obstacle("chemin/vers/image.png", (x, y), (largeur_tile, hauteur_tile), obstacle_tile_position)
     
-class Ennemy(Obstacle):
+class Ennemy(image.Obstacle):
     def __init__(self, image_path, position, tile_size, tile_position, speed):
         super().__init__(image_path, position, tile_size, tile_position)
         self.speed = speed
@@ -164,18 +143,6 @@ class Ennemy(Obstacle):
             self.direction = 1  # Changer la direction vers la droite
 
         
-class Image: # Décor statique
-    def __init__(self, image_path, position=(0, 0), zoom=3):
-        self.image = pygame.image.load(image_path)
-        self.position = position
-        w = self.image.get_width()
-        h = self.image.get_height()
-        self.image_upscaled = pygame.transform.scale(self.image, (w * zoom, h * zoom))  # Grandir l'image
 
-    def draw(self, screen):
-        screen.blit(self.image_upscaled, self.position)
-        
-    def update(self):
-        pass # pas besoin mais obligatoire
 
 

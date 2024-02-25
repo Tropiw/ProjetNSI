@@ -1,6 +1,6 @@
 from PIL import Image   
 import pygame
-
+# Fichier d'outils pour la création de la map 
 class tile:
 
     def __init__(self, fichier, x = None, y = None,size = 16):
@@ -39,5 +39,44 @@ class tile:
             
     def blit_tile(self,screen,tile,pos):   
         screen.blit(self.cache_tile[tile],pos)
+        
+        
+        
+        
+class Image_statique: # Décor statique
+    def __init__(self, image_path, position=(0, 0), zoom=3):
+        self.image = pygame.image.load(image_path)
+        self.position = position
+        w = self.image.get_width()
+        h = self.image.get_height()
+        self.image_upscaled = pygame.transform.scale(self.image, (w * zoom, h * zoom))  # Grandir l'image
+
+    def draw(self, screen):
+        screen.blit(self.image_upscaled, self.position)
+        
+    def update(self):
+        pass # pas besoin mais obligatoire
+    
+    
+    
+    
+class Obstacle(pygame.sprite.Sprite): # Décor dynamique prend en compte un sprite sheet
+    def __init__(self, image_path, position, tile_size, tile_position):
+        super().__init__()
+        self.image = pygame.image.load(image_path).convert_alpha()
+        self.rect = pygame.Rect(position[0], position[1], tile_size[0], tile_size[1])
+        self.tile_size = tile_size
+        self.tile_position = tile_position
+
+    def draw(self, screen):
+        tile_image = self.image.subsurface(pygame.Rect(self.tile_position[0] * self.tile_size[0],
+                                                       self.tile_position[1] * self.tile_size[1],
+                                                       self.tile_size[0], self.tile_size[1]))
+        # Redimensionner la tuile à la taille désirée
+        scaled_tile_image = pygame.transform.scale(tile_image, (128, 128))
+
+        # Afficher la tuile à la position du joueur
+        screen.blit(scaled_tile_image, self.rect.topleft)
+
 
     
