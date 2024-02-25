@@ -1,66 +1,14 @@
 import pygame
 import Imagesetter as image
 
-class Circle:
-    def __init__(self, position, radius, color):
-        self.position = pygame.Vector2(position) # Vecteur convertie coordonnées (100,200) en x=100 et y =200
-        self.radius = radius
-        self.color = color
-        self.background = 0
-    
-    def draw(self, screen, screen_debug):
-        self.background = pygame.Surface((self.radius*2,self.radius*2))
-        screen.blit(self.background, (self.position.x-self.radius,self.position.y-self.radius))
-        pygame.draw.circle(screen, self.color, (int(self.position.x), int(self.position.y)), self.radius)
-
-    def update(self):
-        pass  # Les cercles n'ont pas besoin d'être mis à jour
-
-class circle_Player(Circle):
-    def __init__(self, position, radius, color, speed=1 ,player = 1):
-        super().__init__(position, radius, color) #'super'-->  héritage fonction circle
-        self.speed = speed
-        self.player = player
-        if player == 1:
-            self.movement = [pygame.K_z,pygame.K_s,pygame.K_q,pygame.K_d] #attribuer les touches au joueur 1
-        else:
-            self.movement= [pygame.K_UP,pygame.K_DOWN,pygame.K_LEFT,pygame.K_RIGHT] #attribuer les touches au joueur 2
-
-    def update(self):                               #attribution des touche du joueur au mouvement 
-        keys = pygame.key.get_pressed()
-        if keys[self.movement[0]]:
-            if self.position.y > 110 :
-                self.position.y -= self.speed
-        if keys[self.movement[1]]:
-            if self.position.y < 640 - self.radius:
-                self.position.y += self.speed
-        if keys[self.movement[2]]:
-            if self.position.x > 80 + self.radius:
-                self.position.x -= self.speed
-        if keys[self.movement[3]]:
-            if self.position.x < 1200 - self.radius:
-                self.position.x += self.speed
-                
-                
-class Ennemy(Circle):
-    def __init__(self, position, radius, color, speed=0.1):
-        super().__init__(position, radius, color)
-        self.speed = speed
-    
-    def update(self):
-        if self.position.x < 1200 - self.radius:
-            self.position.x += self.speed
-            
-            
-
-
-import pygame
-
 class Player(pygame.sprite.Sprite):
     def __init__(self, image_path, position, tile_size, player=1):
         super().__init__()
         self.image = pygame.image.load(image_path).convert_alpha()
         self.rect = pygame.Rect(position[0], position[1], tile_size[0], tile_size[1])
+        # rect pour gerer la position puis les collision facilement 
+        # position[0], position[1] pour recuperer position x,y 
+        # tile_size[0], tile_size[1] pour taille x,y de la tile (32x32 ici)
         self.tile_size = tile_size
         self.tile_position = (0, 0)
         self.player = player
@@ -73,17 +21,16 @@ class Player(pygame.sprite.Sprite):
         keys = pygame.key.get_pressed()
         if keys[self.movement[0]]:  # Touche Z ou flèche haut
             if self.rect.y > 26:
-                self.rect.y -= 1
+                self.rect.y -= 5
         if keys[self.movement[1]]:  # Touche S ou flèche bas
             if self.rect.y < 502:
-                self.rect.y += 1
+                self.rect.y += 5
         if keys[self.movement[2]]:  # Touche Q ou flèche gauche
             if self.rect.x > 20:
-                self.rect.x -= 1
+                self.rect.x -= 5
         if keys[self.movement[3]]:  # Touche D ou flèche droite
             if self.rect.x < 1070:
-                self.rect.x += 1
-        print(self.rect)
+                self.rect.x += 5
 
     def draw(self, screen):
         tile_image = self.image.subsurface(pygame.Rect(self.tile_position[0] * self.tile_size[0],
@@ -91,5 +38,61 @@ class Player(pygame.sprite.Sprite):
                                                        self.tile_size[0], self.tile_size[1]))
         w = tile_image.get_width()
         h = tile_image.get_height()
-        tile_image_upscaled = pygame.transform.scale(tile_image, (w * 6, h * 6)) #grandir la tile du perso car trop petite
-        screen.blit(tile_image_upscaled, self.rect.topleft)
+        tile_image_upscaled = pygame.transform.scale(tile_image, (w * 6, h * 6)) # Grandir la tile du perso car trop petite
+        screen.blit(tile_image_upscaled, self.rect.topleft) # Renvoie un tuple x,y du haut gauche, positionner ici
+        
+
+class Obstacle(pygame.sprite.Sprite): # Décor dynamique
+    def __init__(self, image_path, position, tile_size, tile_position):
+        super().__init__()
+        self.image = pygame.image.load(image_path).convert_alpha()
+        self.rect = pygame.Rect(position[0], position[1], tile_size[0], tile_size[1])
+        self.tile_size = tile_size
+        self.tile_position = tile_position
+
+    def draw(self, screen):
+        tile_image = self.image.subsurface(pygame.Rect(self.tile_position[0] * self.tile_size[0],
+                                                       self.tile_position[1] * self.tile_size[1],
+                                                       self.tile_size[0], self.tile_size[1]))
+        # Redimensionner la tuile à la taille désirée
+        scaled_tile_image = pygame.transform.scale(tile_image, (128, 128))
+
+        # Afficher la tuile à la position du joueur
+        screen.blit(scaled_tile_image, self.rect.topleft)
+
+    
+    # UTILISATION
+    # obstacle_tile_position = (3, 4)  # Position de la tuile pour cet obstacle
+    # obstacle = Obstacle("chemin/vers/image.png", (x, y), (largeur_tile, hauteur_tile), obstacle_tile_position)
+    
+class Ennemy(Obstacle):
+    def __init__(self, image_path, position, tile_size, tile_position, speed):
+        super().__init__(image_path, position, tile_size, tile_position)
+        self.speed = speed
+        self.direction = 1  # 1 pour déplacement vers la droite, -1 pour déplacement vers la gauche
+
+    def update(self):
+        # Déplacer l'ennemi dans la direction actuelle
+        self.rect.x += self.speed * self.direction
+
+        # Vérifier si l'ennemi atteint les bords de l'écran
+        if self.rect.right >= 1125:  # Si l'ennemi atteint le bord droit
+            self.direction = -1  # Changer la direction vers la gauche
+        elif self.rect.left <= 65:  # Si l'ennemi atteint le bord gauche
+            self.direction = 1  # Changer la direction vers la droite
+
+        
+class Image: # Décor statique
+    def __init__(self, image_path, position=(0, 0), zoom=3):
+        self.image = pygame.image.load(image_path)
+        self.position = position
+        w = self.image.get_width()
+        h = self.image.get_height()
+        self.image_upscaled = pygame.transform.scale(self.image, (w * zoom, h * zoom))  # Grandir l'image
+
+    def draw(self, screen):
+        screen.blit(self.image_upscaled, self.position)
+        
+    def update(self):
+        pass # pas besoin mais obligatoire
+

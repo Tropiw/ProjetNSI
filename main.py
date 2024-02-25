@@ -26,9 +26,9 @@ class Main:
         
         title = menu.menu()
         collision = title.render_main_menu(self.screen)
-        self.clock.tick(60)
         while self.running:
-            # Votre code de boucle principale ici
+            # Code de boucle principale
+            self.clock.tick(90)  # Temps écoulé entre chaque itération de la boucle est contrôlé, ce qui maintient la vitesse du jeu constante
             self.screen.blit(self.screen_debug,(0,0))
             self.handle_events()
             self.update()
@@ -47,43 +47,51 @@ class Main:
         
     def render(self):
         for obj in self.objects:
-            if isinstance(obj, perso.Player):  # Vérifie si l'objet est une instance de Player
                 obj.draw(self.screen)
-            else:
-                obj.draw(self.screen, self.screen_debug)
 
 
 
 
-# Exemple d'utilisation
+# UTILISATION
+
 jeu = Main()
 
-# peros
+# PERSO
 # Chargement de l'image du personnage
-player_image_path = "Graphic\perso\Sprites\Prototype\Prototype_Worksheet.png"
+player_image_path = r"Graphic\perso\Sprites\Prototype\Prototype_Worksheet.png"
 
 # Taille d'une tile sur l'image (en pixels)
 tile_size = (32, 32)
 
-# Création de l'instance du joueur
-player_sprite = perso.Player(player_image_path, (100, 100), tile_size,1)
-player_sprite2 = perso.Player(player_image_path, (100, 100), tile_size,2)
+# Création des joueurs
+player = perso.Player(player_image_path, (500, 100), tile_size,1)
+player2 = perso.Player(player_image_path, (600, 100), tile_size,2)
 
-# Créer le joueur
-player = perso.circle_Player((100, 500), 30, (255, 0, 0),0.8,1)
-player2 = perso.circle_Player((100, 500), 30, (255, 150, 0),0.8,2)
-# Créer l'obstacle (cercle immobile)
-obstacle = perso.Circle((200, 200), 30, (0, 255, 0))
 
-# Créer l'ennemi
-ennemi = perso.Ennemy((500,200), 25,(56,23,145))
 
+# obstacles
+obstacle = perso.Obstacle(r"Graphic\Dungeon Gathering Free Version\Set 1.1.png",
+                          (100, 500), (16, 16), (8, 6))
+obstacle2 = perso.Obstacle(r"Graphic\Dungeon Gathering Free Version\Set 1.1.png",
+                          (200, 500), (16, 16), (8, 6))
+obstacle3 = perso.Obstacle(r"Graphic\Dungeon Gathering Free Version\Set 1.1.png",
+                          (400, 500), (16, 16), (9, 6))
+
+
+#ennemi
+ennemy = perso.Ennemy(r"Graphic\Slime\slime-Sheet.png", (100,300), (34,25), (0,0), speed=5)
+
+
+#Pilier
+image_path = "Graphic\Dungeon Gathering Free Version\Structure.png"  # Remplacez "path/to/your/image.png" par le chemin de votre image
+pilier = perso.Image(image_path, position=(100, 100))  # Positionnez l'image à (100, 100) sur l'écran
+pilier2 = perso.Image(image_path, position=(1125, 100))  # Positionnez l'image à (100, 100) sur l'écran
+
+slime2 = perso.Image(r'Graphic\slime2.png',position=(800, 425),zoom=0.5)
 
 # Liste d'objets à afficher
-jeu.objects = [ obstacle, ennemi, player_sprite, player_sprite2]
+jeu.objects = [ player, player2, obstacle, ennemy,obstacle2, pilier, pilier2, obstacle3, slime2]
 
 # Lancer le jeu
 jeu.start()
 
-
-#.convert_alpha()
