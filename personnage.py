@@ -10,7 +10,6 @@ class Player(pygame.sprite.Sprite):
         # position[0], position[1] pour recuperer position x,y 
         # tile_size[0], tile_size[1] pour taille x,y de la tile (32x32 ici)
         self.tile_size = tile_size
-        self.tile_position = (0, 0)
         self.player = player
         if player == 1:
             self.movement = [pygame.K_z, pygame.K_s, pygame.K_q, pygame.K_d]  # attribuer les touches au joueur 1
@@ -18,6 +17,18 @@ class Player(pygame.sprite.Sprite):
             self.movement = [pygame.K_UP, pygame.K_DOWN, pygame.K_LEFT, pygame.K_RIGHT]  # attribuer les touches au joueur 2
         self.sfx_move = pygame.mixer.Sound(r"SFX\footstep mc (2).mp3")
         self.is_moving = False
+        self.animation_list = []
+        self.animation_step = 3
+        self.last_update = pygame.time.get_ticks()
+        self.animation_cooldown = 500
+        self.frame = 0
+        # Charger la feuille de sprites
+        self.sprite_sheet = pygame.image.load(image_path).convert_alpha()
+        
+        # Découpez votre sprite sheet et ajoutez les tiles à la liste animation_list
+        for x in range(self.animation_step):
+            tile_rect = pygame.Rect(x * tile_size[0], 0, tile_size[0], tile_size[1])
+            self.animation_list.append(self.sprite_sheet.subsurface(tile_rect))
 
     def update(self):
         keys = pygame.key.get_pressed()
@@ -54,16 +65,19 @@ class Player(pygame.sprite.Sprite):
             if self.is_moving:
                 self.sfx_move.stop()
                 self.is_moving = False
+                
+        now = pygame.time.get_ticks()
+        if now - self.last_update > self.animation_cooldown: # Vérifier s'il faut mettre à jour l'animation à nouveau
+            self.frame = (self.frame + 1) % self.animation_step # Boucle l'animation au lieu de vérifier si on est à la fin de la liste d'animation
+            self.last_update = now
 
 
     def draw(self, screen):
-        tile_image = self.image.subsurface(pygame.Rect(self.tile_position[0] * self.tile_size[0],
-                                                       self.tile_position[1] * self.tile_size[1],
-                                                       self.tile_size[0], self.tile_size[1]))
-        w = tile_image.get_width()
-        h = tile_image.get_height()
-        tile_image_upscaled = pygame.transform.scale(tile_image, (w * 6, h * 6)) # Grandir la tile du perso car trop petite
-        screen.blit(tile_image_upscaled, self.rect.topleft) # Renvoie un tuple x,y du haut gauche, positionner ici
+        w = self.animation_list[self.frame].get_width()
+        h = self.animation_list[self.frame].get_height()
+        image_upscaled = pygame.transform.scale(self.animation_list[self.frame], (w * 6, h * 6)) # Grandir la tile du perso car trop petite
+        screen.blit(image_upscaled, self.rect.topleft)
+        
         
 
 class Obstacle(pygame.sprite.Sprite): # Décor dynamique
@@ -83,7 +97,6 @@ class Obstacle(pygame.sprite.Sprite): # Décor dynamique
 
         # Afficher la tuile à la position du joueur
         screen.blit(scaled_tile_image, self.rect.topleft)
-        
 
     
     # UTILISATION

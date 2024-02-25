@@ -1,0 +1,1 @@
+player = perso.Player("Graphic\perso\Sprites\Prototype\worksheet_red.png", (500, 100), tile_size,1)

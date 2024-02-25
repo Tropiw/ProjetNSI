@@ -34,7 +34,7 @@ class Dongeon:
             for j in range(7):
                 self.tile_set.blit_tile(self.screen_debug,(4,5),(0,(j+1)*80))
                 self.tile_set.blit_tile(self.screen_debug,(2,5),(1200,(j+1)*80)) #Les bord sur les cotés 
-                self.tile_set.blit_tile(self.screen_debug,(14,3),((i+1)*80,(j+1)*80)) #Le milieuxKUG
+                self.tile_set.blit_tile(self.screen_debug,(14,3),((i+1)*80,(j+1)*80)) #Le milieux
         self.tile_set.blit_tile(self.screen_debug,(5,3),(560,0))
         self.tile_set.blit_tile(self.screen_debug,(6,3),(640,0))
         self.tile_set.blit_tile(self.screen_debug,(12,4),((i+1)*80,(j+1)*80)) #Le milieux

@@ -62,8 +62,8 @@ jeu = Main()
 tile_size = (32, 32)
 
 # Création des joueurs
-player = perso.Player("Graphic\perso\Sprites\Prototype\worksheet_red.png", (500, 100), tile_size,1)
-player2 = perso.Player("Graphic\perso\Sprites\Prototype\worksheet_blue.png", (600, 100), tile_size,2)
+player = perso.Player(r"Graphic\perso\Sprites\Prototype\worksheet_red.png", (500, 100), tile_size,1)
+player2 = perso.Player(r"Graphic\perso\Sprites\Prototype\worksheet_blue.png", (600, 100), tile_size,2)
 
 
 
@@ -81,7 +81,7 @@ ennemy = perso.Ennemy(r"Graphic\Slime\slime-Sheet.png", (100,300), (34,25), (0,0
 
 
 #Pilier
-image_path = "Graphic\Dungeon Gathering Free Version\Structure.png"  # Remplacez "path/to/your/image.png" par le chemin de votre image
+image_path = "Graphic\Dungeon Gathering Free Version\Structure.png"
 pilier = perso.Image(image_path, position=(100, 100))  # Positionnez l'image à (100, 100) sur l'écran
 pilier2 = perso.Image(image_path, position=(1125, 100))  # Positionnez l'image à (100, 100) sur l'écran
 
