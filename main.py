@@ -57,15 +57,13 @@ class Main:
 jeu = Main()
 
 # PERSO
-# Chargement de l'image du personnage
-player_image_path = r"Graphic\perso\Sprites\Prototype\Prototype_Worksheet.png"
 
 # Taille d'une tile sur l'image (en pixels)
 tile_size = (32, 32)
 
 # Création des joueurs
-player = perso.Player(player_image_path, (500, 100), tile_size,1)
-player2 = perso.Player(player_image_path, (600, 100), tile_size,2)
+player = perso.Player("Graphic\perso\Sprites\Prototype\worksheet_red.png", (500, 100), tile_size,1)
+player2 = perso.Player("Graphic\perso\Sprites\Prototype\worksheet_blue.png", (600, 100), tile_size,2)
 
 
 
@@ -95,8 +93,8 @@ jeu.objects = [ slime2, ennemy, obstacle, obstacle2, obstacle3, player, player2,
 #Musique
 pygame.mixer.init()
 pygame.mixer.music.load(r'SFX\robot rock.mp3')
-pygame.mixer.music.play(loops=-1, fade_ms=2000)
-pygame.mixer.music.set_volume(0.01)
+pygame.mixer.music.play(loops=-1)
+pygame.mixer.music.set_volume(0.008)
 
 # Lancer le jeu
 jeu.start()

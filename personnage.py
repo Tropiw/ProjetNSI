@@ -16,32 +16,45 @@ class Player(pygame.sprite.Sprite):
             self.movement = [pygame.K_z, pygame.K_s, pygame.K_q, pygame.K_d]  # attribuer les touches au joueur 1
         else:
             self.movement = [pygame.K_UP, pygame.K_DOWN, pygame.K_LEFT, pygame.K_RIGHT]  # attribuer les touches au joueur 2
-        self.sfx_move = pygame.mixer.Sound(r"SFX\ahh.mp3")
+        self.sfx_move = pygame.mixer.Sound(r"SFX\footstep mc (2).mp3")
         self.is_moving = False
 
     def update(self):
         keys = pygame.key.get_pressed()
-        if keys[self.movement[0]]:  # Touche Z ou flèche haut
+
+        # Mouvement vers le haut
+        if keys[self.movement[0]]:  
             if self.rect.y > 26:
                 self.rect.y -= 5
-                if not self.is_moving:
-                    self.sfx_move.play()
-                    self.is_moving = True
-
-        # Gestion de l'événement KEYUP
+            if not self.is_moving:
+                self.sfx_move.play(loops=-1)
+                self.is_moving = True
+        # Mouvement vers le bas
+        elif keys[self.movement[1]]:
+            if self.rect.y < 502:
+                self.rect.y += 5
+            if not self.is_moving:
+                self.sfx_move.play(loops=-1)
+                self.is_moving = True
+        # Mouvement vers la gauche
+        elif keys[self.movement[2]]:
+            if self.rect.x > 20:
+                self.rect.x -= 5
+            if not self.is_moving:
+                self.sfx_move.play(loops=-1)
+                self.is_moving = True
+        # Mouvement vers la droite
+        elif keys[self.movement[3]]:
+            if self.rect.x < 1070:
+                self.rect.x += 5
+            if not self.is_moving:
+                self.sfx_move.play(loops=-1)
+                self.is_moving = True
         else:
             if self.is_moving:
                 self.sfx_move.stop()
                 self.is_moving = False
-        if keys[self.movement[1]]:  # Touche S ou flèche bas
-            if self.rect.y < 502:
-                self.rect.y += 5
-        if keys[self.movement[2]]:  # Touche Q ou flèche gauche
-            if self.rect.x > 20:
-                self.rect.x -= 5
-        if keys[self.movement[3]]:  # Touche D ou flèche droite
-            if self.rect.x < 1070:
-                self.rect.x += 5
+
 
     def draw(self, screen):
         tile_image = self.image.subsurface(pygame.Rect(self.tile_position[0] * self.tile_size[0],
@@ -70,6 +83,7 @@ class Obstacle(pygame.sprite.Sprite): # Décor dynamique
 
         # Afficher la tuile à la position du joueur
         screen.blit(scaled_tile_image, self.rect.topleft)
+        
 
     
     # UTILISATION
