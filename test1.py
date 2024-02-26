@@ -1,5 +1,5 @@
 import pygame
-import Imagesetter as image
+import imagesetter as image
 
 class Main:
     def __init__(self, fps=60, width=1280, height=720):

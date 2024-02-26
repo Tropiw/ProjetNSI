@@ -1,5 +1,5 @@
 import pygame
-import Imagesetter as image
+import imagesetter as image
 
 class Dongeon:
     def __init__(self, screen_debug):

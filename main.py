@@ -1,8 +1,9 @@
 import pygame
-import Imagesetter as image
+import imagesetter as image
 import menu as menu
 import personnage as perso
 import map_module as map_module
+import sys
 
 class Main:
     def __init__(self, fps=60, width=1280, height=720):
@@ -40,7 +41,17 @@ class Main:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
+                
+            # A ENLEVER **DEBUG**
+            
+            elif event.type == pygame.MOUSEBUTTONDOWN:  # Vérifie si un clic de souris a eu lieu
+                if event.button == 1:  # Vérifie si le clic était le bouton gauche de la souris
+                    # Obtient les coordonnées du clic
+                    mouse_x, mouse_y = pygame.mouse.get_pos()
+                    print("Coordonnées du clic : ({}, {})".format(mouse_x, mouse_y))
 
+            # A ENLEVER **DEBUG**
+            
     def update(self):
         for obj in self.objects:
             obj.update()  # Appel à la méthode update de chaque objet
@@ -87,8 +98,18 @@ pilier2 = image.Image_statique(image_path, position=(1125, 100))  # Positionnez 
 
 slime2 = image.Image_statique(r'Graphic\Slime - Enemy\slime2.png',position=(800, 425),zoom=0.2)
 
+#pièce animée
+
+coin_paths = [r'Graphic\2D Pixel Dungeon - Asset Pack\items and trap_animation\coin\coin_1.png',
+              r'Graphic\2D Pixel Dungeon - Asset Pack\items and trap_animation\coin\coin_2.png',
+              r'Graphic\2D Pixel Dungeon - Asset Pack\items and trap_animation\coin\coin_3.png',
+              r'Graphic\2D Pixel Dungeon - Asset Pack\items and trap_animation\coin\coin_4.png']
+
+coin1 = image.animated_sprite(coin_paths, (1145, 575))
+coin2 = image.animated_sprite(coin_paths, (1100, 575))
+coin3 = image.animated_sprite(coin_paths, (1055, 575))
 # Liste d'objets à afficher
-jeu.objects = [ slime2, obstacle, obstacle2, obstacle3, player, player2, pilier, pilier2, enemy]
+jeu.objects = [ slime2, obstacle, obstacle2, obstacle3, player, player2, pilier, pilier2, enemy, coin1, coin2, coin3]
 
 #Musique
 pygame.mixer.init()

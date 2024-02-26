@@ -43,7 +43,7 @@ class tile:
         
         
         
-class Image_statique: # Décor statique
+class Image_statique: # Image simple à afficher
     def __init__(self, image_path, position=(0, 0), zoom=3):
         self.image = pygame.image.load(image_path)
         self.position = position
@@ -60,23 +60,57 @@ class Image_statique: # Décor statique
     
     
     
-class Obstacle(pygame.sprite.Sprite): # Décor dynamique prend en compte un sprite sheet
-    def __init__(self, image_path, position, tile_size, tile_position):
+class Obstacle(pygame.sprite.Sprite): # # Outil pour afficher une image à partir d'une spritesheet avec des tiles
+    def __init__(self, image_path, position, tile_size, tile_position, zoom = 1):
         super().__init__()
         self.image = pygame.image.load(image_path).convert_alpha()
         self.rect = pygame.Rect(position[0], position[1], tile_size[0], tile_size[1])
         self.tile_size = tile_size
         self.tile_position = tile_position
+        self.zoom = zoom
 
     def draw(self, screen):
+        # Extrait une tuile spécifique de l'image principale en fonction de la position et de la taille de la tuile
         tile_image = self.image.subsurface(pygame.Rect(self.tile_position[0] * self.tile_size[0],
                                                        self.tile_position[1] * self.tile_size[1],
                                                        self.tile_size[0], self.tile_size[1]))
+        
         # Redimensionner la tuile à la taille désirée
-        scaled_tile_image = pygame.transform.scale(tile_image, (128, 128))
+        w,h = tile_image.get_width(), tile_image.get_height()
+        image_upscaled = pygame.transform.scale(tile_image, (w * self.zoom, h * self.zoom))
 
         # Afficher la tuile à la position du joueur
-        screen.blit(scaled_tile_image, self.rect.topleft)
+        screen.blit(image_upscaled, self.rect.topleft)
+
+
+class animated_sprite(pygame.sprite.Sprite): # Outil pour animer des image si on en a plusieurs
+    def __init__(self, image_paths, position, zoom = 4):
+        super().__init__()
+        self.images = [pygame.image.load(path).convert_alpha() for path in image_paths]
+        self.rect = pygame.Rect(position[0], position[1], self.images[0].get_width(), self.images[0].get_height())
+        self.animation_step = len(self.images)
+        self.animation_cooldown = 100
+        self.frame = 0
+        self.last_update = pygame.time.get_ticks()
+        self.zoom = zoom
+
+    def update(self):
+        # Mettre à jour l'animation de rotation
+        now = pygame.time.get_ticks()
+        if now - self.last_update > self.animation_cooldown:
+            self.frame = (self.frame + 1) % self.animation_step
+            self.last_update = now
+
+    def draw(self, screen):
+        # Obtenir l'image actuelle de l'animation de rotation
+        current_image = self.images[self.frame]
+
+        # Redimensionner l'image
+        w,h = current_image.get_width(), current_image.get_height()
+        image_upscaled = pygame.transform.scale(current_image, (w * self.zoom, h * self.zoom))
+        
+        # Dessiner l'image à la position de la l'élément sur l'écran
+        screen.blit(image_upscaled, self.rect.topleft)
 
 
     

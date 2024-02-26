@@ -1,5 +1,5 @@
 import pygame
-import Imagesetter as image
+import imagesetter as image
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, image_path, position, tile_size, player=1):
