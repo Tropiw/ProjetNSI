@@ -77,7 +77,7 @@ obstacle3 = image.Obstacle(r"Graphic\Dungeon Gathering Free Version\Set 1.1.png"
 
 
 #ennemi
-ennemy = perso.Ennemy(r"Graphic\Slime\slime-Sheet.png", (100,300), (34,25), (0,0), speed=5)
+enemy = perso.Enemy(r"Graphic\Slime\slime-Sheet.png", (150,300), (32,25), speed = 5)
 
 
 #Pilier
@@ -88,7 +88,7 @@ pilier2 = image.Image_statique(image_path, position=(1125, 100))  # Positionnez 
 slime2 = image.Image_statique(r'Graphic\slime2.png',position=(800, 425),zoom=0.2)
 
 # Liste d'objets à afficher
-jeu.objects = [ slime2, ennemy, obstacle, obstacle2, obstacle3, player, player2, pilier, pilier2 ]
+jeu.objects = [ slime2, obstacle, obstacle2, obstacle3, player, player2, pilier, pilier2, enemy]
 
 #Musique
 pygame.mixer.init()

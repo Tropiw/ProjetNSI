@@ -34,13 +34,10 @@ class Player(pygame.sprite.Sprite):
             tile_rect = pygame.Rect(x * tile_size[0], 4*32, tile_size[0], tile_size[1])
             self.animation_lists["walk_right"].append(self.image.subsurface(tile_rect))
             
-        # Chargement des animations marche a gauche (5ème ligne = 4*32) --> miroir animation droite
-        for x in range(3):
-            tile_rect = pygame.Rect(x * tile_size[0], 4*32, tile_size[0], tile_size[1])
-            walk_right_frame = self.image.subsurface(tile_rect) #stocke les animations 
-            # Refléter horizontalement les frames de marche vers la droite pour les adapter au côté gauche
-            walk_left_frame = pygame.transform.flip(walk_right_frame, True, False)
-            self.animation_lists["walk_left"].append(walk_left_frame)
+        # Chargement des animations marche à gauche (en reflétant les images de gauche)
+        for frame in self.animation_lists['walk_right']:
+            walk_left_frame = pygame.transform.flip(frame, True, False)
+            self.animation_lists['walk_left'].append(walk_left_frame)
 
         # Chargement des animations marche haut (6ème ligne = 5*32)
         for x in range(3):
@@ -126,13 +123,55 @@ class Player(pygame.sprite.Sprite):
     # obstacle_tile_position = (3, 4)  # Position de la tuile pour cet obstacle
     # obstacle = Obstacle("chemin/vers/image.png", (x, y), (largeur_tile, hauteur_tile), obstacle_tile_position)
     
-class Ennemy(image.Obstacle):
-    def __init__(self, image_path, position, tile_size, tile_position, speed):
-        super().__init__(image_path, position, tile_size, tile_position)
+
+
+class Enemy(pygame.sprite.Sprite):
+    def __init__(self, image_path, position, tile_size, speed = 1):
+        super().__init__()
+        self.image = pygame.image.load(image_path).convert_alpha()
+        self.rect = pygame.Rect(position[0], position[1], tile_size[0], tile_size[1])
+        self.tile_size = tile_size
+        self.is_moving = False
+        self.direction = 1
         self.speed = speed
-        self.direction = 1  # 1 pour déplacement vers la droite, -1 pour déplacement vers la gauche
+        self.animation_lists = { 'walk_right': [], 'walk_left': [], 'eat_left': [], 'eat_right': [], 'die': []}
+        self.animation_step = 7
+        self.last_update = pygame.time.get_ticks()
+        self.animation_cooldown = 100
+        self.frame = 0
+        self.load_animation_frames(tile_size)
+        
+    def load_animation_frames(self, tile_size):
+        # Chargement des animations marche à gauche
+        for i in range(self.animation_step):
+            tile_rect = pygame.Rect(i * tile_size[0], 0, tile_size[0], tile_size[1])
+            self.animation_lists['walk_left'].append(self.image.subsurface(tile_rect))
+
+        # Chargement des animations marche à droite (en reflétant les images de gauche)
+        for frame in self.animation_lists['walk_left']:
+            walk_right_frame = pygame.transform.flip(frame, True, False)
+            self.animation_lists['walk_right'].append(walk_right_frame)
+            
+        # Chargement des animations manger à gauche (2ème ligne = 1*25)
+        for x in range(self.animation_step):
+            tile_rect = pygame.Rect(x * tile_size[0], 1*25, tile_size[0], tile_size[1])
+            self.animation_lists["eat_left"].append(self.image.subsurface(tile_rect))
+            
+        # Chargement des animations manger à droite (2ème ligne = 1*25) --> miroir animation gauche
+        for frame in self.animation_lists['eat_left']:
+            eat_right_frame = pygame.transform.flip(frame, True, False)
+            self.animation_lists['eat_right'].append(eat_right_frame)
+
+        
+        # Chargement des animations de mort (3ème ligne = 2*25)
+        for x in range(3):
+            tile_rect = pygame.Rect(x * tile_size[0], 2*25, tile_size[0], tile_size[1])
+            self.animation_lists["die"].append(self.image.subsurface(tile_rect))
+            
 
     def update(self):
+        # Mettre à jour la position de l'ennemi
+        
         # Déplacer l'ennemi dans la direction actuelle
         self.rect.x += self.speed * self.direction
 
@@ -141,8 +180,29 @@ class Ennemy(image.Obstacle):
             self.direction = -1  # Changer la direction vers la gauche
         elif self.rect.left <= 65:  # Si l'ennemi atteint le bord gauche
             self.direction = 1  # Changer la direction vers la droite
+       
+       # Mise à jour de l'animation
+        now = pygame.time.get_ticks()
+        if now - self.last_update > self.animation_cooldown: # Vérification cooldown animation pour éviter une animation top rapide
+            self.frame = (self.frame + 1) % self.animation_step # Si l'on arrive à la dernière image, on boucle l'animation
+            self.last_update = now # Remettre à jour pour le cooldown
+            
+        # Changer l'animation en fonction de la direction de déplacement
+        if self.direction == 1:  # Vers la droite
+            self.current_animation = 'walk_right'
+        else:  # Vers la gauche
+            self.current_animation = 'walk_left'
 
-        
+    def draw(self, screen):
+        # Obtenir le cadre actuel de l'animation
+        current_frame = self.animation_lists[self.current_animation][self.frame]
+
+        # Redimensionner l'image du cadre
+        w, h = current_frame.get_width(), current_frame.get_height()
+        image_upscaled = pygame.transform.scale(current_frame, (w * 4, h * 4))
+
+        # Dessiner l'image redimensionnée à la position du joueur
+        screen.blit(image_upscaled, self.rect.topleft)
 
 
 
