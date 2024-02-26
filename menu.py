@@ -2,8 +2,8 @@ import pygame
 
 class menu:
     pygame.font.init()      #sans ça pas de pygame.font
-    FONT_TITLE = pygame.font.Font("Graphic\Squares.ttf", 20)        #Police du titre
-    FONT_BUTTON = pygame.font.Font('Graphic\Silkscreen\slkscr.ttf',30)      #Police des bouttons
+    FONT_TITLE = pygame.font.Font("Graphic\Silkscreen Font\Squares.ttf", 20)        #Police du titre
+    FONT_BUTTON = pygame.font.Font('Graphic\Silkscreen Font\slkscr.ttf',30)      #Police des bouttons
     def __init__(self):
         pass            #si on trouve un truc a mettre la dedans ca peut etre bien en vrai
 

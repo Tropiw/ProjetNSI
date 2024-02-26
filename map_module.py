@@ -3,8 +3,8 @@ import Imagesetter as image
 
 class Dongeon:
     def __init__(self, screen_debug):
-        self.tile_set = image.tile(r'Graphic\Dungeon Gathering Free Version\Set 1.1.png')
-        self.tile_structure = image.tile(r'Graphic\Dungeon Gathering Free Version\Structure.png',0,0)
+        self.tile_set = image.tile(r'Graphic\Dungeon Gathering - map asset (light)\Set 1.1.png')
+        self.tile_structure = image.tile(r'Graphic\Dungeon Gathering - map asset (light)\Structure.png',0,0)
         for i in range(15):
             for j in range(7):
                 self.tile_set.load(i,j)
