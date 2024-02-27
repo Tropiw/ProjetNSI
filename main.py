@@ -20,38 +20,42 @@ class Main:
         self.clock.tick(fps)
         self.running = True
         self.objects = []  # Liste pour stocker les objets à dessiner
+        self.main_menu = menu.menu()
+        self.collision = self.main_menu.render_main_menu(self.screen)
+        self.mouse_pos = (0,0)
+        self.mode = 2
         
-    def start(self):
-        testmap = map_module.Dongeon(self.screen_debug) # Appeller
-        testmap.map2()  # Appeler la méthode map2() du module map 
-        
+    def start(self): 
         title = menu.menu()
-        collision = title.render_main_menu(self.screen)
-        while self.running:
-            # Code de boucle principale
-            self.clock.tick(90)  # Temps écoulé entre chaque itération de la boucle est contrôlé, ce qui maintient la vitesse du jeu constante
-            self.screen.blit(self.screen_debug,(0,0))
-            self.handle_events()
-            self.update()
-            self.render()
-            pygame.display.flip()
+        while self.running: # Code de boucle principale
+            donjon = map_module.Dongeon(self.screen)
+            donjon.map1()
+            while self.mode == 1:
+                self.handle_events()
+                self.clock.tick(90)  # Temps écoulé entre chaque itération de la boucle est contrôlé, ce qui maintient la vitesse du jeu constante
+                self.screen.blit(self.screen_debug,(0,0))
+                self.update()
+                self.render()
+                pygame.display.flip()
+            self.collision = title.render_main_menu(self.screen)
+            while self.mode == 2:
+                self.handle_events()
+                if self.main_menu.in_rect(self.mouse_pos,self.collision):
+                    self.mode = 1
         pygame.quit()
             
     def handle_events(self):          # Le jeu s'arrête quand on clique sur fermer
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                self.mode = 0
                 self.running = False
-                
-            # A ENLEVER **DEBUG**
-            
+
             elif event.type == pygame.MOUSEBUTTONDOWN:  # Vérifie si un clic de souris a eu lieu
                 if event.button == 1:  # Vérifie si le clic était le bouton gauche de la souris
                     # Obtient les coordonnées du clic
-                    mouse_x, mouse_y = pygame.mouse.get_pos()
-                    print("Coordonnées du clic : ({}, {})".format(mouse_x, mouse_y))
+                    self.mouse_pos = pygame.mouse.get_pos()
+                    
 
-            # A ENLEVER **DEBUG**
-            
     def update(self):
         for obj in self.objects:
             obj.update()  # Appel à la méthode update de chaque objet
