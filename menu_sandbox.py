@@ -1,16 +1,32 @@
 import pygame
 import menu 
 
+
+import pygame
+import Imagesetter as image
+import menu as menu
+import personnage as perso
+import map_module as map_module
+import sys
+
+pygame.init()
+tile_set = image.tile('Graphic\Dungeon Gathering - map asset (light)\Set 1.1.png')
+screen = pygame.display.set_mode((1280,720))
+clock = pygame.time.Clock()
+clock.tick(90)
+running = True
+objects = []  # Liste pour stocker les objets à dessiner
+main_menu = menu.menu()
+mouse_pos = (0,0)
+mode = 2
+donjon = map_module.Dongeon(screen,1280,720)
+screen_debug = donjon.dico_map["map_debug"]
 # pygame setup
 pygame.init()
-screen = pygame.display.set_mode((1280, 720))
-clock = pygame.time.Clock()
-running = True
 
-screen.fill("black")
-pomme = menu.menu()
-collistion = pomme.render_main_menu(screen)
-mouse_pos = (0,0)
+
+
+
 
 while running:
     # poll for events
@@ -18,15 +34,9 @@ while running:
     for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-            
-            elif event.type == pygame.MOUSEBUTTONDOWN:  # Vérifie si un clic de souris a eu lieu
-                if event.button == 1:  # Vérifie si le clic était le bouton gauche de la souris
-                    # Obtient les coordonnées du clic
-                    mouse_pos = pygame.mouse.get_pos()
-                    
+    screen.blit(screen_debug,(0,0))                       
 
     # fill the screen with a color to wipe away anything from last frame
-    print(pomme.in_rect(mouse_pos,collistion))
     # RENDER YOUR GAME HERE
 
     # flip() the display to put your work on screen

@@ -9,27 +9,21 @@ class Main:
     def __init__(self, fps=60, width=1280, height=720):
         pygame.init()
         self.tile_set = image.tile('Graphic\Dungeon Gathering - map asset (light)\Set 1.1.png')
-        for i in range(15):
-            for j in range(7):
-                self.tile_set.load(i,j)
-
         self.screen = pygame.display.set_mode((width, height))
         print(self.screen)
-        self.screen_debug = pygame.Surface((1280,720))
         self.clock = pygame.time.Clock()
         self.clock.tick(fps)
         self.running = True
         self.objects = []  # Liste pour stocker les objets à dessiner
         self.main_menu = menu.menu()
-        self.collision = self.main_menu.render_main_menu(self.screen)
         self.mouse_pos = (0,0)
         self.mode = 2
+        self.donjon = map_module.Dongeon(self.screen,width,height)
+        self.screen_debug = self.donjon.dico_map["map_debug"]
         
     def start(self): 
         title = menu.menu()
         while self.running: # Code de boucle principale
-            donjon = map_module.Dongeon(self.screen)
-            donjon.map1()
             while self.mode == 1:
                 self.handle_events()
                 self.clock.tick(90)  # Temps écoulé entre chaque itération de la boucle est contrôlé, ce qui maintient la vitesse du jeu constante
@@ -42,6 +36,8 @@ class Main:
                 self.handle_events()
                 if self.main_menu.in_rect(self.mouse_pos,self.collision):
                     self.mode = 1
+                pygame.display.flip()
+
         pygame.quit()
             
     def handle_events(self):          # Le jeu s'arrête quand on clique sur fermer

@@ -8,6 +8,7 @@ class menu:
         pass          #si on trouve un truc a mettre la dedans ca peut etre bien en vrai
 
     def render_main_menu(self,screen):
+        screen.fill("black")
         titre = menu.FONT_TITLE.render("Clash  of  Dungeon",True, (255,255,255))    #le texte du titre
         w, h = titre.get_size()                                             #pour le placement 
         screen.blit(titre,(640-(w/2),180-(h/2)))                            #le titre sur l'ecran
