@@ -38,18 +38,27 @@ class Main:
             self.update()  # Appel à la méthode update
             self.render()
             pygame.display.flip()
-        pygame.quit()
+        self.main_menu = menu.menu()
+        self.collision = self.main_menu.render_main_menu(self.screen)
+        self.mouse_pos = (0,0)
+        self.mode = 2
+        
+    
+
 
     def handle_events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                self.mode = 0
                 self.running = False
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                if event.button == 1:
-                    mouse_x, mouse_y = pygame.mouse.get_pos()
-                    print("Coordonnées du clic : ({}, {})".format(mouse_x, mouse_y))
 
-    def update(self):  # Définition de la méthode update
+            elif event.type == pygame.MOUSEBUTTONDOWN:  # Vérifie si un clic de souris a eu lieu
+                if event.button == 1:  # Vérifie si le clic était le bouton gauche de la souris
+                    # Obtient les coordonnées du clic
+                    self.mouse_pos = pygame.mouse.get_pos()
+                    
+
+    def update(self):
         for obj in self.objects:
             if isinstance(obj, pygame.sprite.Group):
                 for sprite in obj.sprites():
