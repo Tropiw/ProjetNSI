@@ -2,10 +2,10 @@ import pygame
 
 class menu:
     pygame.font.init()      #sans ça pas de pygame.font
-    FONT_TITLE = pygame.font.Font("Graphic\Silkscreen Font\Squares.ttf", 20)        #Police du titre
-    FONT_BUTTON = pygame.font.Font('Graphic\Silkscreen Font\slkscr.ttf',30)      #Police des bouttons
+    FONT_TITLE = pygame.font.Font("Squares.ttf", 20)        #Police du titre
+    FONT_BUTTON = pygame.font.Font('slkscr.ttf',30)      #Police des boutons 
     def __init__(self):
-        pass            #si on trouve un truc a mettre la dedans ca peut etre bien en vrai
+        pass          #si on trouve un truc a mettre la dedans ca peut etre bien en vrai
 
     def render_main_menu(self,screen):
         titre = menu.FONT_TITLE.render("Clash  of  Dungeon",True, (255,255,255))    #le texte du titre
@@ -23,8 +23,7 @@ class menu:
         return pygame.rect.Rect((pos[0]-(w/2)+3,pos[1]-(h/2)+3),(w,h))                      #pour la collision 
     
     def in_rect(self,mouse_pos,collision):
-        print(collision)
+        if mouse_pos[0] < collision[0]+collision[2] and mouse_pos[0] > collision[0] and mouse_pos[1] < collision[1]+collision[3] and mouse_pos[1] > collision[1]:
+            return True
+        return False
 
-
-pomme = menu()
-'''pomme.in_rect(0,0,pygame.rect.Rect(10,10,(0,0)))'''
