@@ -1,5 +1,3 @@
-# enemy.py
-
 import pygame
 
 class Enemy(pygame.sprite.Sprite):
@@ -57,7 +55,7 @@ class Enemy(pygame.sprite.Sprite):
         
         else:
             #animation mort
-                
+            pass
         # Mise à jour de l'animation
         now = pygame.time.get_ticks()
         if now - self.last_update > self.animation_cooldown:  # Vérification cooldown animation pour éviter une animation top rapide
