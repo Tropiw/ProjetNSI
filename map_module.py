@@ -1,10 +1,11 @@
 import pygame
 import imagesetter as image
 
-class Dongeon:
-    def __init__(self, screen_debug,width,height):
+class Map():
+    def __init__(self, width,height) -> None:
         self.tile_set = image.tile(r'Graphic\Dungeon Gathering - map asset (light)\Set 1.1.png')
         self.tile_structure = image.tile(r'Graphic\Dungeon Gathering - map asset (light)\Structure.png',0,0)
+        self.background = pygame.surface.Surface((width, height))
         for i in range(15):
             for j in range(7):
                 self.tile_set.load(i,j)

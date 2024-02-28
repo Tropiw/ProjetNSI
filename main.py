@@ -31,7 +31,7 @@ class Main:
             while self.mode == 1:
                 self.handle_events()
                 self.clock.tick(90)  # Temps écoulé entre chaque itération de la boucle est contrôlé, ce qui maintient la vitesse du jeu constante
-                self.screen.blit(self.screen_debug,(0,0))
+                self.screen.blit(self.screen_debug.background,(0,0))
                 self.update()
                 self.render()
                 pygame.display.flip()
