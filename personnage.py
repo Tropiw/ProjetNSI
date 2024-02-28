@@ -2,6 +2,7 @@ import pygame
 import imagesetter as image
 import item as item
 import math
+import UI as ui
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, image_path, position, tile_size, player=1, enemies_group = None):
@@ -12,8 +13,10 @@ class Player(pygame.sprite.Sprite):
         self.player = player
         if player == 1:
             self.movement = [pygame.K_z, pygame.K_s, pygame.K_q, pygame.K_d, pygame.K_f]  # attribuer les touches au joueur 1
+            self.health_bar = ui.HealthBar((45, -40), "Graphic/Health bar/health_bar_blue.png")
         else:
             self.movement = [pygame.K_UP, pygame.K_DOWN, pygame.K_LEFT, pygame.K_RIGHT, pygame.K_RETURN]  # attribuer les touches au joueur 2
+            self.health_bar = ui.HealthBar((950, -40), "Graphic/Health bar/health_bar_red.png")
         self.sfx_move = pygame.mixer.Sound(r"SFX\footstep mc (2).mp3")
         self.is_moving = False
         self.is_sound_playing = False  # Variable pour suivre l'état du son de marche
@@ -29,6 +32,9 @@ class Player(pygame.sprite.Sprite):
         self.last_attack_time = 0  # Temps du dernière attaque
         self.attack_range = 150
         self.enemies = enemies_group
+        
+
+        
         
 
     def load_animation_frames(self, tile_size):
@@ -119,6 +125,8 @@ class Player(pygame.sprite.Sprite):
         # Mise à jour de l'épée
         self.sword.update_position((self.rect.x+115, self.rect.y+50))
         
+        self.health_bar.update_health(0)
+        
     def draw(self, screen):
         # Sélectionner l'animation appropriée en fonction de la direction du mouvement
         if self.is_moving:
@@ -139,7 +147,7 @@ class Player(pygame.sprite.Sprite):
         # Dessiner l'épée
         self.sword.draw(screen)
         
-    
+        self.health_bar.draw(screen)
     
     def attack(self):
         current_time = pygame.time.get_ticks()

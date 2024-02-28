@@ -8,7 +8,7 @@ from pygame.locals import *
 from enemy_module import Enemy
 
 class Main:
-    def __init__(self, fps=60, width=1280, height=720, player=None):
+    def __init__(self, fps=60, width=1280, height=720):
         pygame.init()
         self.tile_set = image.tile('Graphic\Dungeon Gathering - map asset (light)\Set 1.1.png')
         self.screen = pygame.display.set_mode((width, height))
@@ -54,6 +54,10 @@ class Main:
                 if event.button == 1:  # Vérifie si le clic était le bouton gauche de la souris
                     # Obtient les coordonnées du clic
                     self.mouse_pos = pygame.mouse.get_pos()
+                    
+                    # Afficher les coordonnées du clic dans la console
+                    print("Clic à la position :", self.mouse_pos)
+            
                     
 
     def update(self):
@@ -125,7 +129,7 @@ coin2 = image.animated_sprite(coin_paths, (1100, 575))
 coin3 = image.animated_sprite(coin_paths, (1055, 575))
 
 # Liste d'objets à afficher
-jeu.objects = [ slime2, obstacle, obstacle2, obstacle3, player, player2, pilier, pilier2, enemies_group, coin1, coin2, coin3]
+jeu.objects = [ slime2, obstacle, obstacle2, obstacle3, coin1, coin2, coin3, player, player2, pilier, pilier2, enemies_group]
 
 
 #Musique
