@@ -23,7 +23,7 @@ class Main:
         self.mouse_pos = (0,0)
         self.mode = 2
         self.donjon = map_module.Dongeon(self.screen,1280,720)
-        self.screen_debug = self.donjon.dico_map["map_debug"]
+        self.screen_debug = self.donjon.dico_map["map_2"]
 
     def start(self): 
         title = menu.menu()
@@ -31,7 +31,7 @@ class Main:
             while self.mode == 1:
                 self.handle_events()
                 self.clock.tick(90)  # Temps écoulé entre chaque itération de la boucle est contrôlé, ce qui maintient la vitesse du jeu constante
-                self.screen.blit(self.screen_debug,(0,0))
+                self.screen.blit(self.screen_debug.background,(0,0))
                 self.update()
                 self.render()
                 pygame.display.flip()
