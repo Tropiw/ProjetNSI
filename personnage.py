@@ -156,7 +156,8 @@ class Player(pygame.sprite.Sprite):
             # Vérifier si l'ennemi est dans la zone d'attaque
             if dist <= self.attack_range:
                 # L'ennemi est dans la zone d'attaque, effectuer des actions d'attaque
-                self.enemies.remove(enemy)  # Enlever l'ennemi du groupe
+                enemy.kill()
+                #self.enemies.remove(enemy)  # Enlever l'ennemi du groupe
                     
                     
         

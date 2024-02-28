@@ -52,15 +52,24 @@ class Enemy(pygame.sprite.Sprite):
                 self.current_animation = 'walk_right'
             else:  # Vers la gauche
                 self.current_animation = 'walk_left'
-        
+                
+            now = pygame.time.get_ticks()
+            if now - self.last_update > self.animation_cooldown:  # Vérification cooldown animation pour éviter une animation top rapide
+                self.frame = (self.frame + 1) % self.animation_step  # Si l'on arrive à la dernière image, on boucle l'animation
+                self.last_update = now  # Remettre à jour pour le cooldown
+            
         else:
             #animation mort
-            pass
-        # Mise à jour de l'animation
-        now = pygame.time.get_ticks()
-        if now - self.last_update > self.animation_cooldown:  # Vérification cooldown animation pour éviter une animation top rapide
-            self.frame = (self.frame + 1) % self.animation_step  # Si l'on arrive à la dernière image, on boucle l'animation
-            self.last_update = now  # Remettre à jour pour le cooldown
+            self.current_animation = 'die'
+            now = pygame.time.get_ticks()
+            if now - self.last_update > self.animation_cooldown:  
+                # Vérification du cooldown de l'animation pour éviter une animation trop rapide
+                if self.frame < self.animation_step - 1:  
+                    # Vérification si ce n'est pas la dernière image de l'animation
+                    self.frame += 1  # Passer à l'image suivante de l'animation
+                self.last_update = now  # Mettre à jour pour le cooldown
+
+        
 
     def draw(self, screen):
         # Obtenir le cadre actuel de l'animation
