@@ -1,5 +1,5 @@
 import pygame
-import imagesetter as image
+import Imagesetter as image
 import item as item
 import math
 
