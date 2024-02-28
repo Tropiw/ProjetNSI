@@ -23,7 +23,7 @@ class Main:
         self.mouse_pos = (0,0)
         self.mode = 2
         self.donjon = map_module.Dongeon(self.screen,1280,720)
-        self.screen_debug = self.donjon.dico_map["map_2"]
+        self.screen_debug = self.donjon.dico_map["map_debug"]
 
     def start(self): 
         title = menu.menu()
@@ -105,12 +105,6 @@ obstacle2 = image.Obstacle(r"Graphic\Dungeon Gathering - map asset (light)\Set 1
 obstacle3 = image.Obstacle(r"Graphic\Dungeon Gathering - map asset (light)\Set 1.1.png",
                           (400, 500), (16, 16), (9, 6))
 
-
-#Pilier
-image_path = r"Graphic\Dungeon Gathering - map asset (light)\Structure.png"
-pilier = image.Image_statique(image_path, position=(100, 100))  # Positionnez l'image à (100, 100) sur l'écran
-pilier2 = image.Image_statique(image_path, position=(1125, 100))  # Positionnez l'image à (100, 100) sur l'écran
-
 slime2 = image.Image_statique(r'Graphic\Slime - Enemy\slime2.png',position=(800, 425),zoom=0.2)
 
 #pièce animée
@@ -125,7 +119,7 @@ coin2 = image.animated_sprite(coin_paths, (1100, 575))
 coin3 = image.animated_sprite(coin_paths, (1055, 575))
 
 # Liste d'objets à afficher
-jeu.objects = [ slime2, obstacle, obstacle2, obstacle3, player, player2, pilier, pilier2, enemies_group, coin1, coin2, coin3]
+jeu.objects = [ slime2, obstacle, obstacle2, obstacle3, player, player2, enemies_group, coin1, coin2, coin3]
 
 
 #Musique
