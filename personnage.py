@@ -27,7 +27,7 @@ class Player(pygame.sprite.Sprite):
         self.sword = item.AnimatedSword((self.rect.x, self.rect.y))
         self.attack_cooldown = 500  # Cooldown en millisecondes
         self.last_attack_time = 0  # Temps du dernière attaque
-        self.attack_range = 100
+        self.attack_range = 150
         self.enemies = enemies_group
         
 
