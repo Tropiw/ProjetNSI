@@ -5,7 +5,7 @@ import personnage as perso
 import map_module as map_module
 import item as item
 from pygame.locals import *
-from enemy import Enemy
+from enemy_module import Enemy
 
 class Main:
     def __init__(self, fps=60, width=1280, height=720, player=None):
@@ -23,7 +23,7 @@ class Main:
         self.mouse_pos = (0,0)
         self.mode = 2
         self.donjon = map_module.Dongeon(self.screen,1280,720)
-        self.screen_debug = self.donjon.dico_map["map_debug"]
+        self.screen_debug = self.donjon.dico_map["map_2"]
 
     def start(self): 
         title = menu.menu()

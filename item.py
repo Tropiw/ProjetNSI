@@ -1,7 +1,7 @@
 import pygame
 
 class AnimatedSword(pygame.sprite.Sprite):
-    def __init__(self, position, zoom=3):
+    def __init__(self, position, zoom=2.5):
         super().__init__()
         self.image_paths = [ r'Graphic\Weapon\Sword\images_cut\frame_0_delay-0.1s.png',
                        r'Graphic\Weapon\Sword\images_cut\frame_1_delay-0.1s.png',
@@ -19,7 +19,6 @@ class AnimatedSword(pygame.sprite.Sprite):
         self.is_attacking = False
 
     def start_attack(self):
-        print('attaque !')
         self.is_attacking = True
 
     def stop_attack(self):

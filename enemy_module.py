@@ -18,6 +18,7 @@ class Enemy(pygame.sprite.Sprite):
         self.frame = 0
         self.load_animation_frames(tile_size)
         self.health = 100
+        self.is_alive = True
 
     def load_animation_frames(self, tile_size):
         # Chargement des animations marche à gauche
@@ -31,33 +32,37 @@ class Enemy(pygame.sprite.Sprite):
             self.animation_lists['walk_right'].append(walk_right_frame)
 
         # Chargement des animations de mort (3ème ligne = 2*25)
-        for x in range(3):
+        for x in range(self.animation_step):
             tile_rect = pygame.Rect(x * tile_size[0], 2 * tile_size[1], tile_size[0], tile_size[1])
             self.animation_lists["die"].append(self.image.subsurface(tile_rect))
 
     def update(self):
-        # Mettre à jour la position de l'ennemi
+        if self.is_alive:
 
-        # Déplacer l'ennemi dans la direction actuelle
-        self.rect.x += self.speed * self.direction
+            # Déplacer l'ennemi dans la direction actuelle
+            self.rect.x += self.speed * self.direction
 
-        # Vérifier si l'ennemi atteint les bords de l'écran
-        if self.rect.right >= 1125:  # Si l'ennemi atteint le bord droit
-            self.direction = -1  # Changer la direction vers la gauche
-        elif self.rect.left <= 65:  # Si l'ennemi atteint le bord gauche
-            self.direction = 1  # Changer la direction vers la droite
+            # Vérifier si l'ennemi atteint les bords de l'écran
+            if self.rect.right >= 1125:  # Si l'ennemi atteint le bord droit
+                self.direction = -1  # Changer la direction vers la gauche
+            elif self.rect.left <= 65:  # Si l'ennemi atteint le bord gauche
+                self.direction = 1  # Changer la direction vers la droite
 
+
+            # Changer l'animation en fonction de la direction de déplacement
+            if self.direction == 1:  # Vers la droite
+                self.current_animation = 'walk_right'
+            else:  # Vers la gauche
+                self.current_animation = 'walk_left'
+        
+        else:
+            #animation mort
+                
         # Mise à jour de l'animation
         now = pygame.time.get_ticks()
         if now - self.last_update > self.animation_cooldown:  # Vérification cooldown animation pour éviter une animation top rapide
             self.frame = (self.frame + 1) % self.animation_step  # Si l'on arrive à la dernière image, on boucle l'animation
             self.last_update = now  # Remettre à jour pour le cooldown
-
-        # Changer l'animation en fonction de la direction de déplacement
-        if self.direction == 1:  # Vers la droite
-            self.current_animation = 'walk_right'
-        else:  # Vers la gauche
-            self.current_animation = 'walk_left'
 
     def draw(self, screen):
         # Obtenir le cadre actuel de l'animation
@@ -69,3 +74,7 @@ class Enemy(pygame.sprite.Sprite):
 
         # Dessiner l'image redimensionnée à la position de l'ennemi
         screen.blit(image_upscaled, self.rect.topleft)
+
+    def kill(self):
+        self.is_alive = False
+        

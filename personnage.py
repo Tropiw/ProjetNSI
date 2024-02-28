@@ -117,7 +117,7 @@ class Player(pygame.sprite.Sprite):
             self.last_update = now # Remettre à jour pour le cooldown
 
         # Mise à jour de l'épée
-        self.sword.update_position((self.rect.x+100, self.rect.y+40))
+        self.sword.update_position((self.rect.x+115, self.rect.y+50))
         
     def draw(self, screen):
         # Sélectionner l'animation appropriée en fonction de la direction du mouvement
@@ -156,7 +156,6 @@ class Player(pygame.sprite.Sprite):
             # Vérifier si l'ennemi est dans la zone d'attaque
             if dist <= self.attack_range:
                 # L'ennemi est dans la zone d'attaque, effectuer des actions d'attaque
-                print('attaque validée')
                 self.enemies.remove(enemy)  # Enlever l'ennemi du groupe
                     
                     

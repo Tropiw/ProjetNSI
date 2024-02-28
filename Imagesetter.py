@@ -61,7 +61,7 @@ class Image_statique: # Image simple à afficher
     
     
 class Obstacle(pygame.sprite.Sprite): # # Outil pour afficher une image à partir d'une spritesheet avec des tiles
-    def __init__(self, image_path, position, tile_size, tile_position, zoom = 1):
+    def __init__(self, image_path, position, tile_size, tile_position, zoom = 8):
         super().__init__()
         self.image = pygame.image.load(image_path).convert_alpha()
         self.rect = pygame.Rect(position[0], position[1], tile_size[0], tile_size[1])
