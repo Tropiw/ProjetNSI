@@ -5,10 +5,12 @@ class Map():
     def __init__(self, width,height) -> None:
         self.tile_set = image.tile(r'Graphic\Dungeon Gathering - map asset (light)\Set 1.1.png')
         self.tile_structure = image.tile(r'Graphic\Dungeon Gathering - map asset (light)\Structure.png',0,0)
+        self.tile_structure.load(0,1)
         self.background = pygame.surface.Surface((width, height))
         for i in range(15):
             for j in range(7):
                 self.tile_set.load(i,j)
+                #Pilier
 
     def map1(self):
         self.tile_set.blit_tile(self.background,(5,5),(0,0))
@@ -22,6 +24,9 @@ class Map():
                 self.tile_set.blit_tile(self.background,(4,5),(0,(j+1)*80))
                 self.tile_set.blit_tile(self.background,(2,5),(1200,(j+1)*80)) #Les bord sur les cotés 
                 self.tile_set.blit_tile(self.background,(12,4),((i+1)*80,(j+1)*80)) #Le milieux
+        self.tile_structure.blit_tile(self.background,(0,0),(100, 100)) #pillier 1 
+        self.tile_structure.blit_tile(self.background,(0,0),(1125, 100)) #pillier 2
+
     
     def map2(self):
         self.tile_set.blit_tile(self.background,(5,5),(0,0))

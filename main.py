@@ -23,7 +23,7 @@ class Main:
         self.mouse_pos = (0,0)
         self.mode = 2
         self.donjon = map_module.Dongeon(self.screen,1280,720)
-        self.screen_debug = self.donjon.dico_map["map_2"]
+        self.screen_debug = self.donjon.dico_map["map_debug"]
 
     def start(self): 
         title = menu.menu()
@@ -110,12 +110,6 @@ obstacle2 = image.Obstacle(r"Graphic\Dungeon Gathering - map asset (light)\Set 1
                           (200, 500), (16, 16), (8, 6))
 obstacle3 = image.Obstacle(r"Graphic\Dungeon Gathering - map asset (light)\Set 1.1.png",
                           (400, 500), (16, 16), (9, 6))
-
-
-#Pilier
-image_path = r"Graphic\Dungeon Gathering - map asset (light)\Structure.png"
-pilier = image.Image_statique(image_path, position=(100, 100))  # Positionnez l'image à (100, 100) sur l'écran
-pilier2 = image.Image_statique(image_path, position=(1125, 100))  # Positionnez l'image à (100, 100) sur l'écran
 
 slime2 = image.Image_statique(r'Graphic\Slime - Enemy\slime2.png',position=(800, 425),zoom=0.2)
 
