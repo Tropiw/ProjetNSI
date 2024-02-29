@@ -32,7 +32,10 @@ class Player(pygame.sprite.Sprite):
         self.last_attack_time = 0  # Temps du dernière attaque
         self.attack_range = 150
         self.enemies = enemies_group
-        
+        self.collision_cooldown = 500
+        self.last_collision_time = 0
+        self.current_health = 4
+        self.health_bar.current_health = self.current_health
 
         
         
@@ -81,6 +84,13 @@ class Player(pygame.sprite.Sprite):
 
     def update(self):
         self.detect_movement()
+        self.detect_enemy_collision()
+        # Mise à jour de l'épée
+        item.AnimatedSword.update(self.sword)
+        self.sword.update_position((self.rect.x+115, self.rect.y+50))
+        
+        
+        
         keys = pygame.key.get_pressed()
 
         # Mouvement vers le haut
@@ -104,7 +114,6 @@ class Player(pygame.sprite.Sprite):
         if keys[self.movement[4]]:
                 self.attack()
         
-        item.AnimatedSword.update(self.sword)
         
         # Jouer le son de marche si le joueur commence à se déplacer
         if self.is_moving:
@@ -122,10 +131,7 @@ class Player(pygame.sprite.Sprite):
             self.frame = (self.frame + 1) % self.animation_step # Si l'on arrive à la dernière image, on boucle l'animation
             self.last_update = now # Remettre à jour pour le cooldown
 
-        # Mise à jour de l'épée
-        self.sword.update_position((self.rect.x+115, self.rect.y+50))
         
-        self.health_bar.update_health(0)
         
     def draw(self, screen):
         # Sélectionner l'animation appropriée en fonction de la direction du mouvement
@@ -167,8 +173,25 @@ class Player(pygame.sprite.Sprite):
                 enemy.kill()
                 #self.enemies.remove(enemy)  # Enlever l'ennemi du groupe
                     
-                    
-        
+    def detect_enemy_collision(self):
+        # Vérifie la collision avec les ennemis
+        current_time = pygame.time.get_ticks()
+        if current_time - self.last_collision_time > self.collision_cooldown:
+            # Cooldown expiré, on peut détecter une nouvelle collision
+            collision_enemy = pygame.sprite.spritecollideany(self, self.enemies)
+            if collision_enemy:  # Si une collision est détectée
+                print("Collision avec l'ennemi détectée !")
+                if self.current_health > 0:  # Vérifie que le joueur a encore des vies restantes
+                    self.current_health -= 1  # Retire une vie au joueur
+                    #Mise à jour de la barre de vie du joueur
+                    self.health_bar.update_health(self.current_health)
+                elif self.current_health == 0:
+                    self.kill()
+                self.last_collision_time = current_time  # Met à jour le temps de la dernière détection de collision
+                
+
+
+
 
     def distance(self, rect2):
         # Obtenir les coordonnées du centre du joueur
@@ -182,6 +205,11 @@ class Player(pygame.sprite.Sprite):
         distance_y = player_center[1] - rect2_center[1]
         distance = math.sqrt(distance_x ** 2 + distance_y ** 2)
         return distance
+
+    def kill(self):
+        if self.groups():
+            for group in self.groups():
+                group.remove(self)
 
 
     

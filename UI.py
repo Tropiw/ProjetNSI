@@ -7,7 +7,7 @@ class HealthBar(pygame.sprite.Sprite):
         self.image = pygame.image.load(image_path).convert_alpha()
         self.tile_size = (32,32)
         self.rect = pygame.Rect(position[0], position[1], self.tile_size[0] * zoom, self.tile_size[1] * zoom)
-        self.health_states = [(1,1), (1, 0), (0, 2), (0, 1), (0,0)]  # 5 états de barre de vie correspondant à chaque vie restante
+        self.health_states = [(1, 1), (0, 1), (2,0), (1, 0), (0,0)]  # 5 états de barre de vie correspondant à chaque vie restante
         self.zoom = zoom
         self.current_health = 4  # Initialisation de la vie actuelle au maximum
 

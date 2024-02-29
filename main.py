@@ -96,9 +96,11 @@ enemy = Enemy(r"Graphic\Slime - Enemy\slime-Sheet.png", (150,300), (32,25), spee
 enemies_group.add(enemy)
 
 # Création des joueurs
+player_group = pygame.sprite.Group()
 player = perso.Player(r"Graphic\Player\Sprites\Prototype\worksheet_blue.png", (500, 100), tile_size,1, enemies_group)
 player2 = perso.Player(r"Graphic\Player\Sprites\Prototype\worksheet_red.png", (600, 100), tile_size,2, enemies_group)
-
+player_group.add(player)
+player_group.add(player2)
 
 
 # obstacles
@@ -129,7 +131,7 @@ coin2 = image.animated_sprite(coin_paths, (1100, 575))
 coin3 = image.animated_sprite(coin_paths, (1055, 575))
 
 # Liste d'objets à afficher
-jeu.objects = [ slime2, obstacle, obstacle2, obstacle3, coin1, coin2, coin3, player, player2, pilier, pilier2, enemies_group]
+jeu.objects = [ slime2, obstacle, obstacle2, obstacle3, coin1, coin2, coin3, player_group, pilier, pilier2, enemies_group]
 
 
 #Musique
