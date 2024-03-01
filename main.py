@@ -10,7 +10,7 @@ from enemy_module import Enemy
 class Main:
     def __init__(self, fps=60, width=1280, height=720):
         pygame.init()
-        self.tile_set = image.tile('Graphic\Dungeon Gathering - map asset (light)\Set 1.1.png')
+        self.tile_set = image.tile(r'Graphic\Dungeon Gathering - map asset (light)\Set 1.1.png')
         self.screen = pygame.display.set_mode((width, height))
         print(self.screen)
         self.clock = pygame.time.Clock()
@@ -18,7 +18,6 @@ class Main:
         self.running = True
         self.objects = []  # Liste pour stocker les objets à dessiner
         self.ennemies_group = pygame.sprite.Group()
-        tile_set = image.tile('Graphic\Dungeon Gathering - map asset (light)\Set 1.1.png')
         self.main_menu = menu.menu()
         self.mouse_pos = (0,0)
         self.mode = 2
@@ -75,57 +74,61 @@ class Main:
                     sprite.draw(self.screen)
             else:
                 obj.draw(self.screen)
+                
+            
 
 
 
 
 
 # UTILISATION
-
 jeu = Main()
 
-# PERSO
-
-# Taille d'une tile sur l'image (en pixels)
-tile_size = (32, 32)
-
-#ennemi
+# ENNEMIS
 enemies_group = pygame.sprite.Group()
 
-enemy = Enemy(r"Graphic\Slime - Enemy\slime-Sheet.png", (150,300), (32,25), speed = 5)
-enemies_group.add(enemy)
+enemy1 = Enemy(r"Graphic\Slime - Enemy\slime-Sheet.png", (150,300), (32,25), speed = 5)
+enemy2 = Enemy(r"Graphic\Slime - Enemy\slime-Sheet.png", (300,400), (32,25), speed = 5)
+enemies_group.add(enemy1)
+enemies_group.add(enemy2)
 
-# Création des joueurs
+# JOUEUR
 player_group = pygame.sprite.Group()
-player = perso.Player(r"Graphic\Player\Sprites\Prototype\worksheet_blue.png", (500, 100), tile_size,1, enemies_group)
-player2 = perso.Player(r"Graphic\Player\Sprites\Prototype\worksheet_red.png", (600, 100), tile_size,2, enemies_group)
-player_group.add(player)
+player1 = perso.Player(r"Graphic\Player\Sprites\Prototype\worksheet_blue.png", (500, 100), 1, enemies_group)
+player2 = perso.Player(r"Graphic\Player\Sprites\Prototype\worksheet_red.png", (600, 100), 2, enemies_group)
+player_group.add(player1)
 player_group.add(player2)
 
 
-# obstacles
-obstacle = image.Obstacle(r"Graphic\Dungeon Gathering - map asset (light)\Set 1.1.png",
+# OBSTACLE
+map_assets = pygame.sprite.Group()
+
+obstacle1 = image.Obstacle(r"Graphic\Dungeon Gathering - map asset (light)\Set 1.1.png",
                           (100, 500), (16, 16), (8, 6))
 obstacle2 = image.Obstacle(r"Graphic\Dungeon Gathering - map asset (light)\Set 1.1.png",
                           (200, 500), (16, 16), (8, 6))
 obstacle3 = image.Obstacle(r"Graphic\Dungeon Gathering - map asset (light)\Set 1.1.png",
                           (400, 500), (16, 16), (9, 6))
 
-slime2 = image.Image_statique(r'Graphic\Slime - Enemy\slime2.png',position=(800, 425),zoom=0.2)
+slime2 = image.ImageStatique(r'Graphic\Slime - Enemy\slime2.png',position=(800, 425),zoom=0.2)
 
-#pièce animée
-
-coin_paths = [r'Graphic\2D Pixel Dungeon - Asset Pack\items and trap_animation\coin\coin_1.png',
-              r'Graphic\2D Pixel Dungeon - Asset Pack\items and trap_animation\coin\coin_2.png',
-              r'Graphic\2D Pixel Dungeon - Asset Pack\items and trap_animation\coin\coin_3.png',
-              r'Graphic\2D Pixel Dungeon - Asset Pack\items and trap_animation\coin\coin_4.png']
+# PIECE ANIMEE
+coin_paths = []
+for i in range(1,5): # Chemin des image étapes d'animations de la pièce
+    coin_paths.append(rf'Graphic\2D Pixel Dungeon - Asset Pack\items and trap_animation\coin\coin_{i}.png')
 
 coin1 = image.animated_sprite(coin_paths, (1145, 575))
 coin2 = image.animated_sprite(coin_paths, (1100, 575))
 coin3 = image.animated_sprite(coin_paths, (1055, 575))
 
+
+# Remplissage du groupe d'asset de la map
+map_assets.add(coin1,coin2,coin3,obstacle1,obstacle2,obstacle3,slime2)
+
+
+
 # Liste d'objets à afficher
-jeu.objects = [ slime2, obstacle, obstacle2, obstacle3, coin1, coin2, coin3, player_group, enemies_group]
+jeu.objects = [ map_assets, player_group, enemies_group]
 
 
 #Musique

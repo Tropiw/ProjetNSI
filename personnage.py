@@ -5,51 +5,59 @@ import math
 import UI as ui
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, image_path, position, tile_size, player=1, enemies_group = None):
+    def __init__(self, image_path, position, player, enemies_group = None):
         super().__init__()
         self.image = pygame.image.load(image_path).convert_alpha()
-        self.rect = pygame.Rect(position[0], position[1], tile_size[0], tile_size[1])
-        self.tile_size = tile_size
+        self.tile_size = (32,32)
+        self.rect = pygame.Rect(position[0], position[1], self.tile_size[0], self.tile_size[1])
         self.player = player
+        
+        # GESTION DES 2 JOUEURS
         if player == 1:
             self.movement = [pygame.K_z, pygame.K_s, pygame.K_q, pygame.K_d, pygame.K_f]  # attribuer les touches au joueur 1
             self.health_bar = ui.HealthBar((45, -40), "Graphic/Health bar/health_bar_blue.png")
         else:
             self.movement = [pygame.K_UP, pygame.K_DOWN, pygame.K_LEFT, pygame.K_RIGHT, pygame.K_RETURN]  # attribuer les touches au joueur 2
             self.health_bar = ui.HealthBar((950, -40), "Graphic/Health bar/health_bar_red.png")
+        
+        # SON DE MARCHE
         self.sfx_move = pygame.mixer.Sound(r"SFX\footstep mc (2).mp3")
         self.is_moving = False
         self.is_sound_playing = False  # Variable pour suivre l'état du son de marche
+        
+        #ANIMATIONS
         self.animation_lists = {"idle": [], "walk_right": [], "walk_left": [], "walk_up": [], "walk_down": [], "death": []}
         self.animation_step = 3
         self.last_update = pygame.time.get_ticks()
         self.animation_cooldown = 100
         self.frame = 0
-        self.load_animation_frames(tile_size)
+        self.load_animation_frames()
         self.current_animation = 'idle'
+        
+        # ATTAQUE
         self.sword = item.AnimatedSword((self.rect.x, self.rect.y))
         self.attack_cooldown = 500  # Cooldown en millisecondes
         self.last_attack_time = 0  # Temps du dernière attaque
         self.attack_range = 150
         self.enemies = enemies_group
+        
+        # GESTION DE LA VIE
         self.collision_cooldown = 500
         self.last_collision_time = 0
-        self.current_health = 4
+        self.current_health = 1
         self.health_bar.current_health = self.current_health
         self.is_alive = True
 
-        
-        
 
-    def load_animation_frames(self, tile_size):
+    def load_animation_frames(self):
         # Chargement des animations immobile (1ère ligne = 0*32)
-        for x in range(3):
-            tile_rect = pygame.Rect(x * tile_size[0], 0, tile_size[0], tile_size[1])
+        for x in range(4):
+            tile_rect = pygame.Rect(x * self.tile_size[0], 0, self.tile_size[0], self.tile_size[1])
             self.animation_lists["idle"].append(self.image.subsurface(tile_rect))
             
         # Chargement des animations marche a droite (5ème ligne = 4*32)
-        for x in range(3):
-            tile_rect = pygame.Rect(x * tile_size[0], 4*32, tile_size[0], tile_size[1])
+        for x in range(4):
+            tile_rect = pygame.Rect(x * self.tile_size[0], 4*32, self.tile_size[0], self.tile_size[1])
             self.animation_lists["walk_right"].append(self.image.subsurface(tile_rect))
             
         # Chargement des animations marche à gauche (en reflétant les images de gauche)
@@ -58,21 +66,14 @@ class Player(pygame.sprite.Sprite):
             self.animation_lists['walk_left'].append(walk_left_frame)
 
         # Chargement des animations marche haut (6ème ligne = 5*32)
-        for x in range(3):
-            tile_rect = pygame.Rect(x * tile_size[0], 5*32, tile_size[0], tile_size[1])
+        for x in range(4):
+            tile_rect = pygame.Rect(x * self.tile_size[0], 5*32, self.tile_size[0], self.tile_size[1])
             self.animation_lists["walk_up"].append(self.image.subsurface(tile_rect))
             
         # Chargement des animations marche a bas (4ème ligne = 3*32)
-        for x in range(3):
-            tile_rect = pygame.Rect(x * tile_size[0], 3*32, tile_size[0], tile_size[1])
+        for x in range(4):
+            tile_rect = pygame.Rect(x * self.tile_size[0], 3*32, self.tile_size[0], self.tile_size[1])
             self.animation_lists["walk_down"].append(self.image.subsurface(tile_rect))
-        
-        # Chargement des animations de mort
-        for i in range(2):  # Supposons que vous avez 3 images pour l'animation de mort
-            death_frame = pygame.image.load(f"Graphic\Generic death animation\death_{i}.png").convert_alpha()
-            self.animation_lists["death"].append(death_frame)
-        
-            
 
     def detect_movement(self):
         keys = pygame.key.get_pressed()
@@ -89,85 +90,65 @@ class Player(pygame.sprite.Sprite):
         else:
             self.current_animation = 'idle'
 
-    def update(self):
-        if self.is_alive:   # Optimisation, evite de faire des calculs si il et mort
-            self.detect_movement()
-            self.detect_enemy_collision()
-            # Mise à jour de l'épée
-            item.AnimatedSword.update(self.sword)
-            self.sword.update_position((self.rect.x+115, self.rect.y+50))
-            
-            
-            
-            keys = pygame.key.get_pressed()
 
-            # Mouvement vers le haut
-            if keys[self.movement[0]]:
-                if self.rect.y > 0 :#26
-                    self.rect.y -= 5
-            # Mouvement vers le bas
-            elif keys[self.movement[1]]:
-                if self.rect.y < 502:
-                    self.rect.y += 5
-            # Mouvement vers la gauche
-            elif keys[self.movement[2]]:
-                if self.rect.x > 20:
-                    self.rect.x -= 5
-            # Mouvement vers la droite
-            elif keys[self.movement[3]]:
-                if self.rect.x < 1070:
-                    self.rect.x += 5
-                    
-            # Touche attaquer
-            if keys[self.movement[4]]:
-                    self.attack()
-            
-            
-            # Jouer le son de marche si le joueur commence à se déplacer
-            if self.is_moving:
-                if not self.is_sound_playing:  # Vérifie si le son n'est pas déjà en train de jouer
-                    self.sfx_move.play(loops=-1)  # Joue le son en boucle (-1) en cas de maintient prolongé de la touche 
-                    self.is_sound_playing = True  # Met à jour l'état du son
-            else:
-                if self.is_sound_playing:  # Si le joueur s'arrête de se déplacer
-                    self.sfx_move.stop()  # Arrête le son
-                    self.is_sound_playing = False  # Met à jour l'état du son
+    def key_movement(self):
+        keys = pygame.key.get_pressed()
+        
+        # Mouvement vers le haut
+        if keys[self.movement[0]]:
+            if self.rect.y > 0 :#26
+                self.rect.y -= 5
+        # Mouvement vers le bas
+        elif keys[self.movement[1]]:
+            if self.rect.y < 502:
+                self.rect.y += 5
+        # Mouvement vers la gauche
+        elif keys[self.movement[2]]:
+            if self.rect.x > 20:
+                self.rect.x -= 5
+        # Mouvement vers la droite
+        elif keys[self.movement[3]]:
+            if self.rect.x < 1070:
+                self.rect.x += 5
+                
+        # Touche attaquer
+        if keys[self.movement[4]]:
+                self.attack()
+                
+    def walking_sound(self):
+        # Jouer le son de marche si le joueur commence à se déplacer
+        if self.is_moving:
+            if not self.is_sound_playing:  # Vérifie si le son n'est pas déjà en train de jouer
+                self.sfx_move.play(loops=-1)  # Joue le son en boucle (-1) en cas de maintient prolongé de la touche 
+                self.is_sound_playing = True  # Met à jour l'état du son
+        else:
+            if self.is_sound_playing:  # Si le joueur s'arrête de se déplacer
+                self.sfx_move.stop()  # Arrête le son
+                self.is_sound_playing = False  # Met à jour l'état du son
+        
+    def update(self):
+        if self.is_alive:   # Optimisation, evite de faire des calcul+s si il et mort
+            self.key_movement()
+            self.detect_movement()
+            self.walking_sound()
+            self.detect_enemy_collision()
+            self.sword.update_position((self.rect.x+115, self.rect.y+50))
+            item.AnimatedSword.update(self.sword)
 
             # Mise à jour de l'animation
             now = pygame.time.get_ticks()
             if now - self.last_update > self.animation_cooldown: # Vérification cooldown animation pour éviter une animation top rapide
                 self.frame = (self.frame + 1) % self.animation_step # Si l'on arrive à la dernière image, on boucle l'animation
                 self.last_update = now # Remettre à jour pour le cooldown
+        
         else:
-            # Mise à jour de l'animation de mort
-            if self.frame < len(self.animation_lists["death"]):
-                # Obtenir le cadre actuel de l'animation de mort
-                current_frame = self.animation_lists["death"][self.frame]
-
-                # Redimensionner l'image du cadre
-                w, h = current_frame.get_width(), current_frame.get_height()
-                image_upscaled = pygame.transform.scale(current_frame, (w * 6, h * 6))
-
-                # Dessiner l'image redimensionnée à la position du joueur
-                screen.blit(image_upscaled, self.rect.topleft)
-
-                # Augmenter le numéro du cadre
-                self.frame += 1
-            else:
-                # Si l'animation de mort est terminée, définissez is_alive sur False
-                self.is_alive = False
-        
-        
+            pass
+            
     def draw(self, screen):
         if self.is_alive:
-            # Sélectionner l'animation appropriée en fonction de la direction du mouvement
-            if self.is_moving:
-                current_animation = self.current_animation
-            else:
-                current_animation = 'idle'
 
             # Obtenir le cadre actuel de l'animation
-            current_frame = self.animation_lists[current_animation][self.frame]
+            current_frame = self.animation_lists[self.current_animation][self.frame]
 
             # Redimensionner l'image du cadre
             w, h = current_frame.get_width(), current_frame.get_height()
@@ -179,9 +160,13 @@ class Player(pygame.sprite.Sprite):
             # Dessiner l'épée
             self.sword.draw(screen)
             
+            #Dessiner la barre de vie
             self.health_bar.draw(screen)
+            
         else:
+            # Dessiner la barre de vie (vide) même si le joueur est mort
             self.health_bar.draw(screen)
+                
     
     def attack(self):
         current_time = pygame.time.get_ticks()
@@ -218,10 +203,7 @@ class Player(pygame.sprite.Sprite):
                 self.last_collision_time = current_time  # Met à jour le temps de la dernière détection de collision
                 
 
-
-
-
-    def distance(self, rect2):
+    def distance(self, rect2): # Détection pour la distance d'attaque
         # Obtenir les coordonnées du centre du joueur
         player_center = self.rect.center
         
@@ -236,14 +218,4 @@ class Player(pygame.sprite.Sprite):
 
     def kill(self):
         self.is_alive = False
-
-
-    
-    # UTILISATION
-    # obstacle_tile_position = (3, 4)  # Position de la tuile pour cet obstacle
-    # obstacle = Obstacle("chemin/vers/image.png", (x, y), (largeur_tile, hauteur_tile), obstacle_tile_position)
-    
-
-
-
 

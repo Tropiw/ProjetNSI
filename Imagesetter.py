@@ -43,19 +43,22 @@ class tile:
         
         
         
-class Image_statique: # Image simple à afficher
+import pygame
+
+class ImageStatique(pygame.sprite.Sprite):
     def __init__(self, image_path, position=(0, 0), zoom=3):
-        self.image = pygame.image.load(image_path)
-        self.position = position
-        w = self.image.get_width()
-        h = self.image.get_height()
-        self.image_upscaled = pygame.transform.scale(self.image, (w * zoom, h * zoom))  # Grandir l'image
+        super().__init__()
+        self.image = pygame.image.load(image_path).convert_alpha()
+        self.rect = self.image.get_rect(topleft=position)
+        w, h = self.image.get_size()
+        self.image_upscaled = pygame.transform.scale(self.image, (w * zoom, h * zoom))  # Redimensionner l'image
 
     def draw(self, screen):
-        screen.blit(self.image_upscaled, self.position)
-        
+        screen.blit(self.image_upscaled, self.rect)
+
     def update(self):
-        pass # pas besoin mais obligatoire
+        pass  # Pas besoin d'update, mais obligatoire
+
     
     
     
