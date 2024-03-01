@@ -125,7 +125,7 @@ coin2 = image.animated_sprite(coin_paths, (1100, 575))
 coin3 = image.animated_sprite(coin_paths, (1055, 575))
 
 # Liste d'objets à afficher
-jeu.objects = [ slime2, obstacle, obstacle2, obstacle3, coin1, coin2, coin3, player_group, pilier, pilier2, enemies_group]
+jeu.objects = [ slime2, obstacle, obstacle2, obstacle3, coin1, coin2, coin3, player_group, enemies_group]
 
 
 #Musique
