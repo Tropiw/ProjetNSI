@@ -22,6 +22,7 @@ class Player(pygame.sprite.Sprite):
         
         # SON DE MARCHE
         self.sfx_move = pygame.mixer.Sound(r"SFX\footstep mc (2).mp3")
+        self.sfx_death = pygame.mixer.Sound(r"SFX\ooh_death.mp3")
         self.is_moving = False
         self.is_sound_playing = False  # Variable pour suivre l'état du son de marche
         
@@ -47,6 +48,10 @@ class Player(pygame.sprite.Sprite):
         self.current_health = 1
         self.health_bar.current_health = self.current_health
         self.is_alive = True
+        
+        # Animation de mort
+        self.is_dying = False
+        self.death_animation = None
 
 
     def load_animation_frames(self):
@@ -142,7 +147,14 @@ class Player(pygame.sprite.Sprite):
                 self.last_update = now # Remettre à jour pour le cooldown
         
         else:
-            pass
+            if self.is_dying:
+                # Initialiser l'animation de mort à la position actuelle du joueur
+                if not self.death_animation:
+                    self.death_animation = DeathAnimation((self.rect.x, self.rect.y-64))
+                # Mettre à jour l'animation de mort
+                self.death_animation.update()
+                if not self.death_animation.in_progress:
+                    self.is_dying = False  # Réinitialiser l'animation de mort une fois terminée
             
     def draw(self, screen):
         if self.is_alive:
@@ -164,8 +176,11 @@ class Player(pygame.sprite.Sprite):
             self.health_bar.draw(screen)
             
         else:
-            # Dessiner la barre de vie (vide) même si le joueur est mort
-            self.health_bar.draw(screen)
+            if self.is_dying:
+                if self.death_animation:
+                    # Dessiner l'animation de mort à la position actuelle du joueur
+                    self.death_animation.draw(screen)
+            
                 
     
     def attack(self):
@@ -217,5 +232,55 @@ class Player(pygame.sprite.Sprite):
         return distance
 
     def kill(self):
-        self.is_alive = False
+        self.sfx_death.play()
+        if not self.is_dying:
+            self.is_alive = False
+            self.is_dying = True
 
+
+class DeathAnimation(pygame.sprite.Sprite):
+    def __init__(self, position, zoom=8):
+        super().__init__()
+        # Charger les images de l'animation de mort
+        self.images = []
+        for i in range(3):
+            self.images.append(pygame.image.load(rf'Graphic\Generic death animation\death_{i}.png').convert_alpha())
+        
+        # Définir le rectangle pour l'animation à la position spécifiée
+        self.rect = self.images[0].get_rect(topleft=position)
+        
+        # Nombre d'étapes dans l'animation
+        self.animation_step = len(self.images)
+        
+        # Délai entre chaque étape de l'animation en millisecondes
+        self.animation_cooldown = 75
+        
+        # Étape actuelle de l'animation
+        self.frame = 0
+        
+        # Temps de la dernière mise à jour de l'animation
+        self.last_update = pygame.time.get_ticks()
+        
+        # Facteur de zoom pour redimensionner l'animation
+        self.zoom = zoom
+        
+        # Indicateur pour savoir si l'animation est en cours
+        self.in_progress = True
+
+    def update(self):
+        # Mettre à jour l'animation si elle est en cours
+        now = pygame.time.get_ticks()
+        if self.in_progress and now - self.last_update > self.animation_cooldown:
+            if self.frame < self.animation_step:
+                self.frame += 1
+                self.last_update = now
+            else:
+                # L'animation est terminée
+                self.in_progress = False
+
+    def draw(self, screen):
+        # Dessiner l'étape actuelle de l'animation si elle est en cours
+        if self.in_progress and self.frame < self.animation_step:
+            current_image = self.images[self.frame]
+            resized_image = pygame.transform.scale(current_image, (current_image.get_width() // self.zoom, current_image.get_height() // self.zoom))
+            screen.blit(resized_image, self.rect.topleft)

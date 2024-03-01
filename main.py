@@ -126,9 +126,11 @@ coin3 = image.animated_sprite(coin_paths, (1055, 575))
 map_assets.add(coin1,coin2,coin3,obstacle1,obstacle2,obstacle3,slime2)
 
 
+#TESTS
+death_animation = perso.DeathAnimation((500,400))
 
 # Liste d'objets à afficher
-jeu.objects = [ map_assets, player_group, enemies_group]
+jeu.objects = [ map_assets, player_group, enemies_group, death_animation]
 
 
 #Musique
