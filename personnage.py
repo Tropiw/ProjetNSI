@@ -5,7 +5,7 @@ import math
 import UI as ui
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, image_path, position, player, enemies_group = None):
+    def __init__(self, image_path, position, player, enemies_group = None, item_group = None):
         super().__init__()
         self.image = pygame.image.load(image_path).convert_alpha()
         self.tile_size = (32,32)
@@ -36,7 +36,7 @@ class Player(pygame.sprite.Sprite):
         self.current_animation = 'idle'
         
         # ATTAQUE
-        self.sword = item.AnimatedSword((self.rect.x, self.rect.y))
+        self.sword = None
         self.attack_cooldown = 500  # Cooldown en millisecondes
         self.last_attack_time = 0  # Temps du dernière attaque
         self.attack_range = 150
@@ -52,6 +52,8 @@ class Player(pygame.sprite.Sprite):
         # Animation de mort
         self.is_dying = False
         self.death_animation = None
+        
+        self.item_group = item_group
 
 
     def load_animation_frames(self):
@@ -137,8 +139,11 @@ class Player(pygame.sprite.Sprite):
             self.detect_movement()
             self.walking_sound()
             self.detect_enemy_collision()
-            self.sword.update_position((self.rect.x+115, self.rect.y+50))
-            item.AnimatedSword.update(self.sword)
+            self.bring_item()
+            if self.sword:  # Mettre à jour la position de l'épée si elle est ramassée
+                self.sword.rect.x = self.rect.x + 115  # Ajuster la position de l'épée par rapport au joueur
+                self.sword.rect.y = self.rect.y + 50
+                item.AnimatedSword.update(self.sword)  # Mettre à jour l'animation de l'épée
 
             # Mise à jour de l'animation
             now = pygame.time.get_ticks()
@@ -170,7 +175,8 @@ class Player(pygame.sprite.Sprite):
             screen.blit(image_upscaled, self.rect.topleft)
             
             # Dessiner l'épée
-            self.sword.draw(screen)
+            if self.sword != None:
+                self.sword.draw(screen)
             
             #Dessiner la barre de vie
             self.health_bar.draw(screen)
@@ -184,22 +190,23 @@ class Player(pygame.sprite.Sprite):
                 
     
     def attack(self):
-        current_time = pygame.time.get_ticks()
-        if current_time - self.last_attack_time > self.attack_cooldown: # cooldown
-            # Mettre à jour le temps du dernière attaque
-            self.sword.start_attack()
-            self.last_attack_time = current_time
-        
-        # Parcourir les ennemis
-        for enemy in self.enemies:
-            # Calculer la distance entre le joueur et l'ennemi
-            dist = self.distance(enemy.rect)
+        if self.sword != None:
+            current_time = pygame.time.get_ticks()
+            if current_time - self.last_attack_time > self.attack_cooldown: # cooldown
+                # Mettre à jour le temps du dernière attaque
+                self.sword.start_attack()
+                self.last_attack_time = current_time
             
-            # Vérifier si l'ennemi est dans la zone d'attaque
-            if dist <= self.attack_range:
-                # L'ennemi est dans la zone d'attaque, effectuer des actions d'attaque
-                enemy.kill()
-                #self.enemies.remove(enemy)  # Enlever l'ennemi du groupe
+            # Parcourir les ennemis
+            for enemy in self.enemies:
+                # Calculer la distance entre le joueur et l'ennemi
+                dist = self.distance(enemy.rect)
+                
+                # Vérifier si l'ennemi est dans la zone d'attaque
+                if dist <= self.attack_range:
+                    # L'ennemi est dans la zone d'attaque, effectuer des actions d'attaque
+                    enemy.kill()
+                    #self.enemies.remove(enemy)  # Enlever l'ennemi du groupe
                     
     def detect_enemy_collision(self):
         # Vérifie la collision avec les ennemis
@@ -236,7 +243,14 @@ class Player(pygame.sprite.Sprite):
         if not self.is_dying:
             self.is_alive = False
             self.is_dying = True
-
+            
+    def bring_item(self):
+        for item in self.item_group:
+            dist = self.distance(item.rect)
+            if dist < 150:
+                # Ramasser l'épée en l'attachant au joueur
+                self.sword = item  # Attribuer l'épée du sol au joueur
+                self.item_group.remove(item) # Retirer l'épée du sol
 
 class DeathAnimation(pygame.sprite.Sprite):
     def __init__(self, position, zoom=8):

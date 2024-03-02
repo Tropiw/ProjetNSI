@@ -86,16 +86,23 @@ jeu = Main()
 
 # ENNEMIS
 enemies_group = pygame.sprite.Group()
+player_group = pygame.sprite.Group()
 
-enemy1 = Enemy(r"Graphic\Slime - Enemy\slime-Sheet.png", (150,300), (32,25), speed = 5)
-enemy2 = Enemy(r"Graphic\Slime - Enemy\slime-Sheet.png", (300,400), (32,25), speed = 5)
+enemy1 = Enemy(r"Graphic\Slime - Enemy\slime-Sheet.png", (150,300), (32,25), speed = 5, player_group=player_group)
+enemy2 = Enemy(r"Graphic\Slime - Enemy\slime-Sheet.png", (300,400), (32,25), speed = 5, player_group=player_group)
 enemies_group.add(enemy1)
 enemies_group.add(enemy2)
 
+# Items
+item_group = pygame.sprite.Group()
+sword1 = item.AnimatedSword((600,500))
+sword2 = item.AnimatedSword((800,500))
+item_group.add(sword1, sword2)
+
 # JOUEUR
-player_group = pygame.sprite.Group()
-player1 = perso.Player(r"Graphic\Player\Sprites\Prototype\worksheet_blue.png", (500, 100), 1, enemies_group)
-player2 = perso.Player(r"Graphic\Player\Sprites\Prototype\worksheet_red.png", (600, 100), 2, enemies_group)
+
+player1 = perso.Player(r"Graphic\Player\Sprites\Prototype\worksheet_blue.png", (500, 100), 1, enemies_group, item_group=item_group)
+player2 = perso.Player(r"Graphic\Player\Sprites\Prototype\worksheet_red.png", (600, 100), 2, enemies_group, item_group=item_group)
 player_group.add(player1)
 player_group.add(player2)
 
@@ -127,10 +134,9 @@ map_assets.add(coin1,coin2,coin3,obstacle1,obstacle2,obstacle3,slime2)
 
 
 #TESTS
-death_animation = perso.DeathAnimation((500,400))
 
 # Liste d'objets à afficher
-jeu.objects = [ map_assets, player_group, enemies_group, death_animation]
+jeu.objects = [ map_assets, player_group, enemies_group, item_group]
 
 
 #Musique

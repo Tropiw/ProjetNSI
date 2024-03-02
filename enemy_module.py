@@ -1,7 +1,8 @@
 import pygame
+import math
 
 class Enemy(pygame.sprite.Sprite):
-    def __init__(self, image_path, position, tile_size, speed=1):
+    def __init__(self, image_path, position, tile_size, speed=1, player_group = None):
         super().__init__()
         self.image = pygame.image.load(image_path).convert_alpha()
         self.rect = pygame.Rect(position[0], position[1], tile_size[0], tile_size[1])
@@ -9,7 +10,7 @@ class Enemy(pygame.sprite.Sprite):
         self.is_moving = False
         self.direction = 1
         self.speed = speed
-        self.animation_lists = {'walk_right': [], 'walk_left': [], 'die': []}
+        self.animation_lists = {'walk_right': [], 'walk_left': [], 'die': [], 'eat_left': [], 'eat_right': []}
         self.animation_step = 7
         self.last_update = pygame.time.get_ticks()
         self.animation_cooldown = 100
@@ -17,7 +18,9 @@ class Enemy(pygame.sprite.Sprite):
         self.load_animation_frames(tile_size)
         self.health = 100
         self.is_alive = True
-
+        self.player_group = player_group
+        self.is_eating = False
+        
     def load_animation_frames(self, tile_size):
         # Chargement des animations marche à gauche
         for i in range(self.animation_step):
@@ -31,9 +34,19 @@ class Enemy(pygame.sprite.Sprite):
 
         # Chargement des animations de mort (3ème ligne = 2*25)
         for x in range(self.animation_step):
-            tile_rect = pygame.Rect(x * tile_size[0], 2 * tile_size[1], tile_size[0], tile_size[1])
+            tile_rect = pygame.Rect(x * tile_size[0], 2 * 25, tile_size[0], tile_size[1])
             self.animation_lists["die"].append(self.image.subsurface(tile_rect))
-
+        
+        # Chargement des animations de manger a gacuhe
+        for x in range(self.animation_step):
+            tile_rect = pygame.Rect(x * tile_size[0], 1*25, tile_size[0], tile_size[1])
+            self.animation_lists["eat_left"].append(self.image.subsurface(tile_rect))
+            
+        # Chargement des animations de manger a droite
+        for frame in self.animation_lists['eat_left']:
+            eat_left_frame = pygame.transform.flip(frame, True, False)
+            self.animation_lists['eat_right'].append(eat_left_frame)
+            
     def update(self):
         if self.is_alive:
 
@@ -47,11 +60,26 @@ class Enemy(pygame.sprite.Sprite):
                 self.direction = 1  # Changer la direction vers la droite
 
 
-            # Changer l'animation en fonction de la direction de déplacement
-            if self.direction == 1:  # Vers la droite
-                self.current_animation = 'walk_right'
-            else:  # Vers la gauche
-                self.current_animation = 'walk_left'
+            if self.player_group is not None:
+                self.is_eating = False  # Réinitialiser la variable à False avant de parcourir les joueurs
+                for player in self.player_group:
+                    dist = self.distance(player.rect)
+                    if dist < 100:
+                        if self.direction == 1:
+                            self.current_animation = 'eat_right'
+                        else:
+                            self.current_animation = 'eat_left'
+                        self.is_eating = True  # Mettre à True seulement si un joueur est à portée
+                        break  # Sortir de la boucle dès qu'un joueur est trouvé à portée
+
+
+            # Si l'ennemi a fini de manger, reprendre l'animation de marche
+            if not self.is_eating:
+                if self.direction == 1:
+                    self.current_animation = 'walk_right'
+                else:
+                    self.current_animation = 'walk_left'
+
                 
             now = pygame.time.get_ticks()
             if now - self.last_update > self.animation_cooldown:  # Vérification cooldown animation pour éviter une animation top rapide
@@ -84,4 +112,17 @@ class Enemy(pygame.sprite.Sprite):
 
     def kill(self):
         self.is_alive = False
+        
+    def distance(self, rect2): # Détection pour la distance d'attaque
+        # Obtenir les coordonnées du centre du joueur
+        enemy_center = self.rect.center
+        
+        # Obtenir les coordonnées du centre du rectangle 2
+        rect2_center = rect2.center
+
+        # Calculer la distance entre les deux centres
+        distance_x = enemy_center[0] - rect2_center[0]
+        distance_y = enemy_center[1] - rect2_center[1]
+        distance = math.sqrt(distance_x ** 2 + distance_y ** 2)
+        return distance
         
