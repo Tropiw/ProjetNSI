@@ -2,7 +2,7 @@ import pygame
 import math
 
 class Enemy(pygame.sprite.Sprite):
-    def __init__(self, image_path, position, tile_size, speed=1, player_group = None):
+    def __init__(self, image_path, position, tile_size, speed=1, player_group = None, enemies_group = None):
         super().__init__()
         self.image = pygame.image.load(image_path).convert_alpha()
         self.rect = pygame.Rect(position[0], position[1], tile_size[0], tile_size[1])
@@ -20,6 +20,11 @@ class Enemy(pygame.sprite.Sprite):
         self.is_alive = True
         self.player_group = player_group
         self.is_eating = False
+        self.enemies_group = enemies_group
+        self.is_dying = False
+        self.is_finished = False
+        self.sfx_kill = pygame.mixer.Sound(r"SFX\Knife Cut SFX.mp3")
+        self.sfx_kill.set_volume(0.3)
         
     def load_animation_frames(self, tile_size):
         # Chargement des animations marche à gauche
@@ -36,6 +41,7 @@ class Enemy(pygame.sprite.Sprite):
         for x in range(self.animation_step):
             tile_rect = pygame.Rect(x * tile_size[0], 2 * 25, tile_size[0], tile_size[1])
             self.animation_lists["die"].append(self.image.subsurface(tile_rect))
+        print(self.animation_lists['die'])
         
         # Chargement des animations de manger a gacuhe
         for x in range(self.animation_step):
@@ -86,18 +92,23 @@ class Enemy(pygame.sprite.Sprite):
                 self.frame = (self.frame + 1) % self.animation_step  # Si l'on arrive à la dernière image, on boucle l'animation
                 self.last_update = now  # Remettre à jour pour le cooldown
             
-        else:
-            #animation mort
-            self.current_animation = 'die'
-            now = pygame.time.get_ticks()
-            if now - self.last_update > self.animation_cooldown:  
-                # Vérification du cooldown de l'animation pour éviter une animation trop rapide
-                if self.frame < self.animation_step - 1:  
-                    # Vérification si ce n'est pas la dernière image de l'animation
-                    self.frame += 1  # Passer à l'image suivante de l'animation
-                self.last_update = now  # Mettre à jour pour le cooldown
-
         
+        elif self.is_dying:
+            if not self.is_finished:
+                #animation mort
+                self.current_animation = 'die'
+                now = pygame.time.get_ticks()
+                if now - self.last_update > self.animation_cooldown:  
+                    # Vérification du cooldown de l'animation pour éviter une animation trop rapide
+                    if self.frame < self.animation_step - 1:  
+                        # Vérification si ce n'est pas la dernière image de l'animation
+                        self.frame += 1  # Passer à l'image suivante de l'animation
+                        self.last_update = now  # Remettre à jour pour le cooldown
+                    else:
+                        self.is_finished = True
+                if self.is_finished:
+                    self.enemies_group.remove(self)
+
 
     def draw(self, screen):
         # Obtenir le cadre actuel de l'animation
@@ -109,10 +120,18 @@ class Enemy(pygame.sprite.Sprite):
 
         # Dessiner l'image redimensionnée à la position de l'ennemi
         screen.blit(image_upscaled, self.rect.topleft)
+        
 
     def kill(self):
-        self.is_alive = False
-        
+        if not self.is_dying:
+            print('bam')
+            self.sfx_kill.play()
+            self.is_alive = False
+            self.is_dying = True
+            self.is_finished = False  # Réinitialiser la variable is_finished
+            self.frame = 0  # Réinitialiser la frame à 0
+                
+            
     def distance(self, rect2): # Détection pour la distance d'attaque
         # Obtenir les coordonnées du centre du joueur
         enemy_center = self.rect.center

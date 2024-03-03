@@ -17,9 +17,12 @@ class AnimatedSword(pygame.sprite.Sprite):
         self.last_update = pygame.time.get_ticks()
         self.zoom = zoom
         self.is_attacking = False
+        self.sfx_attack = pygame.mixer.Sound(r"SFX\Knife Shing SFX.mp3")
+        self.sfx_attack.set_volume(0.1)
 
     def start_attack(self):
         self.is_attacking = True
+        self.sfx_attack.play()
 
     def stop_attack(self):
         self.is_attacking = False

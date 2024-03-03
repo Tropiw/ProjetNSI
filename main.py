@@ -88,10 +88,10 @@ jeu = Main()
 enemies_group = pygame.sprite.Group()
 player_group = pygame.sprite.Group()
 
-enemy1 = Enemy(r"Graphic\Slime - Enemy\slime-Sheet.png", (150,300), (32,25), speed = 5, player_group=player_group)
-enemy2 = Enemy(r"Graphic\Slime - Enemy\slime-Sheet.png", (300,400), (32,25), speed = 5, player_group=player_group)
-enemies_group.add(enemy1)
-enemies_group.add(enemy2)
+enemy1 = Enemy(r"Graphic\Slime - Enemy\slime-Sheet.png", (150,300), (32,25), speed = 5, player_group=player_group, enemies_group=enemies_group)
+enemy2 = Enemy(r"Graphic\Slime - Enemy\slime-Sheet.png", (300,400), (32,25), speed = 5, player_group=player_group, enemies_group=enemies_group)
+enemy3 = Enemy(r"Graphic\Slime - Enemy\slime-Sheet.png", (600,500), (32,25), speed = 5, player_group=player_group, enemies_group=enemies_group)
+enemies_group.add(enemy1, enemy2, enemy3)
 
 # Items
 item_group = pygame.sprite.Group()
