@@ -33,7 +33,7 @@ class tile:
         self.cache_tile[(i,j)] = pygame_surface ##insertion des tile dans le cache 
     
     
-    def render(self, screen,tile_pos,coordonate):
+    def render(self, screen,coordonate):
         if self.img_tile != None:
             screen.blit((self.img_tile),(coordonate))
             
@@ -43,8 +43,6 @@ class tile:
         
         
         
-import pygame
-
 class ImageStatique(pygame.sprite.Sprite):
     def __init__(self, image_path, position=(0, 0), zoom=3):
         super().__init__()
@@ -63,7 +61,7 @@ class ImageStatique(pygame.sprite.Sprite):
     
     
     
-class Obstacle(pygame.sprite.Sprite): # # Outil pour afficher une image à partir d'une spritesheet avec des tiles
+class Obstacle(pygame.sprite.Sprite): # Outil pour afficher une image à partir d'une spritesheet avec des tiles
     def __init__(self, image_path, position, tile_size, tile_position, zoom = 8):
         super().__init__()
         self.image = pygame.image.load(image_path).convert_alpha()
