@@ -23,7 +23,7 @@ class Main:
         self.mode = 2
         self.donjon = map_module.Dongeon(self.screen,1280,720)
 
-    def start(self): 
+    def start(self,player1,player2): 
         title = menu.menu()
         while self.running: # Code de boucle principale
             while self.mode == 1:
@@ -32,6 +32,10 @@ class Main:
                 self.donjon.blit_map()
                 self.update()
                 self.render()
+                if  menu.rect_in_rect(player1.rect,self.donjon.map_list[self.donjon.actual_room].sortie) and menu.rect_in_rect(player2.rect,self.donjon.map_list[self.donjon.actual_room].sortie):
+                    self.donjon.actual_room = self.donjon.topologie[self.donjon.room_index+1]
+                    player1.rect[1] = 500
+                    player2.rect[1] = 500
                 pygame.display.flip()
             self.collision = title.render_main_menu(self.screen)
             while self.mode == 2:
@@ -145,5 +149,5 @@ pygame.mixer.music.play(loops=-1)
 pygame.mixer.music.set_volume(0.008)
 
 # Lancer le jeu
-jeu.start()
+jeu.start(player1, player2)
 
