@@ -9,18 +9,28 @@ from enemy_module import Enemy
 
 class Main:
     def __init__(self, fps=60, width=1280, height=720):
+        #init pygame
         pygame.init()
+
+        #definit le tile set (pas sur que ce soit utile)
         self.tile_set = image.tile(r'Graphic\Dungeon Gathering - map asset (light)\Set 1.1.png')
+
+        #definit l'affichage, les fps et autre parametre du genre
         self.screen = pygame.display.set_mode((width, height))
-        print(self.screen)
         self.clock = pygame.time.Clock()
         self.clock.tick(fps)
         self.running = True
+
+        #definit la liste des objets, des monstres present sur la map 
         self.objects = []  # Liste pour stocker les objets à dessiner
         self.ennemies_group = pygame.sprite.Group()
+
+        #fini par definir le menu, la pos de la souris(pas vraiment la pos juste pour pas que ca bug) et le mode(si on est dans un menu ou dans le jeu)
         self.main_menu = menu.menu()
         self.mouse_pos = (0,0)
         self.mode = 2
+
+        #defini le donjon actuelle
         self.donjon = map_module.Dongeon(self.screen,1280,720)
 
     def start(self,player1,player2): 
@@ -36,6 +46,7 @@ class Main:
                     self.donjon.actual_room = self.donjon.topologie[self.donjon.room_index+1]
                     player1.rect[1] = 500
                     player2.rect[1] = 500
+                    self.objects[3] = self.donjon.map_list[self.donjon.actual_room].enemies_group
                 pygame.display.flip()
             self.collision = title.render_main_menu(self.screen)
             while self.mode == 2:
@@ -88,13 +99,10 @@ class Main:
 jeu = Main()
 
 # ENNEMIS
-enemies_group = pygame.sprite.Group()
+
 player_group = pygame.sprite.Group()
 
-enemy1 = Enemy(r"Graphic\Slime - Enemy\slime-Sheet.png", (150,300), (32,25), speed = 5, player_group=player_group, enemies_group=enemies_group)
-enemy2 = Enemy(r"Graphic\Slime - Enemy\slime-Sheet.png", (300,400), (32,25), speed = 5, player_group=player_group, enemies_group=enemies_group)
-enemy3 = Enemy(r"Graphic\Slime - Enemy\slime-Sheet.png", (600,500), (32,25), speed = 5, player_group=player_group, enemies_group=enemies_group)
-enemies_group.add(enemy1, enemy2, enemy3)
+
 
 # Items
 item_group = pygame.sprite.Group()
@@ -104,8 +112,8 @@ item_group.add(sword1, sword2)
 
 # JOUEUR
 
-player1 = perso.Player(r"Graphic\Player\Sprites\Prototype\worksheet_blue.png", (500, 100), 1, enemies_group, item_group=item_group)
-player2 = perso.Player(r"Graphic\Player\Sprites\Prototype\worksheet_red.png", (600, 100), 2, enemies_group, item_group=item_group)
+player1 = perso.Player(r"Graphic\Player\Sprites\Prototype\worksheet_blue.png", (500, 100), 1, jeu.donjon.map_list[jeu.donjon.actual_room].enemies_group, item_group=item_group)
+player2 = perso.Player(r"Graphic\Player\Sprites\Prototype\worksheet_red.png", (600, 100), 2, jeu.donjon.map_list[jeu.donjon.actual_room].enemies_group, item_group=item_group)
 player_group.add(player1)
 player_group.add(player2)
 
@@ -139,7 +147,8 @@ map_assets.add(coin1,coin2,coin3,obstacle1,obstacle2,obstacle3,slime2)
 #TESTS
 
 # Liste d'objets à afficher
-jeu.objects = [ map_assets, player_group, enemies_group, item_group]
+jeu.objects = [ map_assets, player_group, item_group]
+jeu.objects.append(jeu.donjon.map_list[jeu.donjon.actual_room].enemies_group)
 
 
 #Musique

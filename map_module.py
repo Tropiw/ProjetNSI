@@ -1,5 +1,6 @@
 import pygame
 import imagesetter as image
+import enemy_module as enemy
 
 class Map():
     def __init__(self, width,height):
@@ -11,21 +12,33 @@ class Map():
         for i in range(15):
             for j in range(7):
                 self.tile_set.load(i,j)
-                #Pilier
-  
+
         
     
 class map1(Map):
     def __init__(self ,width,height):
+
+        #designe les monstre present sur la map
+        self.enemies_group = pygame.sprite.Group()
+        enemy1 = enemy.Enemy(r"Graphic\Slime - Enemy\slime-Sheet.png", (150,300), (32,25), speed = 5, player_group=pygame.sprite.Group(), enemies_group=self.enemies_group)
+        enemy2 = enemy.Enemy(r"Graphic\Slime - Enemy\slime-Sheet.png", (300,400), (32,25), speed = 5, player_group=pygame.sprite.Group(), enemies_group=self.enemies_group)
+        enemy3 = enemy.Enemy(r"Graphic\Slime - Enemy\slime-Sheet.png", (600,500), (32,25), speed = 5, player_group=pygame.sprite.Group(), enemies_group=self.enemies_group)
+        self.enemies_group.add(enemy1, enemy2, enemy3)
+
+
+        #Designe les tile sets utiliser
         self.tile_set = image.tile(r'Graphic\Dungeon Gathering - map asset (light)\Set 1.1.png')
         self.tile_structure = image.tile(r'Graphic\Dungeon Gathering - map asset (light)\Structure.png',0,0)
+
+        #load les tiles
         self.tile_structure.load(0,1)
         self.height = height
         self.width = width
         for i in range(15):
             for j in range(7):
                 self.tile_set.load(i,j)
-                #Pilier
+
+        #blit l'entiereter de la map sur une surface pygame
         self.screen = pygame.surface.Surface((self.width, self.height))
         self.sortie = pygame.rect.Rect(560,0,32,16)
         self.obstacle1 = image.Obstacle('Graphic/Dungeon Gathering - map asset (light)/Structure.png', (1125, 10), (16,32), (0,0),4)#pillier 1 
@@ -48,16 +61,25 @@ class map1(Map):
         
 
 class map2(Map):
-    def map2(self,width,height):
+    def __init__(self,width,height):
+        #designe les monstre present sur la map
+        self.enemies_group = pygame.sprite.Group()
+
+        #Designe les tile sets utiliser
         self.tile_set = image.tile(r'Graphic\Dungeon Gathering - map asset (light)\Set 1.1.png')
         self.tile_structure = image.tile(r'Graphic\Dungeon Gathering - map asset (light)\Structure.png',0,0)
+
+        #load les tiles
         self.tile_structure.load(0,1)
+        self.sortie = pygame.rect.Rect(0,0,0,0)
         self.height = height
         self.width = width
         for i in range(15):
             for j in range(7):
                 self.tile_set.load(i,j)
-                #Pilier
+
+
+        #blit l'entiereter de la map sur une surface pygame
         self.screen = pygame.surface.Surface((self.width, self.height))
         self.tile_set.blit_tile(self.screen,(5,5),(0,0))
         self.tile_set.blit_tile(self.screen,(6,5),(1200,0))

@@ -32,13 +32,16 @@ class menu:
 
         # Retourner le rectangle du bouton pour la détection de collision
         return pygame.rect.Rect((pos[0] - (button_width / 2) + 3, pos[1] - (button_height / 2) + 3), (button_width, button_height))
-        
+
+
 def point_in_rect(mouse_pos,collision):
+    #Retourne vrai si un point est dans un rect pygame
     if mouse_pos[0] < collision[0]+collision[2] and mouse_pos[0] > collision[0] and mouse_pos[1] < collision[1]+collision[3] and mouse_pos[1] > collision[1]:
         return True
     return False
 
 def rect_in_rect(first_rect,second_rect):
+    #Retourne vrai si un rect pygame est dans un rect pygame
     if first_rect[0]+first_rect[2] >= second_rect[0]-second_rect[2] and first_rect[0]-first_rect[2] <= second_rect[0]+second_rect[2] and first_rect[1]+first_rect[3] >= second_rect[1]-second_rect[3] and first_rect[1]-first_rect[3] <= second_rect[1]+second_rect[3]:
         return True
     return False
