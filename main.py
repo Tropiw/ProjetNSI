@@ -1,5 +1,5 @@
 import pygame
-import Imagesetter as image
+import imagesetter as image
 import menu as menu
 import personnage as perso
 import map_module as map_module
@@ -155,7 +155,7 @@ jeu.objects.append(jeu.donjon.map_list[jeu.donjon.actual_room].enemies_group)
 pygame.mixer.init()
 pygame.mixer.music.load(r'SFX\robot rock.mp3')
 pygame.mixer.music.play(loops=-1)
-pygame.mixer.music.set_volume(0.008)
+pygame.mixer.music.set_volume(0.000) #0.008
 
 # Lancer le jeu
 jeu.start(player1, player2)

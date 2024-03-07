@@ -124,7 +124,6 @@ class Enemy(pygame.sprite.Sprite):
 
     def kill(self):
         if not self.is_dying:
-            print('bam')
             self.sfx_kill.play()
             self.is_alive = False
             self.is_dying = True
