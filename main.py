@@ -6,6 +6,7 @@ import map_module as map_module
 import item as item
 from pygame.locals import *
 from enemy_module import Enemy
+#import new_player
 
 class Main:
     def __init__(self, fps=60, width=1280, height=720):
@@ -46,8 +47,8 @@ class Main:
         player2_movement_image = r'Graphic\Peros\-No Shield - Sprite Sheet\Red Knight run Sprite-sheet 16x17.png'
         player2_idle_image = r'Graphic\Peros\-No Shield - Sprite Sheet\Red Knight idle Sprite-sheet 16x16.png'
         
-        self.player1 = new_player.Player(player1_movement_image, player1_idle_image,(600, 100), 1, self.actual_room.enemies_group, item_group=self.actual_room.item_group)
-        self.player2 = new_player.Player(player2_movement_image, player2_idle_image,(500, 100), 2, self.actual_room.enemies_group, item_group=self.actual_room.item_group)
+        self.player1 = perso.Player(player1_movement_image, player1_idle_image,(600, 100), 1, self.actual_room.enemies_group, item_group=self.actual_room.item_group)
+        self.player2 = perso.Player(player2_movement_image, player2_idle_image,(500, 100), 2, self.actual_room.enemies_group, item_group=self.actual_room.item_group)
         self.player_group.add(self.player1)
         self.player_group.add(self.player2)
         

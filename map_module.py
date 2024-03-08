@@ -282,7 +282,7 @@ class map4(Map):
         self.item_group = pygame.sprite.Group()
 
 class map5(Map):
-    def __init__(self,width,height,salle_fils, salle_pere):
+    def __init__(self,width,height):
         #designe les monstre present sur la map
         self.enemies_group = pygame.sprite.Group()
 
@@ -291,14 +291,15 @@ class map5(Map):
         self.tile_set2 = image.tile(r'Graphic\Dungeon Gathering - map asset (light)\Set 1.2.png')
         self.tile_structure = image.tile(r'Graphic\Dungeon Gathering - map asset (light)\Structure.png',0,0)
 
-        self.fils = salle_fils
-        self.pere = salle_pere
 
         #entrer et sortie
-        self.sortie = porte(pygame.rect.Rect(80,320,80,80),200)
-        self.entrer = pygame.rect.Rect(560,80,32,16)
-        self.tp_entrer = 100
-        self.sens_tp_entrer = 1
+        self.porte_Nord = porte(pygame.rect.Rect(560,0,32,16),100,self)
+        
+        self.porte_Est =  None
+
+        self.porte_Ouest = porte(pygame.rect.Rect(80,320,80,80),200,self)
+
+        self.porte_Sud = None
 
         #load les tiles
         self.tile_structure.load(0,1)
@@ -333,10 +334,63 @@ class map5(Map):
         self.map_assets = pygame.sprite.Group()
         self.item_group = pygame.sprite.Group()
 
+class map6(Map):
+    def __init__(self,width,height):
+        #designe les monstre present sur la map
+        self.enemies_group = pygame.sprite.Group()
+
+        #Designe les tile sets utiliser
+        self.tile_set1 = image.tile(r'Graphic\Dungeon Gathering - map asset (light)\Set 1.1.png')
+        self.tile_set2 = image.tile(r'Graphic\Dungeon Gathering - map asset (light)\Set 1.2.png')
+        self.tile_structure = image.tile(r'Graphic\Dungeon Gathering - map asset (light)\Structure.png',0,0)
+
+
+        #entrer et sortie
+        self.porte_Nord = None
+        
+        self.porte_Est =  porte(pygame.rect.Rect(1120,320,80,80),1000,self)
+
+        self.porte_Ouest = None
+
+        self.porte_Sud = porte(pygame.rect.Rect(570, 560,160,80),400,self)
+
+        #load les tiles
+        self.tile_structure.load(0,1)
+        self.height = height
+        self.width = width
+        for i in range(15):
+            for j in range(7):
+                self.tile_set1.load(i,j)
+            for j in range(11):
+                self.tile_set2.load(i,j)
+        
+        #blit l'entiereter de la map sur une surface pygame
+        self.screen = pygame.surface.Surface((self.width, self.height))
+        self.tile_set1.blit_tile(self.screen,(5,5),(0,0))
+        self.tile_set1.blit_tile(self.screen,(6,5),(1200,0))
+        self.tile_set1.blit_tile(self.screen,(6,6),(1200,640))
+        self.tile_set1.blit_tile(self.screen,(5,6),(0,640)) #Les coins 
+        for i in range(14):
+            self.tile_set1.blit_tile(self.screen,(3,6),((i+1)*80,0))
+            self.tile_set1.blit_tile(self.screen,(3,4),((i+1)*80,640)) # Les bord en haut et en bas
+            for j in range(7):
+                self.tile_set1.blit_tile(self.screen,(4,5),(0,(j+1)*80))
+                self.tile_set1.blit_tile(self.screen,(2,5),(1200,(j+1)*80)) #Les bord sur les cotés 
+                self.tile_set1.blit_tile(self.screen,(12,4),((i+1)*80,(j+1)*80)) #Le milieux
+        self.tile_set1.blit_tile(self.screen,(12,4),((i+1)*80,(j+1)*80)) #Le milieux
+        self.tile_set2.blit_tile(self.screen,(7,4),(560,640))
+        self.tile_set2.blit_tile(self.screen,(8,4),(640,640))
+        self.tile_set2.blit_tile(self.screen,(9,2),(1200,320))
+        self.tile_set1.blit_tile(self.screen,(1,6),(1200,240))
+        self.tile_set1.blit_tile(self.screen,(4,4),(1200,400))
+        
+        self.map_assets = pygame.sprite.Group()
+        self.item_group = pygame.sprite.Group()
+
 
 class Dongeon:
     def __init__(self, screen,width,height):
-        self.topologie = [map1(width , height),map3(width , height), map4(width , height),map2(width, height)]
+        self.topologie = [map1(width , height),map3(width , height), map4(width , height),map3(width , height),map6(width , height),map5(width , height),map4(width , height),map2(width , height)]
         self.actual_room = self.topologie[0]
         self.screen = screen
         for i in range(len(self.topologie)-1):
