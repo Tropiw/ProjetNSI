@@ -5,10 +5,13 @@ import math
 import UI as ui
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, image_path, position, player, enemies_group = None, item_group = None):
+    def __init__(self, image_movement_path, image_idle_path, position, player, enemies_group = None, item_group = None):
         super().__init__()
-        self.image = pygame.image.load(image_path).convert_alpha()
-        self.tile_size = (32,32)
+        image_movement_path = image_movement_path
+        image_idle_path = image_idle_path
+        self.image_movement = pygame.image.load(image_movement_path).convert_alpha()
+        self.image_idle = pygame.image.load(image_idle_path).convert_alpha()
+        self.tile_size = (16,17)
         self.rect = pygame.Rect(position[0], position[1], self.tile_size[0], self.tile_size[1])
         self.player = player
         
@@ -28,9 +31,9 @@ class Player(pygame.sprite.Sprite):
         
         #ANIMATIONS
         self.animation_lists = {"idle": [], "walk_right": [], "walk_left": [], "walk_up": [], "walk_down": [], "death": []}
-        self.animation_step = 3
+        self.animation_step = 8
         self.last_update = pygame.time.get_ticks()
-        self.animation_cooldown = 100
+        self.animation_cooldown = 70
         self.frame = 0
         self.load_animation_frames()
         self.current_animation = 'idle'
@@ -61,29 +64,32 @@ class Player(pygame.sprite.Sprite):
 
     def load_animation_frames(self):
         # Chargement des animations immobile (1ère ligne = 0*32)
-        for x in range(4):
+        self.tile_size = (16,16)
+        for x in range(self.animation_step):
             tile_rect = pygame.Rect(x * self.tile_size[0], 0, self.tile_size[0], self.tile_size[1])
-            self.animation_lists["idle"].append(self.image.subsurface(tile_rect))
+            self.animation_lists["idle"].append(self.image_idle.subsurface(tile_rect))
+        
+        self.tile_size = (16,17)
+        # Chargement des animations marche a droite (2eme ligne = 1*)
+        for x in range(self.animation_step):
+            tile_rect = pygame.Rect(x * self.tile_size[0], 1*self.tile_size[1], self.tile_size[0], self.tile_size[1])
+            self.animation_lists["walk_right"].append(self.image_movement.subsurface(tile_rect))
             
-        # Chargement des animations marche a droite (5ème ligne = 4*32)
-        for x in range(4):
-            tile_rect = pygame.Rect(x * self.tile_size[0], 4*32, self.tile_size[0], self.tile_size[1])
-            self.animation_lists["walk_right"].append(self.image.subsurface(tile_rect))
+        # # Chargement des animations marche a gauche (4eme ligne = 3*)
+        for x in range(self.animation_step):
+            tile_rect = pygame.Rect(x * self.tile_size[0], 3*self.tile_size[1], self.tile_size[0], self.tile_size[1])
+            self.animation_lists["walk_left"].append(self.image_movement.subsurface(tile_rect))
             
-        # Chargement des animations marche à gauche (en reflétant les images de gauche)
-        for frame in self.animation_lists['walk_right']:
-            walk_left_frame = pygame.transform.flip(frame, True, False)
-            self.animation_lists['walk_left'].append(walk_left_frame)
 
-        # Chargement des animations marche haut (6ème ligne = 5*32)
-        for x in range(4):
-            tile_rect = pygame.Rect(x * self.tile_size[0], 5*32, self.tile_size[0], self.tile_size[1])
-            self.animation_lists["walk_up"].append(self.image.subsurface(tile_rect))
+        # Chargement des animations marche haut (3ème ligne = 2*)
+        for x in range(self.animation_step):
+            tile_rect = pygame.Rect(x * self.tile_size[0], 2*self.tile_size[1], self.tile_size[0], self.tile_size[1])
+            self.animation_lists["walk_up"].append(self.image_movement.subsurface(tile_rect))
             
-        # Chargement des animations marche a bas (4ème ligne = 3*32)
-        for x in range(4):
-            tile_rect = pygame.Rect(x * self.tile_size[0], 3*32, self.tile_size[0], self.tile_size[1])
-            self.animation_lists["walk_down"].append(self.image.subsurface(tile_rect))
+        # Chargement des animations marche a bas (1ème ligne = 0*)
+        for x in range(self.animation_step):
+            tile_rect = pygame.Rect(x * self.tile_size[0], 0, self.tile_size[0], self.tile_size[1])
+            self.animation_lists["walk_down"].append(self.image_movement.subsurface(tile_rect))
 
     def detect_movement(self):
         keys = pygame.key.get_pressed()
@@ -171,7 +177,7 @@ class Player(pygame.sprite.Sprite):
 
             # Redimensionner l'image du cadre
             w, h = current_frame.get_width(), current_frame.get_height()
-            image_upscaled = pygame.transform.scale(current_frame, (w * 6, h * 6))
+            image_upscaled = pygame.transform.scale(current_frame, (w * 5, h * 5))
 
             # Dessiner l'image redimensionnée à la position du joueur
             screen.blit(image_upscaled, self.rect.topleft)
