@@ -216,7 +216,6 @@ class Player(pygame.sprite.Sprite):
             # Cooldown expiré, on peut détecter une nouvelle collision
             collision_enemy = pygame.sprite.spritecollideany(self, self.enemies)
             if collision_enemy:  # Si une collision est détectée
-                print("Collision avec l'ennemi détectée !")
                 if self.current_health > 0:  # Vérifie que le joueur a encore des vies restantes
                     self.current_health -= 1  # Retire une vie au joueur
                     #Mise à jour de la barre de vie du joueur
@@ -240,6 +239,7 @@ class Player(pygame.sprite.Sprite):
         return distance
 
     def kill(self):
+        self.sfx_move.stop()
         self.sfx_death.play()
         if not self.is_dying:
             self.is_alive = False

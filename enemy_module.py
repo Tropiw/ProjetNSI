@@ -41,7 +41,6 @@ class Enemy(pygame.sprite.Sprite):
         for x in range(self.animation_step):
             tile_rect = pygame.Rect(x * tile_size[0], 2 * 25, tile_size[0], tile_size[1])
             self.animation_lists["die"].append(self.image.subsurface(tile_rect))
-        print(self.animation_lists['die'])
         
         # Chargement des animations de manger a gacuhe
         for x in range(self.animation_step):

@@ -1,5 +1,5 @@
 import pygame
-
+import item as item
 import imagesetter as image
 import enemy_module as enemy
 
@@ -39,9 +39,13 @@ class map1(Map):
             for j in range(7):
                 self.tile_set.load(i,j)
 
+        #entrer et sortie
+        self.entrer = pygame.rect.Rect(0,0,0,0)
+        self.sortie = pygame.rect.Rect(560,0,32,16)
+
         #blit l'entiereter de la map sur une surface pygame
         self.screen = pygame.surface.Surface((self.width, self.height))
-        self.sortie = pygame.rect.Rect(560,0,32,16)
+        
         self.obstacle2 = image.Obstacle('Graphic/Dungeon Gathering - map asset (light)/Structure.png', (1125, 10), (16,32), (0,0),4)#pillier 2 
         self.obstacle1 = image.Obstacle('Graphic/Dungeon Gathering - map asset (light)/Structure.png', (80, 10), (16,32), (0,0),4)#pillier 1
         self.tile_set.blit_tile(self.screen,(5,5),(0,0))
@@ -59,7 +63,8 @@ class map1(Map):
         self.tile_set.blit_tile(self.screen,(6,3),(640,0))#porte d
         self.obstacle1.draw(self.screen) #pillier 1
         self.obstacle2.draw(self.screen) #pillier 2
-         # mur salle pièces
+        
+        '''# mur salle pièces
         self.tile_set.blit_tile(self.screen,(3,4),(1040,400))
         self.tile_set.blit_tile(self.screen,(3,4),(1120,400))
         self.tile_set.blit_tile(self.screen,(2,4),(960,400))#coin
@@ -70,26 +75,61 @@ class map1(Map):
         self.tile_set.blit_tile(self.screen,(6,4),(1040,560)) #sol
         self.tile_set.blit_tile(self.screen,(6,4),(1120,560)) #sol
         self.tile_set.blit_tile(self.screen,(3,2),(880,560)) # escalier qui ne peut pas apparaitre
-        #fin
+        #fin'''
+        
+        
+        # PIECE ANIMEE
+        coin_paths = []
+        for i in range(1,5): # Chemin des image étapes d'animations de la pièce
+            coin_paths.append(rf'Graphic\2D Pixel Dungeon - Asset Pack\items and trap_animation\coin\coin_{i}.png')
 
+        coin1 = image.animated_sprite(coin_paths, (1145, 575))
+        coin2 = image.animated_sprite(coin_paths, (1100, 575))
+        coin3 = image.animated_sprite(coin_paths, (1055, 575))
+        
+        
+        # OBSTACLE
+        obstacle1 = image.Obstacle(r"Graphic\Dungeon Gathering - map asset (light)\Set 1.1.png",
+                                (100, 500), (16, 16), (8, 6))
+        obstacle2 = image.Obstacle(r"Graphic\Dungeon Gathering - map asset (light)\Set 1.1.png",
+                                (200, 500), (16, 16), (8, 6))
+        obstacle3 = image.Obstacle(r"Graphic\Dungeon Gathering - map asset (light)\Set 1.1.png",
+                                (400, 500), (16, 16), (9, 6))
+       
+        self.map_assets = pygame.sprite.Group()
+        # Remplissage du groupe d'asset de la map
+        self.map_assets.add(coin1,coin2,coin3,obstacle1,obstacle2,obstacle3)
+
+        #Item group
+        self.item_group = pygame.sprite.Group()
+        sword1 = item.AnimatedSword((600,500))
+        sword2 = item.AnimatedSword((800,500))
+        self.item_group.add(sword1, sword2)
+        
+        
 class map2(Map):
     def __init__(self,width,height):
         #designe les monstre present sur la map
         self.enemies_group = pygame.sprite.Group()
+        enemy1 = enemy.Enemy(r"Graphic\Slime - Enemy\slime-Sheet.png", (150,200), (32,25), speed = 5, player_group=pygame.sprite.Group(), enemies_group=self.enemies_group)
+        enemy2 = enemy.Enemy(r"Graphic\Slime - Enemy\slime-Sheet.png", (300,300), (32,25), speed = 5, player_group=pygame.sprite.Group(), enemies_group=self.enemies_group)
+        self.enemies_group.add(enemy1, enemy2)
 
         #Designe les tile sets utiliser
         self.tile_set = image.tile(r'Graphic\Dungeon Gathering - map asset (light)\Set 1.1.png')
         self.tile_structure = image.tile(r'Graphic\Dungeon Gathering - map asset (light)\Structure.png',0,0)
 
+        #entrer et sortie
+        self.sortie = pygame.rect.Rect(0,0,0,0)
+        self.entrer = pygame.rect.Rect(570, 560,160,80)
+
         #load les tiles
         self.tile_structure.load(0,1)
-        self.sortie = pygame.rect.Rect(0,0,0,0)
         self.height = height
         self.width = width
         for i in range(15):
             for j in range(7):
                 self.tile_set.load(i,j)
-
 
         #blit l'entiereter de la map sur une surface pygame
         self.screen = pygame.surface.Surface((self.width, self.height))
@@ -105,6 +145,9 @@ class map2(Map):
                 self.tile_set.blit_tile(self.screen,(2,5),(1200,(j+1)*80)) #Les bord sur les cotés 
                 self.tile_set.blit_tile(self.screen,(12,4),((i+1)*80,(j+1)*80)) #Le milieux
         self.tile_set.blit_tile(self.screen,(12,4),((i+1)*80,(j+1)*80)) #Le milieux
+
+        self.map_assets = pygame.sprite.Group()
+        self.item_group = pygame.sprite.Group()
 
 
 

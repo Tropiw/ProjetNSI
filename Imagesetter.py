@@ -30,7 +30,7 @@ class tile:
         pygame_surface = pygame.image.fromstring(image_data, image_dimensions, mode)
         pygame_surface = pygame.transform.scale(pygame_surface, (80, 80))
         self.img_tile = pygame_surface
-        self.cache_tile[(i,j)] = pygame_surface ##insertion des tile dans le cache 
+        self.cache_tile[(i,j)] = pygame_surface #insertion des tile dans le cache 
     
     
     def render(self, screen,coordonate):

@@ -13,6 +13,13 @@ class menu:
         w, h = titre.get_size()                                             #pour le placement 
         screen.blit(titre,(640-(w/2),180-(h/2)))                            #le titre sur l'ecran
         return self.render_button('START',(640,360),screen)                 #le bouton
+
+    def render_game_over(self,screen):
+        screen.fill("black")
+        titre = menu.FONT_TITLE.render("Defeat",True, (255,255,255))    #le texte du titre
+        w, h = titre.get_size()                                             #pour le placement 
+        screen.blit(titre,(640-(w/2),180-(h/2)))                            #le titre sur l'ecran
+        return self.render_button('RESTART',(640,360),screen)                 #le bouton
     
     def render_button(self, text, pos, screen, button_scale=3):
         text_rendered = menu.FONT_BUTTON.render(text, True, (0, 0, 0))  # Texte du bouton
