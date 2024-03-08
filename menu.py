@@ -1,11 +1,19 @@
 import pygame
+import random
 
 class menu:
     pygame.font.init()      #sans ça pas de pygame.font
     FONT_TITLE = pygame.font.Font("Squares.ttf", 20)        #Police du titre
     FONT_BUTTON = pygame.font.Font('slkscr.ttf',30)      #Police des boutons 
     def __init__(self):
-        pass          #si on trouve un truc a mettre la dedans ca peut etre bien en vrai
+        self.liste_de_message_de_mort_nuls = ['Bah alors on est mort?',
+                                        "Personellement j'aurais fait mieux.",
+                                        "Franchement...",
+                                        "Pfff... On s'ennui ici",
+                                        "You were slain by a slime",
+                                        "Et bah j'en attendait plus"]
+        self.index_du_msg_de_mort = random.randint(0,len(self.liste_de_message_de_mort_nuls)-1)          #si on trouve un truc a mettre la dedans ca peut etre bien en vrai
+        
 
     def render_main_menu(self,screen):
         screen.fill("black")
@@ -15,10 +23,19 @@ class menu:
         return self.render_button('START',(640,360),screen)                 #le bouton
 
     def render_game_over(self,screen):
+
         screen.fill("black")
+
+        #On blit le titre
         titre = menu.FONT_TITLE.render("Defeat",True, (255,255,255))    #le texte du titre
         w, h = titre.get_size()                                             #pour le placement 
         screen.blit(titre,(640-(w/2),180-(h/2)))                            #le titre sur l'ecran
+
+        #On blit le message de morts
+        msg_de_mort = menu.FONT_BUTTON.render(self.liste_de_message_de_mort_nuls[self.index_du_msg_de_mort],True, (255,255,255))
+        w, h = msg_de_mort.get_size()  
+        screen.blit(msg_de_mort,(640-(w/2),270-(h/2)))
+
         return self.render_button('RESTART',(640,360),screen)                 #le bouton
     
     def render_button(self, text, pos, screen, button_scale=3):
@@ -44,7 +61,11 @@ class menu:
 def point_in_rect(mouse_pos,collision):
     #Retourne vrai si un point est dans un rect pygame
     if mouse_pos[0] < collision[0]+collision[2] and mouse_pos[0] > collision[0] and mouse_pos[1] < collision[1]+collision[3] and mouse_pos[1] > collision[1]:
+        sfx_click = pygame.mixer.Sound(r'SFX\click.mp3')
+        sfx_click.set_volume(0.3)
+        sfx_click.play()
         return True
+
     return False
 
 def rect_in_rect(first_rect,second_rect):

@@ -47,6 +47,9 @@ class Main:
                         self.player_group,
                         self.actual_room.enemies_group
                         ]
+        # Son GAME OVER
+        self.sfx_game_over = pygame.mixer.Sound(r"SFX\game_over.mp3")
+        self.sfx_game_over.set_volume(0.07)
 
     def start(self): 
         title = menu.menu()
@@ -73,6 +76,7 @@ class Main:
                 if menu.point_in_rect(self.mouse_pos,self.collision):
                     self.reset_all()
                 pygame.display.flip()
+                
         
         pygame.quit()
             
@@ -132,6 +136,7 @@ class Main:
                     self.player2.item_group =  self.objects[1]
             
         if not self.player1.is_alive and not self.player2.is_alive: # Si les 2 joueur sont mort
+                    self.sfx_game_over.play()
                     self.mode = 3  # Menu game over
         
         
@@ -150,6 +155,7 @@ class Main:
             else:
                 obj.draw(self.screen)
     def reset_all(self):
+        self.main_menu = menu.menu()
         self.mouse_pos = (0,0)
         self.mode = 2
 
