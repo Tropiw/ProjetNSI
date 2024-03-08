@@ -40,11 +40,16 @@ class map1(Map):
                 self.tile_set.load(i,j)
 
         #entrer et sortie
-        self.entrer = pygame.rect.Rect(0,0,0,0)
-        self.tp_entrer = 0
-        self.sortie = pygame.rect.Rect(560,0,32,16)
-        self.tp_sortie = 100
-        self.sens_tp_sortie = 1
+        self.porte_Nord =  porte(pygame.rect.Rect(560,0,32,16),100,self)
+
+        self.porte_Est = None
+
+        self.porte_Ouest = None
+
+        self.porte_Sud = None
+
+        
+
 
         #blit l'entiereter de la map sur une surface pygame
         self.screen = pygame.surface.Surface((self.width, self.height))
@@ -123,13 +128,16 @@ class map2(Map):
         self.tile_set2 = image.tile(r'Graphic\Dungeon Gathering - map asset (light)\Set 1.2.png')
         self.tile_structure = image.tile(r'Graphic\Dungeon Gathering - map asset (light)\Structure.png',0,0)
 
+
         #entrer et sortie
-        self.sortie = pygame.rect.Rect(0,0,0,0)
-        self.tp_sortie = 0
-        self.sens_tp_sortie = 1
-        self.entrer = pygame.rect.Rect(570, 560,160,80)
-        self.tp_entrer = 400
-        self.sens_tp_entrer = 1
+        self.porte_Nord = None
+        
+        self.porte_Est = None
+
+        self.porte_Ouest = None
+
+        self.porte_Sud = porte(pygame.rect.Rect(570, 560,160,80),400,self)
+
 
         #load les tiles
         self.tile_structure.load(0,1)
@@ -174,12 +182,14 @@ class map3(Map):
         self.tile_structure = image.tile(r'Graphic\Dungeon Gathering - map asset (light)\Structure.png',0,0)
 
         #entrer et sortie
-        self.sortie = pygame.rect.Rect(80,320,80,80)
-        self.tp_sortie = 200
-        self.sens_tp_sortie = 0
-        self.entrer = pygame.rect.Rect(570, 560,160,80)
-        self.tp_entrer = 400
-        self.sens_tp_entrer = 1
+        self.porte_Nord = None
+        
+        self.porte_Est = None
+
+        self.porte_Ouest =  porte(pygame.rect.Rect(80,320,80,80),200,self)
+
+        self.porte_Sud =  porte(pygame.rect.Rect(570, 560,160,80),400,self)
+
 
         #load les tiles
         self.tile_structure.load(0,1)
@@ -226,13 +236,16 @@ class map4(Map):
         self.tile_set2 = image.tile(r'Graphic\Dungeon Gathering - map asset (light)\Set 1.2.png')
         self.tile_structure = image.tile(r'Graphic\Dungeon Gathering - map asset (light)\Structure.png',0,0)
 
+
         #entrer et sortie
-        self.sortie = pygame.rect.Rect(560,0,32,16)
-        self.tp_sortie = 100
-        self.sens_tp_sortie = 1
-        self.entrer = pygame.rect.Rect(1120,320,80,80)
-        self.tp_entrer = 1000
-        self.sens_tp_entrer = 0
+        self.porte_Nord = porte(pygame.rect.Rect(560,0,32,16),100,self)
+        
+        self.porte_Est =  porte(pygame.rect.Rect(1120,320,80,80),1000,self)
+
+        self.porte_Ouest = None
+
+        self.porte_Sud = None
+
 
         #load les tiles
         self.tile_structure.load(0,1)
@@ -278,13 +291,15 @@ class map5(Map):
         self.tile_set2 = image.tile(r'Graphic\Dungeon Gathering - map asset (light)\Set 1.2.png')
         self.tile_structure = image.tile(r'Graphic\Dungeon Gathering - map asset (light)\Structure.png',0,0)
 
+
         #entrer et sortie
-        self.sortie = pygame.rect.Rect(80,320,80,80)
-        self.tp_sortie = 200
-        self.sens_tp_sortie = 0
-        self.entrer = pygame.rect.Rect(560,0,32,16)
-        self.tp_entrer = 100
-        self.sens_tp_entrer = 1
+        self.porte_Nord = porte(pygame.rect.Rect(560,0,32,16),100,self)
+        
+        self.porte_Est =  None
+
+        self.porte_Ouest = porte(pygame.rect.Rect(80,320,80,80),200,self)
+
+        self.porte_Sud = None
 
         #load les tiles
         self.tile_structure.load(0,1)
@@ -319,23 +334,111 @@ class map5(Map):
         self.map_assets = pygame.sprite.Group()
         self.item_group = pygame.sprite.Group()
 
+class map6(Map):
+    def __init__(self,width,height):
+        #designe les monstre present sur la map
+        self.enemies_group = pygame.sprite.Group()
+
+        #Designe les tile sets utiliser
+        self.tile_set1 = image.tile(r'Graphic\Dungeon Gathering - map asset (light)\Set 1.1.png')
+        self.tile_set2 = image.tile(r'Graphic\Dungeon Gathering - map asset (light)\Set 1.2.png')
+        self.tile_structure = image.tile(r'Graphic\Dungeon Gathering - map asset (light)\Structure.png',0,0)
+
+
+        #entrer et sortie
+        self.porte_Nord = None
+        
+        self.porte_Est =  porte(pygame.rect.Rect(1120,320,80,80),1000,self)
+
+        self.porte_Ouest = None
+
+        self.porte_Sud = porte(pygame.rect.Rect(570, 560,160,80),400,self)
+
+        #load les tiles
+        self.tile_structure.load(0,1)
+        self.height = height
+        self.width = width
+        for i in range(15):
+            for j in range(7):
+                self.tile_set1.load(i,j)
+            for j in range(11):
+                self.tile_set2.load(i,j)
+        
+        #blit l'entiereter de la map sur une surface pygame
+        self.screen = pygame.surface.Surface((self.width, self.height))
+        self.tile_set1.blit_tile(self.screen,(5,5),(0,0))
+        self.tile_set1.blit_tile(self.screen,(6,5),(1200,0))
+        self.tile_set1.blit_tile(self.screen,(6,6),(1200,640))
+        self.tile_set1.blit_tile(self.screen,(5,6),(0,640)) #Les coins 
+        for i in range(14):
+            self.tile_set1.blit_tile(self.screen,(3,6),((i+1)*80,0))
+            self.tile_set1.blit_tile(self.screen,(3,4),((i+1)*80,640)) # Les bord en haut et en bas
+            for j in range(7):
+                self.tile_set1.blit_tile(self.screen,(4,5),(0,(j+1)*80))
+                self.tile_set1.blit_tile(self.screen,(2,5),(1200,(j+1)*80)) #Les bord sur les cotés 
+                self.tile_set1.blit_tile(self.screen,(12,4),((i+1)*80,(j+1)*80)) #Le milieux
+        self.tile_set1.blit_tile(self.screen,(12,4),((i+1)*80,(j+1)*80)) #Le milieux
+        self.tile_set2.blit_tile(self.screen,(7,4),(560,640))
+        self.tile_set2.blit_tile(self.screen,(8,4),(640,640))
+        self.tile_set2.blit_tile(self.screen,(9,2),(1200,320))
+        self.tile_set1.blit_tile(self.screen,(1,6),(1200,240))
+        self.tile_set1.blit_tile(self.screen,(4,4),(1200,400))
+        
+        self.map_assets = pygame.sprite.Group()
+        self.item_group = pygame.sprite.Group()
+
 
 class Dongeon:
     def __init__(self, screen,width,height):
-        self.room_index = 0
-        self.topologie = ['map_2','map_5','map_4','map_2']
-        self.actual_room = self.topologie[self.room_index]
+        self.topologie = [map1(width , height),map3(width , height), map4(width , height),map3(width , height),map6(width , height),map5(width , height),map4(width , height),map2(width , height)]
+        self.actual_room = self.topologie[0]
         self.screen = screen
+        for i in range(len(self.topologie)-1):
+            self.jumelage_salle(self.topologie[i],self.topologie[i+1],i,i+1)
         self.map_list = {}
-        self.map_list['map_1'] = map1(width , height)
-        self.map_list['map_2'] = map2(width , height)
-        self.map_list['map_3'] = map3(width , height)
-        self.map_list['map_4'] = map4(width , height)
-        self.map_list['map_5'] = map4(width , height)
+        
+
 
     def blit_map(self):
-        self.screen.blit(self.map_list[self.actual_room].screen, (0,0))
-    
-                
-    
+        self.screen.blit(self.actual_room.screen, (0,0))
+
+    def change_map(self):
+        pass
+
+    def jumelage_salle(self,salle1,salle2,index1,index2):
+        if salle1.porte_Nord != None and salle1.porte_Nord.jumelage == None:
+            if salle2.porte_Sud != None and salle2.porte_Sud.jumelage == None:
+                actual_room = self.topologie[index1]
+                actual_room.porte_Nord.jumelager(self.topologie[index2].porte_Sud)
+
+        if salle1.porte_Sud != None and salle1.porte_Sud.jumelage == None:
+            if salle2.porte_Nord != None and salle2.porte_Nord.jumelage == None:
+                actual_room = self.topologie[index1]
+                actual_room.porte_Sud.jumelager(self.topologie[index2].porte_Nord)
+
+        if salle1.porte_Ouest != None and salle1.porte_Ouest.jumelage == None:
+            if salle2.porte_Est != None and salle2.porte_Est.jumelage == None:
+                actual_room = self.topologie[index1]
+                actual_room.porte_Ouest.jumelager(self.topologie[index2].porte_Est)
+
+        if salle1.porte_Est != None and salle1.porte_Est.jumelage == None:
+            if salle2.porte_Ouest != None and salle2.porte_Ouest.jumelage == None:
+                actual_room = self.topologie[index1]
+                actual_room.porte_Est.jumelager(self.topologie[index2].porte_Ouest)
+
+
+class porte:
+    def __init__(self,rect,tp, room,porte2 = None):
+        self.rect = rect
+        self.tp = tp 
+        self.jumelage = porte2
+        self.room = room
+
+        if self.jumelage != None:
+            self.jumelage.jumelage = self
+
+    def jumelager(self,porte2):
+        self.jumelage = porte2
+        if self.jumelage != None:
+            self.jumelage.jumelage = self
         
