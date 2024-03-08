@@ -95,7 +95,7 @@ class Main:
                     
     
     def update(self): 
-        if  menu.rect_in_rect(self.player1.rect,self.actual_room.sortie) and menu.rect_in_rect(self.player2.rect,self.actual_room.sortie):
+        if  menu.pass_through(self.player1,self.player2,self.actual_room.sortie):
                     #on change de salle 
                     self.donjon.room_index += 1
                     self.donjon.actual_room = self.donjon.topologie[self.donjon.room_index]
@@ -115,7 +115,7 @@ class Main:
                     self.player2.item_group =  self.objects[1]
 
                     
-        elif menu.rect_in_rect(self.player1.rect,self.actual_room.entrer) and menu.rect_in_rect(self.player2.rect,self.actual_room.entrer):
+        elif menu.pass_through(self.player1,self.player2,self.actual_room.entrer):
 
                     #on change de salle 
                     self.donjon.room_index -= 1
@@ -134,7 +134,9 @@ class Main:
                     self.objects[1] = self.actual_room.item_group
                     self.player1.item_group =  self.objects[1]
                     self.player2.item_group =  self.objects[1]
-            
+        
+
+
         if not self.player1.is_alive and not self.player2.is_alive: # Si les 2 joueur sont mort
                     self.sfx_game_over.play()
                     self.mode = 3  # Menu game over
@@ -154,6 +156,7 @@ class Main:
                     sprite.draw(self.screen)
             else:
                 obj.draw(self.screen)
+
     def reset_all(self):
         self.main_menu = menu.menu()
         self.mouse_pos = (0,0)

@@ -73,3 +73,12 @@ def rect_in_rect(first_rect,second_rect):
     if first_rect[0]+first_rect[2] >= second_rect[0]-second_rect[2] and first_rect[0]-first_rect[2] <= second_rect[0]+second_rect[2] and first_rect[1]+first_rect[3] >= second_rect[1]-second_rect[3] and first_rect[1]-first_rect[3] <= second_rect[1]+second_rect[3]:
         return True
     return False
+
+def pass_through(player1,player2,actual_room):
+    if rect_in_rect(player1.rect,actual_room) and rect_in_rect(player2.rect,actual_room) :
+        return True
+    elif (rect_in_rect(player1.rect,actual_room) and not player2.is_alive) :
+        return True
+    elif (rect_in_rect(player2.rect,actual_room) and not player1.is_alive) :
+        return True
+    return False
