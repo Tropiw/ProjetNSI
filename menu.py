@@ -56,6 +56,9 @@ class menu:
 
         # Retourner le rectangle du bouton pour la détection de collision
         return pygame.rect.Rect((pos[0] - (button_width / 2) + 3, pos[1] - (button_height / 2) + 3), (button_width, button_height))
+    
+    def nouveau_msg(self):
+        self.index_du_msg_de_mort = random.randint(0,len(self.liste_de_message_de_mort_nuls)-1)   
 
 
 def point_in_rect(mouse_pos,collision):

@@ -21,6 +21,12 @@ class Main:
         self.clock.tick(fps)
         self.running = True
 
+        #Musique
+        pygame.mixer.init()
+        pygame.mixer.music.load(r'SFX\robot rock.mp3')
+        pygame.mixer.music.play(loops=-1)
+        pygame.mixer.music.set_volume(0.008) #0.008
+
         #definit la liste des objets, des monstres present sur la map 
         self.objects = []  # Liste pour stocker les objets à dessiner
 
@@ -52,7 +58,6 @@ class Main:
         self.sfx_game_over.set_volume(0.07)
 
     def start(self): 
-        title = menu.menu()
         while self.running:  # Code de boucle principale
             while self.mode == 1:
                 self.handle_events()
@@ -63,7 +68,7 @@ class Main:
                 pygame.display.flip()
 
             while self.mode == 2:
-                self.collision = title.render_main_menu(self.screen)
+                self.collision = self.main_menu.render_main_menu(self.screen)
                 self.handle_events()
                 if menu.point_in_rect(self.mouse_pos,self.collision):
                     self.mouse_pos = (0,0)
@@ -71,7 +76,7 @@ class Main:
                 pygame.display.flip()
             
             while self.mode == 3:
-                self.collision = title.render_game_over(self.screen)
+                self.collision = self.main_menu.render_game_over(self.screen)
                 self.handle_events()
                 if menu.point_in_rect(self.mouse_pos,self.collision):
                     self.reset_all()
@@ -158,7 +163,7 @@ class Main:
                 obj.draw(self.screen)
 
     def reset_all(self):
-        self.main_menu = menu.menu()
+        self.main_menu.nouveau_msg()
         self.mouse_pos = (0,0)
         self.mode = 2
 
@@ -186,11 +191,6 @@ class Main:
 jeu = Main()
 slime2 = image.ImageStatique(r'Graphic\Slime - Enemy\slime2.png',position=(800, 425),zoom=0.2)
 
-#Musique
-pygame.mixer.init()
-pygame.mixer.music.load(r'SFX\robot rock.mp3')
-pygame.mixer.music.play(loops=-1)
-pygame.mixer.music.set_volume(0.000) #0.008
 
 # Lancer le jeu
 jeu.start()
