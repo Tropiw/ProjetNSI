@@ -110,7 +110,7 @@ class Player(pygame.sprite.Sprite):
                 self.rect.y -= 5
         # Mouvement vers le bas
         elif keys[self.movement[1]]:
-            if self.rect.y < 502:
+            if self.rect.y < 500:
                 self.rect.y += 5
         # Mouvement vers la gauche
         elif keys[self.movement[2]]:

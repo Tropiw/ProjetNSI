@@ -43,7 +43,8 @@ class map1(Map):
         self.entrer = pygame.rect.Rect(0,0,0,0)
         self.tp_entrer = 0
         self.sortie = pygame.rect.Rect(560,0,32,16)
-        self.tp_sortie = 120
+        self.tp_sortie = 100
+        self.sens_tp_sortie = 1
 
         #blit l'entiereter de la map sur une surface pygame
         self.screen = pygame.surface.Surface((self.width, self.height))
@@ -125,8 +126,10 @@ class map2(Map):
         #entrer et sortie
         self.sortie = pygame.rect.Rect(0,0,0,0)
         self.tp_sortie = 0
+        self.sens_tp_sortie = 1
         self.entrer = pygame.rect.Rect(570, 560,160,80)
         self.tp_entrer = 400
+        self.sens_tp_entrer = 1
 
         #load les tiles
         self.tile_structure.load(0,1)
@@ -171,9 +174,12 @@ class map3(Map):
         self.tile_structure = image.tile(r'Graphic\Dungeon Gathering - map asset (light)\Structure.png',0,0)
 
         #entrer et sortie
-        self.sortie = pygame.rect.Rect(0,0,0,0)
-        
-        self.entrer = pygame.rect.Rect(0,0,0,0)
+        self.sortie = pygame.rect.Rect(80,320,80,80)
+        self.tp_sortie = 200
+        self.sens_tp_sortie = 0
+        self.entrer = pygame.rect.Rect(570, 560,160,80)
+        self.tp_entrer = 400
+        self.sens_tp_entrer = 1
 
         #load les tiles
         self.tile_structure.load(0,1)
@@ -210,19 +216,72 @@ class map3(Map):
         self.map_assets = pygame.sprite.Group()
         self.item_group = pygame.sprite.Group()
 
+class map4(Map):
+    def __init__(self,width,height):
+        #designe les monstre present sur la map
+        self.enemies_group = pygame.sprite.Group()
+
+        #Designe les tile sets utiliser
+        self.tile_set1 = image.tile(r'Graphic\Dungeon Gathering - map asset (light)\Set 1.1.png')
+        self.tile_set2 = image.tile(r'Graphic\Dungeon Gathering - map asset (light)\Set 1.2.png')
+        self.tile_structure = image.tile(r'Graphic\Dungeon Gathering - map asset (light)\Structure.png',0,0)
+
+        #entrer et sortie
+        self.sortie = pygame.rect.Rect(560,0,32,16)
+        self.tp_sortie = 100
+        self.sens_tp_sortie = 1
+        self.entrer = pygame.rect.Rect(1120,320,80,80)
+        self.tp_entrer = 1000
+        self.sens_tp_entrer = 0
+
+        #load les tiles
+        self.tile_structure.load(0,1)
+        self.height = height
+        self.width = width
+        for i in range(15):
+            for j in range(7):
+                self.tile_set1.load(i,j)
+            for j in range(11):
+                self.tile_set2.load(i,j)
+        
+        #blit l'entiereter de la map sur une surface pygame
+        self.screen = pygame.surface.Surface((self.width, self.height))
+        self.tile_set1.blit_tile(self.screen,(5,5),(0,0))
+        self.tile_set1.blit_tile(self.screen,(6,5),(1200,0))
+        self.tile_set1.blit_tile(self.screen,(6,6),(1200,640))
+        self.tile_set1.blit_tile(self.screen,(5,6),(0,640)) #Les coins 
+        for i in range(14):
+            self.tile_set1.blit_tile(self.screen,(3,6),((i+1)*80,0))
+            self.tile_set1.blit_tile(self.screen,(3,4),((i+1)*80,640)) # Les bord en haut et en bas
+            for j in range(7):
+                self.tile_set1.blit_tile(self.screen,(4,5),(0,(j+1)*80))
+                self.tile_set1.blit_tile(self.screen,(2,5),(1200,(j+1)*80)) #Les bord sur les cotés 
+                self.tile_set1.blit_tile(self.screen,(12,4),((i+1)*80,(j+1)*80)) #Le milieux
+        self.tile_set1.blit_tile(self.screen,(12,4),((i+1)*80,(j+1)*80)) #Le milieux
+        self.tile_set1.blit_tile(self.screen,(5,3),(560,0))# porte g
+        self.tile_set1.blit_tile(self.screen,(6,3),(640,0))#porte d
+        self.tile_set2.blit_tile(self.screen,(9,3),(1200,320))
+        self.tile_set1.blit_tile(self.screen,(0,6),(1200,240))
+        self.tile_set1.blit_tile(self.screen,(2,4),(1200,400))
+
+
+        self.map_assets = pygame.sprite.Group()
+        self.item_group = pygame.sprite.Group()
+
 
 
 
 class Dongeon:
     def __init__(self, screen,width,height):
         self.room_index = 0
-        self.topologie = ['map_1','map_2','map_3']
+        self.topologie = ['map_1','map_3','map_4','map_2']
         self.actual_room = self.topologie[self.room_index]
         self.screen = screen
         self.map_list = {}
         self.map_list['map_1'] = map1(width , height)
         self.map_list['map_2'] = map2(width , height)
         self.map_list['map_3'] = map3(width , height)
+        self.map_list['map_4'] = map4(width , height)
 
 
     def blit_map(self):
