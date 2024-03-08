@@ -37,7 +37,7 @@ class Main:
 
         #defini le donjon actuelle
         self.donjon = map_module.Dongeon(self.screen,1280,720)
-        self.actual_room = self.donjon.map_list[self.donjon.actual_room]
+        self.actual_room = self.donjon.actual_room
 
         #player groupe
         self.player_group = pygame.sprite.Group()
@@ -99,16 +99,16 @@ class Main:
             
                     
     
-    def update(self): 
-        if  menu.pass_through(self.player1,self.player2,self.actual_room.sortie):
+    def update(self):
+        if self.actual_room.porte_Nord != None:
+            if  menu.pass_through(self.player1,self.player2,self.actual_room.porte_Nord.rect):
                     #on change de salle 
-                    self.donjon.room_index += 1
-                    self.donjon.actual_room = self.donjon.topologie[self.donjon.room_index]
-                    self.actual_room  = self.donjon.map_list[self.donjon.actual_room]
+                    self.donjon.actual_room = self.donjon.actual_room.porte_Nord.jumelage.room
+                    self.actual_room  = self.donjon.actual_room
 
                     #on tp les joueur
-                    self.player1.rect[self.actual_room.sens_tp_entrer] = self.actual_room.tp_entrer  # TP le joueur 1
-                    self.player2.rect[self.actual_room.sens_tp_entrer] = self.actual_room.tp_entrer  # TP le joueur 2
+                    self.player1.rect[1] = self.actual_room.porte_Sud.tp  # TP le joueur 1
+                    self.player2.rect[1] = self.actual_room.porte_Sud.tp  # TP le joueur 2
 
                     #on redefinit les objs et les enemies
                     self.objects[3] = self.actual_room.enemies_group
@@ -119,17 +119,36 @@ class Main:
                     self.player1.item_group =  self.objects[1]
                     self.player2.item_group =  self.objects[1]
 
-                    
-        elif menu.pass_through(self.player1,self.player2,self.actual_room.entrer):
+        if self.actual_room.porte_Sud != None:
+            if menu.pass_through(self.player1,self.player2,self.actual_room.porte_Sud.rect):
 
                     #on change de salle 
-                    self.donjon.room_index -= 1
-                    self.donjon.actual_room = self.donjon.topologie[self.donjon.room_index]
-                    self.actual_room  = self.donjon.map_list[self.donjon.actual_room]
+                    self.donjon.actual_room = self.donjon.actual_room.porte_Sud.jumelage.room
+                    self.actual_room  = self.donjon.actual_room
 
                     #on tp les joueur
-                    self.player1.rect[self.actual_room.sens_tp_sortie] = self.actual_room.tp_sortie   # TP le joueur 1
-                    self.player2.rect[self.actual_room.sens_tp_sortie] = self.actual_room.tp_sortie    # TP le joueur 2
+                    self.player1.rect[1] = self.actual_room.porte_Nord.tp   # TP le joueur 1
+                    self.player2.rect[1] = self.actual_room.porte_Nord.tp   # TP le joueur 2
+
+                    #on redefinit les objs et les enemies 
+                    self.objects[3] = self.actual_room.enemies_group
+                    self.player1.enemies =  self.objects[3]
+                    self.player2.enemies =  self.objects[3]
+                    self.objects[0] = self.actual_room.map_assets
+                    self.objects[1] = self.actual_room.item_group
+                    self.player1.item_group =  self.objects[1]
+                    self.player2.item_group =  self.objects[1]
+
+        if self.actual_room.porte_Ouest != None:
+            if menu.pass_through(self.player1,self.player2,self.actual_room.porte_Ouest.rect):
+
+                    #on change de salle 
+                    self.donjon.actual_room = self.donjon.actual_room.porte_Ouest.jumelage.room
+                    self.actual_room  = self.donjon.actual_room
+
+                    #on tp les joueur
+                    self.player1.rect[0] = self.actual_room.porte_Est.tp   # TP le joueur 1
+                    self.player2.rect[0] = self.actual_room.porte_Est.tp   # TP le joueur 2
 
                     #on redefinit les objs et les enemies 
                     self.objects[3] = self.actual_room.enemies_group
@@ -140,8 +159,27 @@ class Main:
                     self.player1.item_group =  self.objects[1]
                     self.player2.item_group =  self.objects[1]
         
+        if self.actual_room.porte_Est != None:
+            if menu.pass_through(self.player1,self.player2,self.actual_room.porte_Est.rect):
+
+                    #on change de salle 
+                    self.donjon.actual_room = self.donjon.actual_room.porte_Est.jumelage.room
+                    self.actual_room  = self.donjon.actual_room
 
 
+                    #on tp les joueur
+                    self.player1.rect[0] = self.actual_room.porte_Ouest.tp  # TP le joueur 1
+                    self.player2.rect[0] = self.actual_room.porte_Ouest.tp    # TP le joueur 2
+
+                    #on redefinit les objs et les enemies 
+                    self.objects[3] = self.actual_room.enemies_group
+                    self.player1.enemies =  self.objects[3]
+                    self.player2.enemies =  self.objects[3]
+                    self.objects[0] = self.actual_room.map_assets
+                    self.objects[1] = self.actual_room.item_group
+                    self.player1.item_group =  self.objects[1]
+                    self.player2.item_group =  self.objects[1]
+        
         if not self.player1.is_alive and not self.player2.is_alive: # Si les 2 joueur sont mort
                     self.sfx_game_over.play()
                     self.mode = 3  # Menu game over
@@ -169,7 +207,7 @@ class Main:
 
         #defini le donjon actuelle
         self.donjon = map_module.Dongeon(self.screen,1280,720)
-        self.actual_room = self.donjon.map_list[self.donjon.actual_room]
+        self.actual_room = self.donjon.actual_room
         #player groupe
         self.player_group = pygame.sprite.Group()
         self.player1 = perso.Player(r"Graphic\Player\Sprites\Prototype\worksheet_blue.png", (500, 100), 1, self.actual_room.enemies_group, item_group=self.actual_room.item_group)
@@ -189,9 +227,6 @@ class Main:
 
 # UTILISATION
 jeu = Main()
-slime2 = image.ImageStatique(r'Graphic\Slime - Enemy\slime2.png',position=(800, 425),zoom=0.2)
-
-
 # Lancer le jeu
 jeu.start()
 
