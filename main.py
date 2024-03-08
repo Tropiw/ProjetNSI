@@ -184,7 +184,7 @@ class Main:
                         self.player_group,
                         self.actual_room.enemies_group
                         ]
-            
+    
 
 
 # UTILISATION

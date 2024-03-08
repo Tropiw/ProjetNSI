@@ -7,7 +7,7 @@ class menu:
     FONT_BUTTON = pygame.font.Font('slkscr.ttf',30)      #Police des boutons 
     def __init__(self):
         self.liste_de_message_de_mort_nuls = ['Bah alors on est mort?',
-                                        "Personellement j'aurais fait mieux.",
+                                        "Personellement j'aurais mieux fait.",
                                         "Franchement...",
                                         "Pfff... On s'ennui ici",
                                         "You were slain by a slime",
