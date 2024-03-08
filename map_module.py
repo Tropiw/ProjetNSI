@@ -41,7 +41,9 @@ class map1(Map):
 
         #entrer et sortie
         self.entrer = pygame.rect.Rect(0,0,0,0)
+        self.tp_entrer = 0
         self.sortie = pygame.rect.Rect(560,0,32,16)
+        self.tp_sortie = 120
 
         #blit l'entiereter de la map sur une surface pygame
         self.screen = pygame.surface.Surface((self.width, self.height))
@@ -117,11 +119,14 @@ class map2(Map):
 
         #Designe les tile sets utiliser
         self.tile_set = image.tile(r'Graphic\Dungeon Gathering - map asset (light)\Set 1.1.png')
+        self.tile_set2 = image.tile(r'Graphic\Dungeon Gathering - map asset (light)\Set 1.2.png')
         self.tile_structure = image.tile(r'Graphic\Dungeon Gathering - map asset (light)\Structure.png',0,0)
 
         #entrer et sortie
         self.sortie = pygame.rect.Rect(0,0,0,0)
+        self.tp_sortie = 0
         self.entrer = pygame.rect.Rect(570, 560,160,80)
+        self.tp_entrer = 400
 
         #load les tiles
         self.tile_structure.load(0,1)
@@ -130,6 +135,8 @@ class map2(Map):
         for i in range(15):
             for j in range(7):
                 self.tile_set.load(i,j)
+            for j in range(11):
+                self.tile_set2.load(i,j)
 
         #blit l'entiereter de la map sur une surface pygame
         self.screen = pygame.surface.Surface((self.width, self.height))
@@ -145,6 +152,10 @@ class map2(Map):
                 self.tile_set.blit_tile(self.screen,(2,5),(1200,(j+1)*80)) #Les bord sur les cotés 
                 self.tile_set.blit_tile(self.screen,(12,4),((i+1)*80,(j+1)*80)) #Le milieux
         self.tile_set.blit_tile(self.screen,(12,4),((i+1)*80,(j+1)*80)) #Le milieux
+        self.tile_set2.blit_tile(self.screen,(7,4),(560,640))
+        self.tile_set2.blit_tile(self.screen,(8,4),(640,640))
+        self.tile_set.blit_tile(self.screen,(2,4),(720,640))
+        self.tile_set.blit_tile(self.screen,(4,4),(480,640))
 
         self.map_assets = pygame.sprite.Group()
         self.item_group = pygame.sprite.Group()
@@ -161,6 +172,7 @@ class map3(Map):
 
         #entrer et sortie
         self.sortie = pygame.rect.Rect(0,0,0,0)
+        
         self.entrer = pygame.rect.Rect(0,0,0,0)
 
         #load les tiles
@@ -190,6 +202,10 @@ class map3(Map):
         self.tile_set2.blit_tile(self.screen,(9,2),(0,320))
         self.tile_set1.blit_tile(self.screen,(1,6),(0,240))
         self.tile_set1.blit_tile(self.screen,(4,4),(0,400))
+        self.tile_set2.blit_tile(self.screen,(7,4),(560,640))
+        self.tile_set2.blit_tile(self.screen,(8,4),(640,640))
+        self.tile_set1.blit_tile(self.screen,(2,4),(720,640))
+        self.tile_set1.blit_tile(self.screen,(4,4),(480,640))
 
         self.map_assets = pygame.sprite.Group()
         self.item_group = pygame.sprite.Group()

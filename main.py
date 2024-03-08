@@ -107,8 +107,8 @@ class Main:
                     self.actual_room  = self.donjon.map_list[self.donjon.actual_room]
 
                     #on tp les joueur
-                    self.player1.rect[1] = 400  # TP le joueur 1
-                    self.player2.rect[1] = 400  # TP le joueur 2
+                    self.player1.rect[1] = self.actual_room.tp_entrer  # TP le joueur 1
+                    self.player2.rect[1] = self.actual_room.tp_entrer  # TP le joueur 2
 
                     #on redefinit les objs et les enemies
                     self.objects[3] = self.actual_room.enemies_group
@@ -128,8 +128,8 @@ class Main:
                     self.actual_room  = self.donjon.map_list[self.donjon.actual_room]
 
                     #on tp les joueur
-                    self.player1.rect[1] = 120    # TP le joueur 1
-                    self.player2.rect[1] = 120    # TP le joueur 2
+                    self.player1.rect[1] = self.actual_room.tp_sortie   # TP le joueur 1
+                    self.player2.rect[1] = self.actual_room.tp_sortie    # TP le joueur 2
 
                     #on redefinit les objs et les enemies 
                     self.objects[3] = self.actual_room.enemies_group
