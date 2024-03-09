@@ -107,6 +107,10 @@ class Main:
     def update(self):
         if self.actual_room.porte_Nord != None:
             if  menu.pass_through(self.player1,self.player2,self.actual_room.porte_Nord.rect):
+                    
+                    #on ajoute une salle au donjon
+                    self.donjon.add_room()
+
                     #on change de salle 
                     self.donjon.actual_room = self.donjon.actual_room.porte_Nord.jumelage.room
                     self.actual_room  = self.donjon.actual_room
@@ -126,6 +130,9 @@ class Main:
 
         if self.actual_room.porte_Sud != None:
             if menu.pass_through(self.player1,self.player2,self.actual_room.porte_Sud.rect):
+
+                    #on ajoute une salle au donjon
+                    self.donjon.add_room()
 
                     #on change de salle 
                     self.donjon.actual_room = self.donjon.actual_room.porte_Sud.jumelage.room
@@ -147,6 +154,9 @@ class Main:
         if self.actual_room.porte_Ouest != None:
             if menu.pass_through(self.player1,self.player2,self.actual_room.porte_Ouest.rect):
 
+                    #on ajoute une salle au donjon
+                    self.donjon.add_room()
+
                     #on change de salle 
                     self.donjon.actual_room = self.donjon.actual_room.porte_Ouest.jumelage.room
                     self.actual_room  = self.donjon.actual_room
@@ -166,6 +176,9 @@ class Main:
         
         if self.actual_room.porte_Est != None:
             if menu.pass_through(self.player1,self.player2,self.actual_room.porte_Est.rect):
+                    
+                    #on ajoute une salle au donjon
+                    self.donjon.add_room()
 
                     #on change de salle 
                     self.donjon.actual_room = self.donjon.actual_room.porte_Est.jumelage.room

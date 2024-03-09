@@ -2,6 +2,7 @@ import pygame
 import item as item
 import imagesetter as image
 import enemy_module as enemy
+import random
 
 class Map():
     def __init__(self, width,height):
@@ -390,8 +391,10 @@ class map6(Map):
 
 class Dongeon:
     def __init__(self, screen,width,height):
-        self.topologie = [map1(width , height),map3(width , height), map4(width , height),map3(width , height),map6(width , height),map5(width , height),map4(width , height),map2(width , height)]
+        self.topologie = [map1(width , height),map3(width , height)]
         self.actual_room = self.topologie[0]
+        self.width = width
+        self.height = height
         self.screen = screen
         for i in range(len(self.topologie)-1):
             self.jumelage_salle(self.topologie[i],self.topologie[i+1],i,i+1)
@@ -402,8 +405,18 @@ class Dongeon:
     def blit_map(self):
         self.screen.blit(self.actual_room.screen, (0,0))
 
-    def change_map(self):
-        pass
+    def add_room(self):
+        last_room = self.topologie[-1]
+        if last_room.porte_Nord != None and last_room.porte_Nord.jumelage == None:
+            self.topologie.append(random.choice([map3(self.width,self.height),map6(self.width,self.height)]))
+        if last_room.porte_Sud != None and last_room.porte_Sud.jumelage == None:
+            self.topologie.append(random.choice([map4(self.width,self.height),map5(self.width,self.height)]))
+        if last_room.porte_Ouest != None and last_room.porte_Ouest.jumelage == None:
+            self.topologie.append(random.choice([map4(self.width,self.height),map6(self.width,self.height)]))
+        if last_room.porte_Est != None and last_room.porte_Est.jumelage == None:
+            self.topologie.append(random.choice([map5(self.width,self.height),map3(self.width,self.height)]))
+        self.jumelage_salle(self.topologie[-1],self.topologie[-2],-1,-2)
+
 
     def jumelage_salle(self,salle1,salle2,index1,index2):
         if salle1.porte_Nord != None and salle1.porte_Nord.jumelage == None:
