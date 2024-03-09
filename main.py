@@ -105,6 +105,8 @@ class Main:
                     
     
     def update(self):
+
+        #on passe une porte au Nord
         if self.actual_room.porte_Nord != None:
             if  menu.pass_through(self.player1,self.player2,self.actual_room.porte_Nord.rect):
                     
@@ -128,6 +130,7 @@ class Main:
                     self.player1.item_group =  self.objects[1]
                     self.player2.item_group =  self.objects[1]
 
+        #on passe une porte au Sud
         if self.actual_room.porte_Sud != None:
             if menu.pass_through(self.player1,self.player2,self.actual_room.porte_Sud.rect):
 
@@ -151,6 +154,7 @@ class Main:
                     self.player1.item_group =  self.objects[1]
                     self.player2.item_group =  self.objects[1]
 
+        #on passe une porte au Ouest
         if self.actual_room.porte_Ouest != None:
             if menu.pass_through(self.player1,self.player2,self.actual_room.porte_Ouest.rect):
 
@@ -174,6 +178,7 @@ class Main:
                     self.player1.item_group =  self.objects[1]
                     self.player2.item_group =  self.objects[1]
         
+        #on passe une porte au Est
         if self.actual_room.porte_Est != None:
             if menu.pass_through(self.player1,self.player2,self.actual_room.porte_Est.rect):
                     
