@@ -187,7 +187,7 @@ class Player(pygame.sprite.Sprite):
                 self.sword.draw(screen)
             
             #Dessiner la barre de vie
-            self.health_bar.draw(screen)
+            self.health_bar.draw(screen,self.sword)
             
         else:
             if self.is_dying:
@@ -260,6 +260,7 @@ class Player(pygame.sprite.Sprite):
                     # Ramasser l'épée en l'attachant au joueur
                     self.sword = item  # Attribuer l'épée du sol au joueur
                     self.item_group.remove(item) # Retirer l'épée du sol
+                    self.health_bar.sword_status = item
 
 class DeathAnimation(pygame.sprite.Sprite):
     def __init__(self, position, zoom=8):
