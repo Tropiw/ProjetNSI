@@ -86,19 +86,6 @@ class map1(Map):
         self.tile_set1.blit_tile(self.screen,(7,3),(480,0)) #mur cassé
         
         
-        '''# mur salle pièces
-        self.tile_set.blit_tile(self.screen,(3,4),(1040,400))
-        self.tile_set.blit_tile(self.screen,(3,4),(1120,400))
-        self.tile_set.blit_tile(self.screen,(2,4),(960,400))#coin
-        self.tile_set.blit_tile(self.screen,(2,5),(960,480)) #coté
-        self.tile_set.blit_tile(self.screen,(2,5),(960,560)) #coté
-        self.tile_set.blit_tile(self.screen,(6,4),(1040,480)) #sol
-        self.tile_set.blit_tile(self.screen,(6,4),(1120,480)) #sol
-        self.tile_set.blit_tile(self.screen,(6,4),(1040,560)) #sol
-        self.tile_set.blit_tile(self.screen,(6,4),(1120,560)) #sol
-        self.tile_set.blit_tile(self.screen,(3,2),(880,560)) # escalier qui ne peut pas apparaitre
-        #fin'''
-        
         
         # PIECE ANIMEE
         coin_paths = []
@@ -108,8 +95,16 @@ class map1(Map):
         coin1 = image.animated_sprite(coin_paths, (1145, 575))
         coin2 = image.animated_sprite(coin_paths, (1100, 575))
         coin3 = image.animated_sprite(coin_paths, (1055, 575))
-        
-        
+    
+        torch_paths = []
+        for i in range(1,5): # Chemin des image étapes d'animations de la pièce
+            torch_paths.append(rf'Graphic\2D Pixel Dungeon - Asset Pack\items and trap_animation\torch\torch_{i}.png')
+
+        torch1 = image.animated_sprite(torch_paths, (1125, 45))
+        torch2 = image.animated_sprite(torch_paths, (80, 45))
+        torch3 = image.animated_sprite(torch_paths, (730, 0))
+
+    
         # OBSTACLE
         obstacle1 = image.Obstacle(r"Graphic\Dungeon Gathering - map asset (light)\Set 1.1.png",
                                 (100, 500), (16, 16), (8, 6))
@@ -119,8 +114,12 @@ class map1(Map):
                                 (400, 500), (16, 16), (9, 6))
        
         self.map_assets = pygame.sprite.Group()
+        
         # Remplissage du groupe d'asset de la map
         self.map_assets.add(coin1,coin2,coin3,obstacle1,obstacle2,obstacle3)
+        self.map_assets.add(torch1,torch2,torch3)
+       
+
 
         #Item group
         self.item_group = pygame.sprite.Group()
@@ -184,6 +183,8 @@ class map2(Map):
 
         self.map_assets = pygame.sprite.Group()
         self.item_group = pygame.sprite.Group()
+        
+        
 
 class map3(Map):
     def __init__(self,width,height):
@@ -276,6 +277,25 @@ class map3(Map):
         self.map_assets = pygame.sprite.Group()
         self.item_group = pygame.sprite.Group()
 
+        # animations
+        side_torch_paths = []
+        for i in range(1,5): # Chemin des image étapes d'animations de la pièce
+            side_torch_paths.append(rf'Graphic\2D Pixel Dungeon - Asset Pack\items and trap_animation\torch\side_torch_{i}.png')
+
+        side_torch1 = image.animated_sprite(side_torch_paths, (80, 240))
+        side_torch2 = image.animated_sprite(side_torch_paths, (80, 400))
+
+        torch_paths = []
+        for i in range(1,5): # Chemin des image étapes d'animations de la pièce
+            torch_paths.append(rf'Graphic\2D Pixel Dungeon - Asset Pack\items and trap_animation\torch\torch_{i}.png')
+
+        torch1 = image.animated_sprite(torch_paths, (1125, 45))
+        torch2 = image.animated_sprite(torch_paths, (80, 45))
+        torch3 = image.animated_sprite(torch_paths, (80, 520))
+
+        self.map_assets.add(torch1,torch2,torch3)
+        self.map_assets.add(side_torch1,side_torch2)
+
 class map4(Map):
     def __init__(self,width,height):
         #designe les monstre present sur la map
@@ -364,6 +384,19 @@ class map4(Map):
 
         self.map_assets = pygame.sprite.Group()
         self.item_group = pygame.sprite.Group()
+
+
+        side_torch_paths = []
+        for i in range(1,5): # Chemin des image étapes d'animations de la pièce
+            side_torch_paths.append(rf'Graphic\2D Pixel Dungeon - Asset Pack\items and trap_animation\torch\side_torch_{i}.png')
+
+        side_torch1 = image.animated_sprite(side_torch_paths, (1137, 240), zoom = 6, reverse=True)
+        side_torch2 = image.animated_sprite(side_torch_paths, (1137, 400), zoom = 6, reverse=True)
+
+        self.map_assets.add(side_torch1,side_torch2)
+
+
+
 
 class map5(Map):
     def __init__(self,width,height):

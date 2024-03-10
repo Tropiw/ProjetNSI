@@ -46,8 +46,8 @@ class Main:
         player2_movement_image = r'Graphic\Peros\-No Shield - Sprite Sheet\Red Knight run Sprite-sheet 16x17.png'
         player2_idle_image = r'Graphic\Peros\-No Shield - Sprite Sheet\Red Knight idle Sprite-sheet 16x16.png'
         
-        self.player1 = perso.Player(player1_movement_image, player1_idle_image,(600, 100), 1, self.actual_room.enemies_group, item_group=self.actual_room.item_group)
-        self.player2 = perso.Player(player2_movement_image, player2_idle_image,(500, 100), 2, self.actual_room.enemies_group, item_group=self.actual_room.item_group)
+        self.player1 = perso.Player(player1_movement_image, player1_idle_image,(560, 560), 1, self.actual_room.enemies_group, item_group=self.actual_room.item_group)
+        self.player2 = perso.Player(player2_movement_image, player2_idle_image,(640, 560), 2, self.actual_room.enemies_group, item_group=self.actual_room.item_group)
         self.player_group.add(self.player1)
         self.player_group.add(self.player2)
         
