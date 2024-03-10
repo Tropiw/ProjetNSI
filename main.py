@@ -243,7 +243,6 @@ class Main:
         self.player_group.add(self.player1)
         self.player_group.add(self.player2)
         
-        
         #ORDRE : objects[map_assets, item_group, player_group, enemies_group]
         self.objects = [self.actual_room.map_assets,
                         self.actual_room.item_group,

@@ -131,7 +131,10 @@ class map1(Map):
         
         potion = image.animated_sprite(potion_paths, (1125, 100))
         
+        
         self.item_group.add(sword1, sword2, potion)
+        
+        
         
         
 class map2(Map):
