@@ -8,7 +8,7 @@ class Player(pygame.sprite.Sprite):
     def __init__(self, position, player, enemies_group = None, item_group = None):
         super().__init__()
         self.tile_size = (16,17)
-        self.rect = pygame.Rect(position[0], position[1], self.tile_size[0], self.tile_size[1])
+        self.rect = pygame.Rect(position[0], position[1], self.tile_size[0]*5, self.tile_size[1]*5)
         self.player = player
         
         # GESTION DES 2 JOUEURS
@@ -174,15 +174,15 @@ class Player(pygame.sprite.Sprite):
                 self.rect.y -= 5
         # Mouvement vers le bas
         elif keys[self.movement[1]]:
-            if self.rect.y < 500:
+            if self.rect.y < 515:
                 self.rect.y += 5
         # Mouvement vers la gauche
         elif keys[self.movement[2]]:
-            if self.rect.x > 20:
+            if self.rect.x > 35:
                 self.rect.x -= 5
         # Mouvement vers la droite
         elif keys[self.movement[3]]:
-            if self.rect.x < 1070:
+            if self.rect.x < 1084:
                 self.rect.x += 5
                 
     def walking_sound(self):
@@ -219,7 +219,7 @@ class Player(pygame.sprite.Sprite):
             if self.is_dying:
                 # Initialiser l'animation de mort à la position actuelle du joueur
                 if not self.death_animation:
-                    self.death_animation = DeathAnimation((self.rect.x, self.rect.y-64))
+                    self.death_animation = DeathAnimation((self.rect.topleft))#-64
                 # Mettre à jour l'animation de mort
                 self.death_animation.update()
             

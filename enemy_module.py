@@ -2,7 +2,7 @@ import pygame
 import math
 
 class Enemy(pygame.sprite.Sprite):
-    def __init__(self, image_path, position, tile_size, speed=1, player_group = None, enemies_group = None):
+    def __init__(self, image_path, position, tile_size, speed=1, player_group = None, enemies_group = None, sens = 0):
         super().__init__()
         self.image = pygame.image.load(image_path).convert_alpha()
         self.rect = pygame.Rect(position[0], position[1], tile_size[0], tile_size[1])
@@ -25,6 +25,7 @@ class Enemy(pygame.sprite.Sprite):
         self.is_finished = False
         self.sfx_kill = pygame.mixer.Sound(r"SFX\Knife Cut SFX.mp3")
         self.sfx_kill.set_volume(0.3)
+        self.sens = sens
         
     def load_animation_frames(self, tile_size):
         # Chargement des animations marche à gauche
@@ -55,14 +56,24 @@ class Enemy(pygame.sprite.Sprite):
     def update(self):
         if self.is_alive:
 
-            # Déplacer l'ennemi dans la direction actuelle
-            self.rect.x += self.speed * self.direction
+            if self.sens == 0:
+                # Déplacer l'ennemi dans la direction actuelle
+                self.rect.x += self.speed * self.direction
 
-            # Vérifier si l'ennemi atteint les bords de l'écran
-            if self.rect.right >= 1125:  # Si l'ennemi atteint le bord droit
-                self.direction = -1  # Changer la direction vers la gauche
-            elif self.rect.left <= 65:  # Si l'ennemi atteint le bord gauche
-                self.direction = 1  # Changer la direction vers la droite
+                # Vérifier si l'ennemi atteint les bords de l'écran
+                if self.rect.right >= 1125:  # Si l'ennemi atteint le bord droit
+                    self.direction = -1  # Changer la direction vers la gauche
+                elif self.rect.left <= 65:  # Si l'ennemi atteint le bord gauche
+                    self.direction = 1  # Changer la direction vers la droite
+            else:
+                # Déplacer l'ennemi dans la direction actuelle
+                self.rect.y += self.speed * self.direction
+
+                # Vérifier si l'ennemi atteint les bords de l'écran
+                if self.rect.top >= 520:  # Si l'ennemi atteint le bord droit
+                    self.direction = -1  # Changer la direction vers la gauche
+                elif self.rect.bottom <= 60:  # Si l'ennemi atteint le bord gauche
+                    self.direction = 1  # Changer la direction vers la droite
 
 
             if self.player_group is not None:

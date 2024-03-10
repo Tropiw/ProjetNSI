@@ -220,6 +220,7 @@ class Main:
                 obj.draw(self.screen)
 
     def reset_all(self):
+        #fini par definir le menu, la pos de la souris(pas vraiment la pos juste pour pas que ca bug) et le mode(si on est dans un menu ou dans le jeu)
         self.main_menu.nouveau_msg()
         self.mouse_pos = (0,0)
         self.mode = 2
@@ -227,12 +228,13 @@ class Main:
         #defini le donjon actuelle
         self.donjon = map_module.Dongeon(self.screen,1280,720)
         self.actual_room = self.donjon.actual_room
+
         #player groupe
         self.player_group = pygame.sprite.Group()
         
         
-        self.player1 = perso.Player((600, 100), 1, self.actual_room.enemies_group, item_group=self.actual_room.item_group)
-        self.player2 = perso.Player((500, 100), 2, self.actual_room.enemies_group, item_group=self.actual_room.item_group)
+        self.player1 = perso.Player((600, 200), 1, self.actual_room.enemies_group, item_group=self.actual_room.item_group)
+        self.player2 = perso.Player((500, 200), 2, self.actual_room.enemies_group, item_group=self.actual_room.item_group)
         self.player_group.add(self.player1)
         self.player_group.add(self.player2)
         
