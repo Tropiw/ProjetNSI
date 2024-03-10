@@ -46,8 +46,8 @@ class Main:
         player2_movement_image = r'Graphic\Peros\-No Shield - Sprite Sheet\Red Knight run Sprite-sheet 16x17.png'
         player2_idle_image = r'Graphic\Peros\-No Shield - Sprite Sheet\Red Knight idle Sprite-sheet 16x16.png'
         
-        self.player1 = perso.Player(player1_movement_image, player1_idle_image,(560, 560), 1, self.actual_room.enemies_group, item_group=self.actual_room.item_group)
-        self.player2 = perso.Player(player2_movement_image, player2_idle_image,(640, 560), 2, self.actual_room.enemies_group, item_group=self.actual_room.item_group)
+        self.player1 = perso.Player(player1_movement_image, player1_idle_image,(560, 200), 1, self.actual_room.enemies_group, item_group=self.actual_room.item_group)
+        self.player2 = perso.Player(player2_movement_image, player2_idle_image,(640, 200), 2, self.actual_room.enemies_group, item_group=self.actual_room.item_group)
         self.player_group.add(self.player1)
         self.player_group.add(self.player2)
         
@@ -224,6 +224,7 @@ class Main:
                 obj.draw(self.screen)
 
     def reset_all(self):
+        #fini par definir le menu, la pos de la souris(pas vraiment la pos juste pour pas que ca bug) et le mode(si on est dans un menu ou dans le jeu)
         self.main_menu.nouveau_msg()
         self.mouse_pos = (0,0)
         self.mode = 2
@@ -231,6 +232,7 @@ class Main:
         #defini le donjon actuelle
         self.donjon = map_module.Dongeon(self.screen,1280,720)
         self.actual_room = self.donjon.actual_room
+
         #player groupe
         self.player_group = pygame.sprite.Group()
         player1_movement_image = r'Graphic\Peros\-No Shield - Sprite Sheet\Blue Knight run Sprite-sheet 16x17.png'
@@ -238,8 +240,8 @@ class Main:
         player2_movement_image = r'Graphic\Peros\-No Shield - Sprite Sheet\Red Knight run Sprite-sheet 16x17.png'
         player2_idle_image = r'Graphic\Peros\-No Shield - Sprite Sheet\Red Knight idle Sprite-sheet 16x16.png'
         
-        self.player1 = perso.Player(player1_movement_image, player1_idle_image,(600, 100), 1, self.actual_room.enemies_group, item_group=self.actual_room.item_group)
-        self.player2 = perso.Player(player2_movement_image, player2_idle_image,(500, 100), 2, self.actual_room.enemies_group, item_group=self.actual_room.item_group)
+        self.player1 = perso.Player(player1_movement_image, player1_idle_image,(560, 200), 1, self.actual_room.enemies_group, item_group=self.actual_room.item_group)
+        self.player2 = perso.Player(player2_movement_image, player2_idle_image,(640, 200), 2, self.actual_room.enemies_group, item_group=self.actual_room.item_group)
         self.player_group.add(self.player1)
         self.player_group.add(self.player2)
         

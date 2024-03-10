@@ -51,8 +51,7 @@ class ImageStatique(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(topleft=position)
         w, h = self.image.get_size()
         self.image_upscaled = pygame.transform.scale(self.image, (w * zoom, h * zoom))  # Redimensionner l'image
-        self.reverse = reverse
-
+        
     def draw(self, screen):
         screen.blit(self.image_upscaled, self.rect)
 
