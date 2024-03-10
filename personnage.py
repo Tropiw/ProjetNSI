@@ -170,19 +170,19 @@ class Player(pygame.sprite.Sprite):
         
         # Mouvement vers le haut
         if keys[self.movement[0]]:
-            if self.rect.y > 0 :
+            if self.rect.y > 40 :
                 self.rect.y -= 5
         # Mouvement vers le bas
         elif keys[self.movement[1]]:
-            if self.rect.y < 515:
+            if self.rect.y < 560:
                 self.rect.y += 5
         # Mouvement vers la gauche
         elif keys[self.movement[2]]:
-            if self.rect.x > 35:
+            if self.rect.x > 75:
                 self.rect.x -= 5
         # Mouvement vers la droite
         elif keys[self.movement[3]]:
-            if self.rect.x < 1084:
+            if self.rect.x < 1125:
                 self.rect.x += 5
                 
     def walking_sound(self):
@@ -203,7 +203,7 @@ class Player(pygame.sprite.Sprite):
             self.detect_movement()
             self.walking_sound()
             self.detect_enemy_collision()
-            self.bring_item()
+            self.bring_sword()
             self.handle_attack()
             if self.sword:  # Mettre à jour la position de l'épée si elle est ramassée
                 item.AnimatedSword.update(self.sword)  # Mettre à jour l'animation de l'épée
@@ -302,11 +302,20 @@ class Player(pygame.sprite.Sprite):
             self.is_alive = False
             self.is_dying = True
             
-    def bring_item(self):
+    def bring_sword(self):
         if self.sword == None:  # Verifie si le joueur à un item
             for item in self.item_group:
                 dist = self.distance(item.rect)
-                if dist < 150:
+                if dist < 75:
+                    self.take_item_sfx.play()
+                    self.sword = item  # Attribuer l'épée du sol au joueur
+                    self.item_group.remove(item) # Retirer l'épée du sol
+                    self.health_bar.sword_status = item
+
+    def bring_coin(self):
+            for item in self.item_group:
+                dist = self.distance(item.rect)
+                if dist < 75:
                     self.take_item_sfx.play()
                     self.sword = item  # Attribuer l'épée du sol au joueur
                     self.item_group.remove(item) # Retirer l'épée du sol

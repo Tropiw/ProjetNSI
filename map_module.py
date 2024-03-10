@@ -44,7 +44,7 @@ class map1(Map):
                 self.tile_set1.load(i,j)
 
         #entrer et sortie
-        self.porte_Nord =  porte(pygame.rect.Rect(560,0,160,80),200,self)
+        self.porte_Nord =  porte(pygame.rect.Rect(560,0,160,40),150,self)
 
         self.porte_Est = None
 
@@ -150,7 +150,7 @@ class map2(Map):
 
         self.porte_Ouest = None
 
-        self.porte_Sud = porte(pygame.rect.Rect(570, 560,160,80),350,self)
+        self.porte_Sud = porte(pygame.rect.Rect(570, 560,160,40),300,self)
 
 
         #load les tiles
@@ -208,9 +208,9 @@ class map3(Map):
         
         self.porte_Est = None
 
-        self.porte_Ouest =  porte(pygame.rect.Rect(80,320,80,80),300,self)
+        self.porte_Ouest =  porte(pygame.rect.Rect(80,320,40,80),250,self)
 
-        self.porte_Sud =  porte(pygame.rect.Rect(570, 560,160,80),350,self)
+        self.porte_Sud =  porte(pygame.rect.Rect(570, 560,160,40),300,self)
 
 
         #load les tiles
@@ -317,9 +317,9 @@ class map4(Map):
 
 
         #entrer et sortie
-        self.porte_Nord = porte(pygame.rect.Rect(560,0,160,80),200,self)
+        self.porte_Nord = porte(pygame.rect.Rect(560,0,160,40),150,self)
         
-        self.porte_Est =  porte(pygame.rect.Rect(1120,320,80,80),900,self)
+        self.porte_Est =  porte(pygame.rect.Rect(1120,320,40,80),950,self)
 
         self.porte_Ouest = None
 
@@ -428,11 +428,11 @@ class map5(Map):
 
 
         #entrer et sortie
-        self.porte_Nord = porte(pygame.rect.Rect(560,0,160,80),200,self)
+        self.porte_Nord = porte(pygame.rect.Rect(560,0,160,40),150,self)
         
         self.porte_Est =  None
 
-        self.porte_Ouest = porte(pygame.rect.Rect(80,320,80,80),250,self)
+        self.porte_Ouest = porte(pygame.rect.Rect(80,320,40,80),200,self)
 
         self.porte_Sud = None
 
@@ -508,11 +508,11 @@ class map6(Map):
         #entrer et sortie
         self.porte_Nord = None
         
-        self.porte_Est =  porte(pygame.rect.Rect(1120,320,80,80),900,self)
+        self.porte_Est =  porte(pygame.rect.Rect(1160,320,40,80),900,self)
 
         self.porte_Ouest = None
 
-        self.porte_Sud = porte(pygame.rect.Rect(570, 560,160,80),350,self)
+        self.porte_Sud = porte(pygame.rect.Rect(570, 560,160,40),300,self)
 
         #load les tiles
         self.tile_structure.load(0,1)
