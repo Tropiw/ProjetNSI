@@ -91,9 +91,9 @@ class map1(Map):
             coin_paths.append(rf'Graphic\2D Pixel Dungeon - Asset Pack\items and trap_animation\coin\coin_{i}.png')
 
 
-        coin1 = image.animated_sprite(coin_paths, (1145, 575))
-        coin2 = image.animated_sprite(coin_paths, (1100, 575))
-        coin3 = image.animated_sprite(coin_paths, (1055, 575))
+        coin1 = item.AnimatedCoin( (1145, 575))
+        coin2 = item.AnimatedCoin( (1100, 575))
+        coin3 = item.AnimatedCoin( (1055, 575))
     
         torch_paths = []
         for i in range(1,5): # Chemin des image étapes d'animations de la pièce
@@ -115,7 +115,7 @@ class map1(Map):
         self.map_assets = pygame.sprite.Group()
         
         # Remplissage du groupe d'asset de la map
-        self.map_assets.add(coin1,coin2,coin3,obstacle1,obstacle2,obstacle3)
+        self.map_assets.add(obstacle1,obstacle2,obstacle3)
         self.map_assets.add(torch1,torch2,torch3)
        
 
@@ -132,7 +132,7 @@ class map1(Map):
         potion = image.animated_sprite(potion_paths, (1125, 100))
         
         
-        self.item_group.add(sword1, sword2, potion)
+        self.item_group.add(sword1, sword2, potion,coin1,coin2,coin3)
         
         
         

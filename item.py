@@ -75,3 +75,36 @@ class Chest(pygame.sprite.Sprite):
             
             
             
+class AnimatedCoin(pygame.sprite.Sprite):
+    def __init__(self, position, zoom=4):
+        super().__init__()
+        self.images = []
+        for i in range(1,5):
+            self.images.append(pygame.image.load(rf'Graphic\2D Pixel Dungeon - Asset Pack\items and trap_animation\coin\coin_{i}.png').convert_alpha())
+        self.rect = pygame.Rect(position[0], position[1], self.images[0].get_width(), self.images[0].get_height())
+        self.zoom = zoom
+        self.animation_step = len(self.images)
+        self.animation_cooldown = 100
+        self.frame = 0
+        self.last_update = pygame.time.get_ticks()
+        self.zoom = zoom
+
+    def update(self):
+        # Mettre à jour l'animation de rotation
+        now = pygame.time.get_ticks()
+        if now - self.last_update > self.animation_cooldown:
+            self.frame = (self.frame + 1) % self.animation_step
+            self.last_update = now
+
+    def draw(self, screen):
+        # Obtenir l'image actuelle de l'animation de rotation
+        current_image = self.images[self.frame]
+
+        # Redimensionner l'image
+        w,h = current_image.get_width(), current_image.get_height()
+        image_upscaled = pygame.transform.scale(current_image, (w * self.zoom, h * self.zoom))
+
+        
+
+        # Dessiner l'image à la position de la l'élément sur l'écran
+        screen.blit(image_upscaled, self.rect.topleft)

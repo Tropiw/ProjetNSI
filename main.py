@@ -26,7 +26,7 @@ class Main:
         pygame.mixer.init()
         pygame.mixer.music.load(r'SFX\robot rock.mp3')
         pygame.mixer.music.play(loops=-1)
-        pygame.mixer.music.set_volume(0.000) #0.008
+        pygame.mixer.music.set_volume(0.008) #0.008
 
         #definit la liste des objets, des monstres present sur la map 
         self.objects = []  # Liste pour stocker les objets à dessiner
@@ -41,13 +41,13 @@ class Main:
         self.actual_room = self.donjon.actual_room
 
         #Compteur de piece
-        self.compteur = UI.coin_counter((640,0),"Squares.ttf")
+        self.compteur = UI.coin_counter((520,650),"Squares.ttf")
 
         #player groupe
         self.player_group = pygame.sprite.Group()
         
-        self.player1 = perso.Player((650, 200), 1, self.actual_room.enemies_group, item_group=self.actual_room.item_group)
-        self.player2 = perso.Player((550, 200), 2, self.actual_room.enemies_group, item_group=self.actual_room.item_group)
+        self.player1 = perso.Player((650, 200), 1, self.actual_room.enemies_group, item_group=self.actual_room.item_group,compteur=self.compteur)
+        self.player2 = perso.Player((550, 200), 2, self.actual_room.enemies_group, item_group=self.actual_room.item_group,compteur=self.compteur)
         self.player_group.add(self.player1)
         self.player_group.add(self.player2)
         
@@ -234,12 +234,14 @@ class Main:
         self.donjon = map_module.Dongeon(self.screen,1280,720)
         self.actual_room = self.donjon.actual_room
 
+        #Compteur de piece
+        self.compteur = UI.coin_counter((520,10),"Squares.ttf")
+
         #player groupe
         self.player_group = pygame.sprite.Group()
         
-        
-        self.player1 = perso.Player((600, 200), 1, self.actual_room.enemies_group, item_group=self.actual_room.item_group)
-        self.player2 = perso.Player((500, 200), 2, self.actual_room.enemies_group, item_group=self.actual_room.item_group)
+        self.player1 = perso.Player((650, 200), 1, self.actual_room.enemies_group, item_group=self.actual_room.item_group,compteur=self.compteur)
+        self.player2 = perso.Player((550, 200), 2, self.actual_room.enemies_group, item_group=self.actual_room.item_group,compteur=self.compteur)
         self.player_group.add(self.player1)
         self.player_group.add(self.player2)
         #ORDRE : objects[map_assets, item_group, player_group, enemies_group]
