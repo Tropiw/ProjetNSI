@@ -37,3 +37,18 @@ class HealthBar(pygame.sprite.Sprite):
 
         # Affiche la tuile à la position spécifiée
         screen.blit(image_upscaled, self.rect.topleft)
+
+class coin_counter():
+    def __init__(self,position , font_path):
+        self.position = position
+        self.font = pygame.font.Font(font_path,20)
+        self.count = 0
+    
+    def update_counting(self):
+        self.count += 1
+    
+    def draw(self,screen):
+        #
+        texte = self.font.render(str(self.count),False,(255,255,255))
+        w, h = texte.get_size()                                             #pour le placement  
+        screen.blit(texte,(self.position[0]-(w/2),self.position[1]))

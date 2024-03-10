@@ -55,6 +55,8 @@ class Player(pygame.sprite.Sprite):
         self.attack_range = 150
         self.enemies = enemies_group
         self.is_attacking = False
+        self.sfx_attack = pygame.mixer.Sound(r"SFX\Knife Shing SFX.mp3")
+        self.sfx_attack.set_volume(0.1)
         
         # GESTION DE LA VIE
         self.collision_cooldown = 500
@@ -66,7 +68,6 @@ class Player(pygame.sprite.Sprite):
         # Animation de mort
         self.is_dying = False
         self.death_animation = None
-        
         self.item_group = item_group
         self.take_item_sfx = pygame.mixer.Sound(r'SFX\pop_item.mp3')
         self.take_item_sfx.set_volume(0.3)
@@ -143,7 +144,7 @@ class Player(pygame.sprite.Sprite):
             self.current_animation = 'idle'
             self.direction = "down"
         if keys[self.movement[4]]:
-            self.is_moving = False
+            self.is_moving = False #enlever le son de marche
 
 
     def handle_attack(self):
@@ -170,19 +171,19 @@ class Player(pygame.sprite.Sprite):
         
         # Mouvement vers le haut
         if keys[self.movement[0]]:
-            if self.rect.y > 0 :
+            if self.rect.y > 40 :
                 self.rect.y -= 5
         # Mouvement vers le bas
         elif keys[self.movement[1]]:
-            if self.rect.y < 515:
+            if self.rect.y < 560:
                 self.rect.y += 5
         # Mouvement vers la gauche
         elif keys[self.movement[2]]:
-            if self.rect.x > 35:
+            if self.rect.x > 75:
                 self.rect.x -= 5
         # Mouvement vers la droite
         elif keys[self.movement[3]]:
-            if self.rect.x < 1084:
+            if self.rect.x < 1125:
                 self.rect.x += 5
                 
     def walking_sound(self):
@@ -213,13 +214,14 @@ class Player(pygame.sprite.Sprite):
             if now - self.last_update > self.animation_cooldown: # Vérification cooldown animation pour éviter une animation top rapide
                 self.frame = (self.frame + 1) % self.animation_step # Si l'on arrive à la dernière image, on boucle l'animation
                 self.last_update = now # Remettre à jour pour le cooldown
+                
 
 
         else:
             if self.is_dying:
                 # Initialiser l'animation de mort à la position actuelle du joueur
                 if not self.death_animation:
-                    self.death_animation = DeathAnimation((self.rect.topleft))#-64
+                    self.death_animation = DeathAnimation((self.rect.x-65, self.rect.y-65))
                 # Mettre à jour l'animation de mort
                 self.death_animation.update()
             
@@ -253,18 +255,20 @@ class Player(pygame.sprite.Sprite):
                 
     
     def attack(self):
-        if self.sword != None:
-            self.is_attacking = True
-            
-            # Parcourir les ennemis
-            for enemy in self.enemies:
-                # Calculer la distance entre le joueur et l'ennemi
-                dist = self.distance(enemy.rect)
+        if self.is_attacking != True:
+            self.sfx_attack.play()
+            if self.sword != None:
+                self.is_attacking = True
                 
-                # Vérifier si l'ennemi est dans la zone d'attaque
-                if dist <= self.attack_range:
-                    # L'ennemi est dans la zone d'attaque, effectuer des actions d'attaque
-                    enemy.kill()
+                # Parcourir les ennemis
+                for enemy in self.enemies:
+                    # Calculer la distance entre le joueur et l'ennemi
+                    dist = self.distance(enemy.rect)
+                    
+                    # Vérifier si l'ennemi est dans la zone d'attaque
+                    if dist <= self.attack_range:
+                        # L'ennemi est dans la zone d'attaque, effectuer des actions d'attaque
+                        enemy.kill()
                     
     def detect_enemy_collision(self):
         # Vérifie la collision avec les ennemis
@@ -303,15 +307,19 @@ class Player(pygame.sprite.Sprite):
             self.is_dying = True
             
     def bring_item(self):
-        if self.sword == None:  # Verifie si le joueur à un item
-            for item in self.item_group:
-                dist = self.distance(item.rect)
-                if dist < 150:
+        for object in self.item_group:
+            dist = self.distance(object.rect)
+            if dist < 75:
+                if self.sword == None: 
+                    if isinstance(object, item.AnimatedSword): # Vérifie si l'élément est une épée
+                            self.take_item_sfx.play()
+                            self.sword = object
+                            self.item_group.remove(object)
+                            self.health_bar.sword_status = object
+                if not isinstance(object, item.AnimatedSword): # Vérifie si l'élément est pas une épée
+                    self.health_bar.current_health += 1
                     self.take_item_sfx.play()
-                    self.sword = item  # Attribuer l'épée du sol au joueur
-                    self.item_group.remove(item) # Retirer l'épée du sol
-                    self.health_bar.sword_status = item
-
+                    self.item_group.remove(object)
 class DeathAnimation(pygame.sprite.Sprite):
     def __init__(self, position, zoom=8):
         super().__init__()
