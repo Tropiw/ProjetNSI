@@ -126,7 +126,14 @@ class map1(Map):
         self.item_group = pygame.sprite.Group()
         sword1 = item.AnimatedSword((320,400))
         sword2 = item.AnimatedSword((890,400))
-        self.item_group.add(sword1, sword2)
+        
+        potion_paths = []
+        for i in range(1,5): # Chemin des image étapes d'animations de la pièce
+            potion_paths.append(rf'C:\Users\tropi\Documents\GitHub\ProjetNSI\Graphic\2D Pixel Dungeon - Asset Pack\items and trap_animation\flasks\flasks_1_{i}.png')
+        
+        potion = image.animated_sprite(potion_paths, (1125, 100))
+        
+        self.item_group.add(sword1, sword2, potion)
         
         
 class map2(Map):

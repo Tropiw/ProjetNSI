@@ -55,6 +55,8 @@ class Player(pygame.sprite.Sprite):
         self.attack_range = 150
         self.enemies = enemies_group
         self.is_attacking = False
+        self.sfx_attack = pygame.mixer.Sound(r"SFX\Knife Shing SFX.mp3")
+        self.sfx_attack.set_volume(0.1)
         
         # GESTION DE LA VIE
         self.collision_cooldown = 500
@@ -66,7 +68,6 @@ class Player(pygame.sprite.Sprite):
         # Animation de mort
         self.is_dying = False
         self.death_animation = None
-        
         self.item_group = item_group
         self.take_item_sfx = pygame.mixer.Sound(r'SFX\pop_item.mp3')
         self.take_item_sfx.set_volume(0.3)
@@ -143,7 +144,7 @@ class Player(pygame.sprite.Sprite):
             self.current_animation = 'idle'
             self.direction = "down"
         if keys[self.movement[4]]:
-            self.is_moving = False
+            self.is_moving = False #enlever le son de marche
 
 
     def handle_attack(self):
@@ -219,7 +220,7 @@ class Player(pygame.sprite.Sprite):
             if self.is_dying:
                 # Initialiser l'animation de mort à la position actuelle du joueur
                 if not self.death_animation:
-                    self.death_animation = DeathAnimation((self.rect.topleft))#-64
+                    self.death_animation = DeathAnimation((self.rect.x-65, self.rect.y-65))
                 # Mettre à jour l'animation de mort
                 self.death_animation.update()
             
@@ -253,18 +254,20 @@ class Player(pygame.sprite.Sprite):
                 
     
     def attack(self):
-        if self.sword != None:
-            self.is_attacking = True
-            
-            # Parcourir les ennemis
-            for enemy in self.enemies:
-                # Calculer la distance entre le joueur et l'ennemi
-                dist = self.distance(enemy.rect)
+        if self.is_attacking != True:
+            self.sfx_attack.play()
+            if self.sword != None:
+                self.is_attacking = True
                 
-                # Vérifier si l'ennemi est dans la zone d'attaque
-                if dist <= self.attack_range:
-                    # L'ennemi est dans la zone d'attaque, effectuer des actions d'attaque
-                    enemy.kill()
+                # Parcourir les ennemis
+                for enemy in self.enemies:
+                    # Calculer la distance entre le joueur et l'ennemi
+                    dist = self.distance(enemy.rect)
+                    
+                    # Vérifier si l'ennemi est dans la zone d'attaque
+                    if dist <= self.attack_range:
+                        # L'ennemi est dans la zone d'attaque, effectuer des actions d'attaque
+                        enemy.kill()
                     
     def detect_enemy_collision(self):
         # Vérifie la collision avec les ennemis
@@ -306,7 +309,7 @@ class Player(pygame.sprite.Sprite):
         if self.sword == None:  # Verifie si le joueur à un item
             for item in self.item_group:
                 dist = self.distance(item.rect)
-                if dist < 150:
+                if dist < 75:
                     self.take_item_sfx.play()
                     self.sword = item  # Attribuer l'épée du sol au joueur
                     self.item_group.remove(item) # Retirer l'épée du sol
