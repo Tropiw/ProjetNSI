@@ -1,6 +1,6 @@
 import pygame
 import item as item
-import imagesetter as image
+import Imagesetter as image
 import enemy_module as enemy
 import random
 
@@ -84,14 +84,6 @@ class map1(Map):
         self.tile_set1.blit_tile(self.screen,(3,3),(880,0)) #mur trou2
         self.tile_set1.blit_tile(self.screen,(7,3),(480,0)) #mur cassé
         
-        
-        
-
-
-
-        coin1 = item.AnimatedCoin( (1145, 575))
-        coin2 = item.AnimatedCoin( (1100, 575))
-        coin3 = item.AnimatedCoin( (1055, 575))
     
         torch_paths = []
         for i in range(1,5):
@@ -100,12 +92,6 @@ class map1(Map):
         torch1 = image.animated_sprite(torch_paths, (1125, 45))
         torch2 = image.animated_sprite(torch_paths, (80, 45))
         torch3 = image.animated_sprite(torch_paths, (730, 0))
-
-        box1 = image.ImageStatique(r'Graphic\2D Pixel Dungeon - Asset Pack\items and trap_animation\box_1\box_1_3.png', (1120,240), zoom = 5)
-        box2 = image.ImageStatique(r'Graphic\2D Pixel Dungeon - Asset Pack\items and trap_animation\box_1\box_1_3.png', (1065,240), zoom = 5)
-        box3 = image.ImageStatique(r'Graphic\2D Pixel Dungeon - Asset Pack\items and trap_animation\box_1\box_1_3.png', (1120,291), zoom = 5)
-        box4 = image.ImageStatique(r'Graphic\2D Pixel Dungeon - Asset Pack\items and trap_animation\box_1\box_1_3.png', (255,47), zoom = 5)
-        box5 = image.ImageStatique(r'Graphic\2D Pixel Dungeon - Asset Pack\items and trap_animation\box_1\box_1_3.png', (315,47), zoom = 5)
 
     
         # OBSTACLE
@@ -118,16 +104,12 @@ class map1(Map):
        
         self.map_assets = pygame.sprite.Group()
         
-        for _ in range(3):  # Générer 3 pièces animées
-            x = random.randint(100, 1150)  # Générer une coordonnée x aléatoire entre 650 et 1150
-            y = random.randint(100, 575)     # Générer une coordonnée y aléatoire entre 0 et 575
-            coin = item.AnimatedCoin((x, y))
-            self.map_assets.add(coin)
+
+
         
         # Remplissage du groupe d'asset de la map
         self.map_assets.add(obstacle1,obstacle2,obstacle3)
         self.map_assets.add(torch1,torch2,torch3)
-        self.map_assets.add(box1,box2,box3,box4,box5)
        
 
 
@@ -143,8 +125,15 @@ class map1(Map):
         potion = image.animated_sprite(potion_paths, (1125, 100))
         
         
-        self.item_group.add(sword1, sword2, potion,coin1,coin2,coin3)
-        
+        self.item_group.add(sword1, sword2, potion)
+
+        for _ in range(3):  # Générer 3 pièces animées
+            x = random.randint(100, 1150)  # Générer une coordonnée x aléatoire entre 650 et 1150
+            y = random.randint(100, 575)     # Générer une coordonnée y aléatoire entre 0 et 575
+            coin = item.AnimatedCoin((x, y))
+            self.item_group.add(coin)
+
+        self.item_group.add(sword1, sword2, potion)        
         
         
         
@@ -181,6 +170,11 @@ class map2(Map):
 
         #blit l'entiereter de la map sur une surface pygame
         self.screen = pygame.surface.Surface((self.width, self.height))
+        self.obstacle1 = image.Obstacle('Graphic/Dungeon Gathering - map asset (light)/Structure.png', (80, 10), (16,32), (0,0),4)#pillier 1
+        self.obstacle2 = image.Obstacle('Graphic/Dungeon Gathering - map asset (light)/Structure.png', (1125, 20), (16,32), (0,0),4)#pillier 2
+        self.obstacle3 = image.Obstacle('Graphic/Dungeon Gathering - map asset (light)/Structure.png', (80, 480), (16,32), (0,0),4)#pillier 3
+        self.obstacle4 = image.Obstacle('Graphic/Dungeon Gathering - map asset (light)/Structure.png', (1125, 480), (16,32), (0,0),4)#pillier 4
+        self.obstacle5 = image.Obstacle('Graphic/Dungeon Gathering - map asset (light)/Structure.png', (480, 10), (16,32), (0,0),4)#pillier 5
         self.tile_set1.blit_tile(self.screen,(5,5),(0,0))
         self.tile_set1.blit_tile(self.screen,(6,5),(1200,0))
         self.tile_set1.blit_tile(self.screen,(6,6),(1200,640))
@@ -199,6 +193,36 @@ class map2(Map):
         self.tile_set2.blit_tile(self.screen,(8,4),(640,640))
         self.tile_set1.blit_tile(self.screen,(2,4),(720,640))
         self.tile_set1.blit_tile(self.screen,(4,4),(480,640))
+        self.obstacle1.draw(self.screen) #pillier 1
+        self.obstacle2.draw(self.screen) #pillier 2
+        self.obstacle3.draw(self.screen) #pillier 3
+        self.obstacle4.draw(self.screen) #pillier 4
+        self.obstacle5.draw(self.screen) #pillier 5
+        self.tile_set1.blit_tile(self.screen,(12,5),(800,160)) #sol insalubre hg
+        self.tile_set1.blit_tile(self.screen,(13,5),(880,160)) #sol insalubre hd
+        self.tile_set1.blit_tile(self.screen,(12,6),(800,240)) #sol insalubre bg
+        self.tile_set1.blit_tile(self.screen,(13,6),(880,240)) #sol insalubre bd
+        self.tile_set1.blit_tile(self.screen,(12,5),(160,480)) #sol insalubre1
+        self.tile_set1.blit_tile(self.screen,(13,5),(240,480)) #sol insalubre2
+        self.tile_set1.blit_tile(self.screen,(12,6),(160,556)) #sol insalubre3
+        self.tile_set1.blit_tile(self.screen,(13,6),(240,556)) #sol insalubre4
+        self.tile_set1.blit_tile(self.screen,(2,3),(320,0)) #mur trou1
+        self.tile_set1.blit_tile(self.screen,(2,3),(400,0)) #mur trou1;1
+        self.tile_set1.blit_tile(self.screen,(2,3),(880,0)) #mur trou2
+        self.tile_set1.blit_tile(self.screen,(7,3),(1040,0)) #mur cassé1
+        self.tile_set1.blit_tile(self.screen,(14,4),(160,160)) #sol cassé1
+        self.tile_set1.blit_tile(self.screen,(15,4),(800,400)) #sol cassé3
+        self.tile_set1.blit_tile(self.screen,(15,4),(960,560)) #sol cassé4
+        self.tile_set1.blit_tile(self.screen,(15,3),(800,160)) #sol insalubre hg
+        self.tile_set1.blit_tile(self.screen,(15,3),(880,160)) #sol insalubre hd
+        self.tile_set1.blit_tile(self.screen,(15,3),(800,240)) #sol insalubre bg
+        self.tile_set1.blit_tile(self.screen,(15,3),(880,240)) #sol insalubre bd
+        self.tile_set1.blit_tile(self.screen,(6,7),(160,480)) #sol insalubre1
+        self.tile_set1.blit_tile(self.screen,(6,7),(240,480)) #sol insalubre2
+        self.tile_set1.blit_tile(self.screen,(6,7),(160,556)) #sol insalubre3
+        self.tile_set1.blit_tile(self.screen,(6,7),(240,556)) #sol insalubre4
+        self.map_assets = pygame.sprite.Group()
+        self.item_group = pygame.sprite.Group()
 
         self.map_assets = pygame.sprite.Group()
         self.item_group = pygame.sprite.Group()
@@ -207,7 +231,19 @@ class map2(Map):
             x = random.randint(100, 1150)  # Générer une coordonnée x aléatoire entre 650 et 1150
             y = random.randint(100, 575)     # Générer une coordonnée y aléatoire entre 0 et 575
             coin = item.AnimatedCoin((x, y))
-            self.map_assets.add(coin)
+            self.item_group.add(coin)
+
+        flag_paths = []
+        for i in range(1,5): # Chemin des image étapes d'animations de la pièce
+            flag_paths.append(rf'Graphic\2D Pixel Dungeon - Asset Pack\items and trap_animation\flag\flag_{i}.png')
+
+        flag1 = image.animated_sprite(flag_paths, (80, 10))
+        flag2 = image.animated_sprite(flag_paths, (1125, 20))
+        flag3 = image.animated_sprite(flag_paths, (80, 480))
+        flag4 = image.animated_sprite(flag_paths, (1125, 480))
+        flag5 = image.animated_sprite(flag_paths, (480, 10))
+
+        self.map_assets.add(flag1,flag2,flag3,flag4,flag5)
 
 class map3(Map):
     def __init__(self,width,height):
@@ -332,7 +368,7 @@ class map3(Map):
             x = random.randint(100, 1150)  # Générer une coordonnée x aléatoire entre 650 et 1150
             y = random.randint(100, 575)     # Générer une coordonnée y aléatoire entre 0 et 575
             coin = item.AnimatedCoin((x, y))
-            self.map_assets.add(coin)
+            self.item_group.add(coin)
 
 class map4(Map):
     def __init__(self,width,height):
@@ -448,7 +484,7 @@ class map4(Map):
             x = random.randint(100, 1150)  # Générer une coordonnée x aléatoire entre 650 et 1150
             y = random.randint(100, 575)     # Générer une coordonnée y aléatoire entre 0 et 575
             coin = item.AnimatedCoin((x, y))
-            self.map_assets.add(coin)
+            self.item_group.add(coin)
 
 
 
@@ -688,7 +724,7 @@ class map6(Map):
             x = random.randint(100, 1150)  # Générer une coordonnée x aléatoire entre 650 et 1150
             y = random.randint(100, 575)     # Générer une coordonnée y aléatoire entre 0 et 575
             coin = item.AnimatedCoin((x, y))
-            self.map_assets.add(coin)
+            self.item_group.add(coin)
 
 
 class Dongeon:
