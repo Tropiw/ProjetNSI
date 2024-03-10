@@ -1,5 +1,5 @@
 import pygame
-import imagesetter as image
+import Imagesetter as image
 
 class AnimatedSword(pygame.sprite.Sprite):
     def __init__(self, position, zoom=2.5):
