@@ -39,7 +39,10 @@ class Main:
         self.donjon = map_module.Dongeon(self.screen,1280,720)
         self.actual_room = self.donjon.actual_room
 
-        #player groupeq
+        #Compteur de piece
+        self.compteur = 0
+
+        #player groupe
         self.player_group = pygame.sprite.Group()
         
         self.player1 = perso.Player((650, 200), 1, self.actual_room.enemies_group, item_group=self.actual_room.item_group)
