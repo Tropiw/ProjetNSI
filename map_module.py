@@ -126,7 +126,14 @@ class map1(Map):
         self.item_group = pygame.sprite.Group()
         sword1 = item.AnimatedSword((320,400))
         sword2 = item.AnimatedSword((890,400))
-        self.item_group.add(sword1, sword2)
+        
+        potion_paths = []
+        for i in range(1,5): # Chemin des image étapes d'animations de la pièce
+            potion_paths.append(rf'C:\Users\tropi\Documents\GitHub\ProjetNSI\Graphic\2D Pixel Dungeon - Asset Pack\items and trap_animation\flasks\flasks_1_{i}.png')
+        
+        potion = image.animated_sprite(potion_paths, (1125, 100))
+        
+        self.item_group.add(sword1, sword2, potion)
         
         
 class map2(Map):
@@ -494,6 +501,39 @@ class map5(Map):
         self.map_assets = pygame.sprite.Group()
         self.item_group = pygame.sprite.Group()
 
+        side_torch_paths = []
+        for i in range(1,5): # Chemin des image étapes d'animations de la pièce
+            side_torch_paths.append(rf'Graphic\2D Pixel Dungeon - Asset Pack\items and trap_animation\torch\side_torch_{i}.png')
+
+        side_torch1 = image.animated_sprite(side_torch_paths, (1137, 240), zoom = 6, reverse=True)
+        side_torch2 = image.animated_sprite(side_torch_paths, (1137, 400), zoom = 6, reverse=True)
+
+        torch_paths = []
+        for i in range(1,5): # Chemin des image étapes d'animations de la pièce
+            torch_paths.append(rf'Graphic\2D Pixel Dungeon - Asset Pack\items and trap_animation\torch\torch_{i}.png')
+
+        
+        torch2 = image.animated_sprite(torch_paths, (720, 0))
+        
+
+        flag_paths = []
+        for i in range(1,5): # Chemin des image étapes d'animations de la pièce
+            flag_paths.append(rf'Graphic\2D Pixel Dungeon - Asset Pack\items and trap_animation\flag\flag_{i}.png')
+
+        flag1 = image.animated_sprite(flag_paths, (80, 10))
+        flag2 = image.animated_sprite(flag_paths, (1125, 20))
+        flag3 = image.animated_sprite(flag_paths, (80, 480))
+        flag4 = image.animated_sprite(flag_paths, (1125, 480))
+        flag5 = image.animated_sprite(flag_paths, (480, 10))
+        
+        self.map_assets.add(torch2)
+
+        self.map_assets.add(side_torch1,side_torch2)
+        
+        self.map_assets.add(flag1,flag2,flag3,flag4,flag5)
+
+
+
 class map6(Map):
     def __init__(self,width,height):
         #designe les monstre present sur la map
@@ -526,6 +566,13 @@ class map6(Map):
         
         #blit l'entiereter de la map sur une surface pygame
         self.screen = pygame.surface.Surface((self.width, self.height))
+        self.screen = pygame.surface.Surface((self.width, self.height))
+        self.obstacle1 = image.Obstacle('Graphic/Dungeon Gathering - map asset (light)/Structure.png', (80, 10), (16,32), (0,0),4)#pillier 1
+        self.obstacle2 = image.Obstacle('Graphic/Dungeon Gathering - map asset (light)/Structure.png', (1125, 20), (16,32), (0,0),4)#pillier 2
+        self.obstacle3 = image.Obstacle('Graphic/Dungeon Gathering - map asset (light)/Structure.png', (80, 480), (16,32), (0,0),4)#pillier 3
+        self.obstacle4 = image.Obstacle('Graphic/Dungeon Gathering - map asset (light)/Structure.png', (1125, 480), (16,32), (0,0),4)#pillier 4
+        self.obstacle5 = image.Obstacle('Graphic/Dungeon Gathering - map asset (light)/Structure.png', (480, 10), (16,32), (0,0),4)#pillier 5
+        self.obstacle6 = image.Obstacle('Graphic/Dungeon Gathering - map asset (light)/Structure.png', (720, 470), (16,32), (0,0),4)#pillier 6
         self.tile_set1.blit_tile(self.screen,(5,5),(0,0))
         self.tile_set1.blit_tile(self.screen,(6,5),(1200,0))
         self.tile_set1.blit_tile(self.screen,(6,6),(1200,640))
@@ -558,9 +605,48 @@ class map6(Map):
         self.tile_set1.blit_tile(self.screen,(14,4),(160,160)) #sol cassé1
         self.tile_set1.blit_tile(self.screen,(15,4),(800,400)) #sol cassé3
         self.tile_set1.blit_tile(self.screen,(15,4),(960,560)) #sol cassé4
+        self.obstacle1.draw(self.screen) #pillier 1
+        self.obstacle2.draw(self.screen) #pillier 2
+        self.obstacle3.draw(self.screen) #pillier 3
+        self.obstacle4.draw(self.screen) #pillier 4
+        self.obstacle5.draw(self.screen) #pillier 5
+        self.obstacle6.draw(self.screen) #pillier 6
+
         
         self.map_assets = pygame.sprite.Group()
         self.item_group = pygame.sprite.Group()
+
+        side_torch_paths = []
+        for i in range(1,5): # Chemin des image étapes d'animations de la pièce
+            side_torch_paths.append(rf'Graphic\2D Pixel Dungeon - Asset Pack\items and trap_animation\torch\side_torch_{i}.png')
+
+        side_torch1 = image.animated_sprite(side_torch_paths, (1137, 240), zoom = 6, reverse=True)
+        side_torch2 = image.animated_sprite(side_torch_paths, (1137, 400), zoom = 6, reverse=True)
+
+        torch_paths = []
+        for i in range(1,5): # Chemin des image étapes d'animations de la pièce
+            torch_paths.append(rf'Graphic\2D Pixel Dungeon - Asset Pack\items and trap_animation\torch\torch_{i}.png')
+
+        torch1 = image.animated_sprite(torch_paths, (1125, 45))
+        torch2 = image.animated_sprite(torch_paths, (720, 0))
+        
+
+        flag_paths = []
+        for i in range(1,5): # Chemin des image étapes d'animations de la pièce
+            flag_paths.append(rf'Graphic\2D Pixel Dungeon - Asset Pack\items and trap_animation\flag\flag_{i}.png')
+
+        flag1 = image.animated_sprite(flag_paths, (80, 10))
+        flag2 = image.animated_sprite(flag_paths, (1125, 10))
+        flag3 = image.animated_sprite(flag_paths, (80, 480))
+        flag4 = image.animated_sprite(flag_paths, (1125, 480))
+        flag5 = image.animated_sprite(flag_paths, (480, 10))
+        flag6 = image.animated_sprite(flag_paths, (720, 470))
+        
+        self.map_assets.add(torch1,torch2)
+
+        self.map_assets.add(side_torch1,side_torch2)
+        
+        self.map_assets.add(flag1,flag2,flag3,flag4,flag5,flag6)
 
 
 class Dongeon:
