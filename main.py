@@ -240,7 +240,6 @@ class Main:
         self.player2 = perso.Player((500, 200), 2, self.actual_room.enemies_group, item_group=self.actual_room.item_group)
         self.player_group.add(self.player1)
         self.player_group.add(self.player2)
-        
         #ORDRE : objects[map_assets, item_group, player_group, enemies_group]
         self.objects = [self.actual_room.map_assets,
                         self.actual_room.item_group,

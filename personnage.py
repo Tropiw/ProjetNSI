@@ -204,7 +204,7 @@ class Player(pygame.sprite.Sprite):
             self.detect_movement()
             self.walking_sound()
             self.detect_enemy_collision()
-            self.bring_sword()
+            self.bring_item()
             self.handle_attack()
             if self.sword:  # Mettre à jour la position de l'épée si elle est ramassée
                 item.AnimatedSword.update(self.sword)  # Mettre à jour l'animation de l'épée
@@ -317,7 +317,6 @@ class Player(pygame.sprite.Sprite):
                     self.health_bar.sword_status = object
                 else:
                     self.health_bar.current_health += 1
-                    print('vie + 1')
                     self.item_group.remove(object)
 class DeathAnimation(pygame.sprite.Sprite):
     def __init__(self, position, zoom=8):
