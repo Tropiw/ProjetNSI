@@ -25,7 +25,7 @@ class Main:
         pygame.mixer.init()
         pygame.mixer.music.load(r'SFX\robot rock.mp3')
         pygame.mixer.music.play(loops=-1)
-        pygame.mixer.music.set_volume(0.008) #0.008
+        pygame.mixer.music.set_volume(0.000) #0.008
 
         #definit la liste des objets, des monstres present sur la map 
         self.objects = []  # Liste pour stocker les objets à dessiner

@@ -19,14 +19,17 @@ class Map():
     
 class map1(Map):
     def __init__(self ,width,height):
-
+        
         #designe les monstre present sur la map
         self.enemies_group = pygame.sprite.Group()
-        enemy1 = enemy.Enemy(r"Graphic\Slime - Enemy\slime-Sheet.png", (150,300), (32,25), speed = 5, player_group=pygame.sprite.Group(), enemies_group=self.enemies_group)
-        enemy2 = enemy.Enemy(r"Graphic\Slime - Enemy\slime-Sheet.png", (300,400), (32,25), speed = 5, player_group=pygame.sprite.Group(), enemies_group=self.enemies_group)
+        enemy1 = enemy.Enemy(r"Graphic\Slime - Enemy\slime-Sheet.png", (150,80), (32,25), speed = 5, player_group=pygame.sprite.Group(), enemies_group=self.enemies_group)
+        enemy2 = enemy.Enemy(r"Graphic\Slime - Enemy\slime-Sheet.png", (150,400), (32,25), speed = 5, player_group=pygame.sprite.Group(), enemies_group=self.enemies_group)
         enemy3 = enemy.Enemy(r"Graphic\Slime - Enemy\slime-Sheet.png", (600,500), (32,25), speed = 5, player_group=pygame.sprite.Group(), enemies_group=self.enemies_group)
-        self.enemies_group.add(enemy1, enemy2, enemy3)
+        self.enemies_group.add(enemy1)#, enemy2, enemy3
 
+        
+    
+        
 
         #Designe les tile sets utiliser
         self.tile_set1 = image.tile(r'Graphic\Dungeon Gathering - map asset (light)\Set 1.1.png')
@@ -72,6 +75,16 @@ class map1(Map):
         self.tile_set1.blit_tile(self.screen,(6,3),(640,0))#porte d
         self.obstacle1.draw(self.screen) #pillier 1
         self.obstacle2.draw(self.screen) #pillier 2
+        self.tile_set1.blit_tile(self.screen,(5,7),(310,410)) #support epee 1
+        self.tile_set1.blit_tile(self.screen,(5,7),(880,410)) #support epee 2
+        self.tile_set1.blit_tile(self.screen,(12,5),(800,160)) #sol insalubre1
+        self.tile_set1.blit_tile(self.screen,(13,5),(880,160)) #sol insalubre2
+        self.tile_set1.blit_tile(self.screen,(12,6),(800,240)) #sol insalubre3
+        self.tile_set1.blit_tile(self.screen,(13,6),(880,240)) #sol insalubre4
+        self.tile_set1.blit_tile(self.screen,(3,3),(320,0)) #mur trou1
+        self.tile_set1.blit_tile(self.screen,(3,3),(880,0)) #mur trou2
+        self.tile_set1.blit_tile(self.screen,(7,3),(480,0)) #mur cassé
+        
         
         '''# mur salle pièces
         self.tile_set.blit_tile(self.screen,(3,4),(1040,400))
@@ -111,8 +124,8 @@ class map1(Map):
 
         #Item group
         self.item_group = pygame.sprite.Group()
-        sword1 = item.AnimatedSword((600,500))
-        sword2 = item.AnimatedSword((800,500))
+        sword1 = item.AnimatedSword((320,400))
+        sword2 = item.AnimatedSword((890,400))
         self.item_group.add(sword1, sword2)
         
         
@@ -144,7 +157,7 @@ class map2(Map):
         self.tile_structure.load(0,1)
         self.height = height
         self.width = width
-        for i in range(15):
+        for i in range(18):
             for j in range(8):
                 self.tile_set.load(i,j)
             for j in range(11):
@@ -178,7 +191,7 @@ class map3(Map):
         self.enemies_group = pygame.sprite.Group()
         enemy1 = enemy.Enemy(r"Graphic\Slime - Enemy\slime-Sheet.png", (150,300), (32,25), speed = 5, player_group=pygame.sprite.Group(), enemies_group=self.enemies_group)
         enemy2 = enemy.Enemy(r"Graphic\Slime - Enemy\slime-Sheet.png", (300,400), (32,25), speed = 5, player_group=pygame.sprite.Group(), enemies_group=self.enemies_group)
-        enemy3 = enemy.Enemy(r"Graphic\Slime - Enemy\slime-Sheet.png", (600,500), (32,25), speed = 5, player_group=pygame.sprite.Group(), enemies_group=self.enemies_group)
+        enemy3 = enemy.Enemy(r"Graphic\Slime - Enemy\slime-Sheet.png", (600,40), (32,25), speed = 5, player_group=pygame.sprite.Group(), enemies_group=self.enemies_group)
         self.enemies_group.add(enemy1, enemy2, enemy3)
 
 
@@ -202,7 +215,7 @@ class map3(Map):
         self.tile_structure.load(0,1)
         self.height = height
         self.width = width
-        for i in range(15):
+        for i in range(16):
             for j in range(8):
                 self.tile_set1.load(i,j)
             for j in range(11):
@@ -210,6 +223,12 @@ class map3(Map):
         
         #blit l'entiereter de la map sur une surface pygame
         self.screen = pygame.surface.Surface((self.width, self.height))
+        
+        self.obstacle1 = image.Obstacle('Graphic/Dungeon Gathering - map asset (light)/Structure.png', (80, 10), (16,32), (0,0),4)#pillier 1
+        self.obstacle2 = image.Obstacle('Graphic/Dungeon Gathering - map asset (light)/Structure.png', (1125, 10), (16,32), (0,0),4)#pillier 2
+        self.obstacle3 = image.Obstacle('Graphic/Dungeon Gathering - map asset (light)/Structure.png', (80, 480), (16,32), (0,0),4)#pillier3 3
+        
+    
         self.tile_set1.blit_tile(self.screen,(5,5),(0,0))
         self.tile_set1.blit_tile(self.screen,(6,5),(1200,0))
         self.tile_set1.blit_tile(self.screen,(6,6),(1200,640))
@@ -229,6 +248,30 @@ class map3(Map):
         self.tile_set2.blit_tile(self.screen,(8,4),(640,640))
         self.tile_set1.blit_tile(self.screen,(2,4),(720,640))
         self.tile_set1.blit_tile(self.screen,(4,4),(480,640))
+        self.tile_set1.blit_tile(self.screen,(12,5),(800,160)) #sol insalubre hg
+        self.tile_set1.blit_tile(self.screen,(13,5),(880,160)) #sol insalubre hd
+        self.tile_set1.blit_tile(self.screen,(12,6),(800,240)) #sol insalubre bg
+        self.tile_set1.blit_tile(self.screen,(13,6),(880,240)) #sol insalubre bd
+        self.tile_set1.blit_tile(self.screen,(12,5),(160,480)) #sol insalubre1
+        self.tile_set1.blit_tile(self.screen,(13,5),(240,480)) #sol insalubre2
+        self.tile_set1.blit_tile(self.screen,(12,6),(160,556)) #sol insalubre3
+        self.tile_set1.blit_tile(self.screen,(13,6),(240,556)) #sol insalubre4
+        self.tile_set1.blit_tile(self.screen,(2,3),(320,0)) #mur trou1
+        self.tile_set1.blit_tile(self.screen,(2,3),(400,0)) #mur trou1;1
+        self.tile_set1.blit_tile(self.screen,(2,3),(880,0)) #mur trou2
+        self.tile_set1.blit_tile(self.screen,(7,3),(1040,0)) #mur cassé1
+        self.tile_set1.blit_tile(self.screen,(14,4),(160,160)) #sol cassé1
+        self.tile_set1.blit_tile(self.screen,(15,4),(800,400)) #sol cassé3
+        self.tile_set1.blit_tile(self.screen,(15,4),(960,560)) #sol cassé4
+        
+        self.obstacle1.draw(self.screen) #pillier 1
+        self.obstacle2.draw(self.screen) #pillier 2
+        self.obstacle3.draw(self.screen) #pillier 3
+        
+        
+         
+        
+
 
         self.map_assets = pygame.sprite.Group()
         self.item_group = pygame.sprite.Group()
@@ -237,6 +280,14 @@ class map4(Map):
     def __init__(self,width,height):
         #designe les monstre present sur la map
         self.enemies_group = pygame.sprite.Group()
+        enemy1 = enemy.Enemy(r"Graphic\Slime - Enemy\slime-Sheet.png", (160,80), (32,25), speed = 20, player_group=pygame.sprite.Group(), enemies_group=self.enemies_group)
+        enemy2 = enemy.Enemy(r"Graphic\Slime - Enemy\slime-Sheet.png", (500,80), (32,25), speed = 20, player_group=pygame.sprite.Group(), enemies_group=self.enemies_group)
+        enemy3 = enemy.Enemy(r"Graphic\Slime - Enemy\slime-Sheet.png", (800,80), (32,25), speed = 20, player_group=pygame.sprite.Group(), enemies_group=self.enemies_group)
+        enemy4 = enemy.Enemy(r"Graphic\Slime - Enemy\slime-Sheet.png", (1024,80), (32,25), speed = 20, player_group=pygame.sprite.Group(), enemies_group=self.enemies_group)
+        enemy5 = enemy.Enemy(r"Graphic\Slime - Enemy\slime-Sheet.png", (1120,80), (32,25), speed = 20, player_group=pygame.sprite.Group(), enemies_group=self.enemies_group)
+        
+        self.enemies_group.add(enemy1, enemy2, enemy3, enemy4, enemy5)
+
 
         #Designe les tile sets utiliser
         self.tile_set1 = image.tile(r'Graphic\Dungeon Gathering - map asset (light)\Set 1.1.png')
@@ -258,7 +309,7 @@ class map4(Map):
         self.tile_structure.load(0,1)
         self.height = height
         self.width = width
-        for i in range(15):
+        for i in range(18):
             for j in range(8):
                 self.tile_set1.load(i,j)
             for j in range(11):
@@ -266,6 +317,13 @@ class map4(Map):
         
         #blit l'entiereter de la map sur une surface pygame
         self.screen = pygame.surface.Surface((self.width, self.height))
+        
+        self.obstacle1 = image.Obstacle('Graphic/Dungeon Gathering - map asset (light)/Structure.png', (80, 10), (16,32), (0,0),4)#pillier 1
+        self.obstacle2 = image.Obstacle('Graphic/Dungeon Gathering - map asset (light)/Structure.png', (1125, 10), (16,32), (0,0),4)#pillier 2
+        self.obstacle3 = image.Obstacle('Graphic/Dungeon Gathering - map asset (light)/Structure.png', (80, 480), (16,32), (0,0),4)#pillier 3
+        self.obstacle4 = image.Obstacle('Graphic/Dungeon Gathering - map asset (light)/Structure.png', (1125, 480), (16,32), (0,0),4)#pillier 4
+        
+        
         self.tile_set1.blit_tile(self.screen,(5,5),(0,0))
         self.tile_set1.blit_tile(self.screen,(6,5),(1200,0))
         self.tile_set1.blit_tile(self.screen,(6,6),(1200,640))
@@ -283,6 +341,25 @@ class map4(Map):
         self.tile_set2.blit_tile(self.screen,(9,3),(1200,320))
         self.tile_set1.blit_tile(self.screen,(0,6),(1200,240))
         self.tile_set1.blit_tile(self.screen,(2,4),(1200,400))
+        self.obstacle1.draw(self.screen) #pillier 1
+        self.obstacle2.draw(self.screen) #pillier 2
+        self.obstacle3.draw(self.screen) #pillier 3
+        self.obstacle4.draw(self.screen) #pillier 4
+        self.tile_set1.blit_tile(self.screen,(12,5),(800,160)) #sol insalubre hg
+        self.tile_set1.blit_tile(self.screen,(13,5),(880,160)) #sol insalubre hd
+        self.tile_set1.blit_tile(self.screen,(12,6),(800,240)) #sol insalubre bg
+        self.tile_set1.blit_tile(self.screen,(13,6),(880,240)) #sol insalubre bd
+        self.tile_set1.blit_tile(self.screen,(12,5),(160,480)) #sol insalubre1
+        self.tile_set1.blit_tile(self.screen,(13,5),(240,480)) #sol insalubre2
+        self.tile_set1.blit_tile(self.screen,(12,6),(160,556)) #sol insalubre3
+        self.tile_set1.blit_tile(self.screen,(13,6),(240,556)) #sol insalubre4
+        self.tile_set1.blit_tile(self.screen,(2,3),(320,0)) #mur trou1
+        self.tile_set1.blit_tile(self.screen,(2,3),(400,0)) #mur trou1;1
+        self.tile_set1.blit_tile(self.screen,(2,3),(880,0)) #mur trou2
+        self.tile_set1.blit_tile(self.screen,(7,3),(1040,0)) #mur cassé1
+        self.tile_set1.blit_tile(self.screen,(14,4),(160,160)) #sol cassé1
+        self.tile_set1.blit_tile(self.screen,(15,4),(800,400)) #sol cassé3
+        self.tile_set1.blit_tile(self.screen,(15,4),(960,560)) #sol cassé4
 
 
         self.map_assets = pygame.sprite.Group()
@@ -292,7 +369,13 @@ class map5(Map):
     def __init__(self,width,height):
         #designe les monstre present sur la map
         self.enemies_group = pygame.sprite.Group()
-
+        enemy1 = enemy.Enemy(r"Graphic\Slime - Enemy\slime-Sheet.png", (160,80), (32,25), speed = 7, player_group=pygame.sprite.Group(), enemies_group=self.enemies_group)
+        enemy2 = enemy.Enemy(r"Graphic\Slime - Enemy\slime-Sheet.png", (500,80), (32,25), speed = 7, player_group=pygame.sprite.Group(), enemies_group=self.enemies_group)
+        enemy3 = enemy.Enemy(r"Graphic\Slime - Enemy\slime-Sheet.png", (800,240), (32,25), speed = 7, player_group=pygame.sprite.Group(), enemies_group=self.enemies_group)
+        enemy4 = enemy.Enemy(r"Graphic\Slime - Enemy\slime-Sheet.png", (1024,480), (32,25), speed = 7, player_group=pygame.sprite.Group(), enemies_group=self.enemies_group)
+        enemy5 = enemy.Enemy(r"Graphic\Slime - Enemy\slime-Sheet.png", (1120,920), (32,25), speed = 7, player_group=pygame.sprite.Group(), enemies_group=self.enemies_group)
+        
+        self.enemies_group.add(enemy1, enemy2, enemy3, enemy4, enemy5)
         #Designe les tile sets utiliser
         self.tile_set1 = image.tile(r'Graphic\Dungeon Gathering - map asset (light)\Set 1.1.png')
         self.tile_set2 = image.tile(r'Graphic\Dungeon Gathering - map asset (light)\Set 1.2.png')
@@ -312,7 +395,7 @@ class map5(Map):
         self.tile_structure.load(0,1)
         self.height = height
         self.width = width
-        for i in range(15):
+        for i in range(18):
             for j in range(8):
                 self.tile_set1.load(i,j)
             for j in range(11):
@@ -320,6 +403,12 @@ class map5(Map):
         
         #blit l'entiereter de la map sur une surface pygame
         self.screen = pygame.surface.Surface((self.width, self.height))
+        self.obstacle1 = image.Obstacle('Graphic/Dungeon Gathering - map asset (light)/Structure.png', (80, 10), (16,32), (0,0),4)#pillier 1
+        self.obstacle2 = image.Obstacle('Graphic/Dungeon Gathering - map asset (light)/Structure.png', (1125, 20), (16,32), (0,0),4)#pillier 2
+        self.obstacle3 = image.Obstacle('Graphic/Dungeon Gathering - map asset (light)/Structure.png', (80, 480), (16,32), (0,0),4)#pillier 3
+        self.obstacle4 = image.Obstacle('Graphic/Dungeon Gathering - map asset (light)/Structure.png', (1125, 480), (16,32), (0,0),4)#pillier 4
+        self.obstacle5 = image.Obstacle('Graphic/Dungeon Gathering - map asset (light)/Structure.png', (480, 10), (16,32), (0,0),4)#pillier 5
+    
         self.tile_set1.blit_tile(self.screen,(5,5),(0,0))
         self.tile_set1.blit_tile(self.screen,(6,5),(1200,0))
         self.tile_set1.blit_tile(self.screen,(6,6),(1200,640))
@@ -337,7 +426,26 @@ class map5(Map):
         self.tile_set2.blit_tile(self.screen,(9,2),(0,320))
         self.tile_set1.blit_tile(self.screen,(1,6),(0,240))
         self.tile_set1.blit_tile(self.screen,(4,4),(0,400))
-        
+        self.obstacle1.draw(self.screen) #pillier 1
+        self.obstacle2.draw(self.screen) #pillier 2
+        self.obstacle3.draw(self.screen) #pillier 3
+        self.obstacle4.draw(self.screen) #pillier 4
+        self.obstacle5.draw(self.screen) #pillier 5
+        self.tile_set1.blit_tile(self.screen,(12,5),(800,160)) #sol insalubre hg
+        self.tile_set1.blit_tile(self.screen,(13,5),(880,160)) #sol insalubre hd
+        self.tile_set1.blit_tile(self.screen,(12,6),(800,240)) #sol insalubre bg
+        self.tile_set1.blit_tile(self.screen,(13,6),(880,240)) #sol insalubre bd
+        self.tile_set1.blit_tile(self.screen,(12,5),(160,480)) #sol insalubre1
+        self.tile_set1.blit_tile(self.screen,(13,5),(240,480)) #sol insalubre2
+        self.tile_set1.blit_tile(self.screen,(12,6),(160,556)) #sol insalubre3
+        self.tile_set1.blit_tile(self.screen,(13,6),(240,556)) #sol insalubre4
+        self.tile_set1.blit_tile(self.screen,(2,3),(320,0)) #mur trou1
+        self.tile_set1.blit_tile(self.screen,(2,3),(400,0)) #mur trou1;1
+        self.tile_set1.blit_tile(self.screen,(2,3),(880,0)) #mur trou2
+        self.tile_set1.blit_tile(self.screen,(7,3),(1040,0)) #mur cassé1
+        self.tile_set1.blit_tile(self.screen,(14,4),(160,160)) #sol cassé1
+        self.tile_set1.blit_tile(self.screen,(15,4),(800,400)) #sol cassé3
+        self.tile_set1.blit_tile(self.screen,(15,4),(960,560)) #sol cassé4
         self.map_assets = pygame.sprite.Group()
         self.item_group = pygame.sprite.Group()
 
@@ -365,7 +473,7 @@ class map6(Map):
         self.tile_structure.load(0,1)
         self.height = height
         self.width = width
-        for i in range(15):
+        for i in range(18):
             for j in range(8):
                 self.tile_set1.load(i,j)
             for j in range(11):
@@ -387,9 +495,24 @@ class map6(Map):
         self.tile_set1.blit_tile(self.screen,(12,4),((i+1)*80,(j+1)*80)) #Le milieux
         self.tile_set2.blit_tile(self.screen,(7,4),(560,640))
         self.tile_set2.blit_tile(self.screen,(8,4),(640,640))
-        self.tile_set2.blit_tile(self.screen,(9,2),(1200,320))
-        self.tile_set1.blit_tile(self.screen,(1,6),(1200,240))
-        self.tile_set1.blit_tile(self.screen,(4,4),(1200,400))
+        self.tile_set2.blit_tile(self.screen,(9,3),(1200,320))
+        self.tile_set1.blit_tile(self.screen,(0,6),(1200,240))
+        self.tile_set1.blit_tile(self.screen,(2,4),(1200,400))
+        self.tile_set1.blit_tile(self.screen,(15,3),(800,160)) #sol insalubre hg
+        self.tile_set1.blit_tile(self.screen,(15,3),(880,160)) #sol insalubre hd
+        self.tile_set1.blit_tile(self.screen,(15,3),(800,240)) #sol insalubre bg
+        self.tile_set1.blit_tile(self.screen,(15,3),(880,240)) #sol insalubre bd
+        self.tile_set1.blit_tile(self.screen,(6,7),(160,480)) #sol insalubre1
+        self.tile_set1.blit_tile(self.screen,(6,7),(240,480)) #sol insalubre2
+        self.tile_set1.blit_tile(self.screen,(6,7),(160,556)) #sol insalubre3
+        self.tile_set1.blit_tile(self.screen,(6,7),(240,556)) #sol insalubre4
+        self.tile_set1.blit_tile(self.screen,(7,3),(320,0)) #mur cassé
+        self.tile_set1.blit_tile(self.screen,(2,3),(400,0)) #mur trou1;1
+        self.tile_set1.blit_tile(self.screen,(2,3),(880,0)) #mur trou2
+        self.tile_set1.blit_tile(self.screen,(7,3),(1040,0)) #mur cassé1
+        self.tile_set1.blit_tile(self.screen,(14,4),(160,160)) #sol cassé1
+        self.tile_set1.blit_tile(self.screen,(15,4),(800,400)) #sol cassé3
+        self.tile_set1.blit_tile(self.screen,(15,4),(960,560)) #sol cassé4
         
         self.map_assets = pygame.sprite.Group()
         self.item_group = pygame.sprite.Group()
