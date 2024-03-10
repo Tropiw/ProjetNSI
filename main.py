@@ -6,6 +6,7 @@ import map_module as map_module
 import item as item
 from pygame.locals import *
 from enemy_module import Enemy
+import UI
 
 class Main:
     def __init__(self, fps=60, width=1280, height=720):
@@ -40,7 +41,7 @@ class Main:
         self.actual_room = self.donjon.actual_room
 
         #Compteur de piece
-        self.compteur = 0
+        self.compteur = UI.coin_counter((640,0),"Squares.ttf")
 
         #player groupe
         self.player_group = pygame.sprite.Group()
@@ -221,6 +222,7 @@ class Main:
                     sprite.draw(self.screen)
             else:
                 obj.draw(self.screen)
+        self.compteur.draw(self.screen)
 
     def reset_all(self):
         #fini par definir le menu, la pos de la souris(pas vraiment la pos juste pour pas que ca bug) et le mode(si on est dans un menu ou dans le jeu)
