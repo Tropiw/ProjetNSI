@@ -203,7 +203,11 @@ class map2(Map):
         self.map_assets = pygame.sprite.Group()
         self.item_group = pygame.sprite.Group()
         
-        
+        for _ in range(3):  # Générer 3 pièces animées
+            x = random.randint(100, 1150)  # Générer une coordonnée x aléatoire entre 650 et 1150
+            y = random.randint(100, 575)     # Générer une coordonnée y aléatoire entre 0 et 575
+            coin = item.AnimatedCoin((x, y))
+            self.map_assets.add(coin)
 
 class map3(Map):
     def __init__(self,width,height):
