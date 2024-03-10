@@ -1,6 +1,6 @@
 import pygame
 import item as item
-import Imagesetter as image
+import imagesetter as image
 import enemy_module as enemy
 import random
 
@@ -84,20 +84,10 @@ class map1(Map):
         self.tile_set1.blit_tile(self.screen,(3,3),(880,0)) #mur trou2
         self.tile_set1.blit_tile(self.screen,(7,3),(480,0)) #mur cassé
         
-        
-        
-        # PIECE ANIMEE
-        coin_paths = []
-        for i in range(1,5): # Chemin des image étapes d'animations de la pièce
-            coin_paths.append(rf'Graphic\2D Pixel Dungeon - Asset Pack\items and trap_animation\coin\coin_{i}.png')
-
-
-        coin1 = image.animated_sprite(coin_paths, (1145, 575))
-        coin2 = image.animated_sprite(coin_paths, (1100, 575))
-        coin3 = image.animated_sprite(coin_paths, (1055, 575))
     
         torch_paths = []
-        torch_paths.append(rf'Graphic\2D Pixel Dungeon - Asset Pack\items and trap_animation\torch\torch_{i}.png')
+        for i in range(1,5):
+            torch_paths.append(rf'Graphic\2D Pixel Dungeon - Asset Pack\items and trap_animation\torch\torch_{i}.png')
 
         torch1 = image.animated_sprite(torch_paths, (1125, 45))
         torch2 = image.animated_sprite(torch_paths, (80, 45))
@@ -120,8 +110,14 @@ class map1(Map):
        
         self.map_assets = pygame.sprite.Group()
         
+        for _ in range(3):  # Générer 3 pièces animées
+            x = random.randint(100, 1150)  # Générer une coordonnée x aléatoire entre 650 et 1150
+            y = random.randint(100, 575)     # Générer une coordonnée y aléatoire entre 0 et 575
+            coin = item.AnimatedCoin((x, y))
+            self.map_assets.add(coin)
+        
         # Remplissage du groupe d'asset de la map
-        self.map_assets.add(coin1,coin2,coin3,obstacle1,obstacle2,obstacle3)
+        self.map_assets.add(obstacle1,obstacle2,obstacle3)
         self.map_assets.add(torch1,torch2,torch3)
         self.map_assets.add(box1,box2,box3,box4,box5)
        

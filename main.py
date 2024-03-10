@@ -1,5 +1,5 @@
 import pygame
-import Imagesetter as image
+import imagesetter as image
 import menu as menu
 import personnage as perso
 import map_module as map_module
