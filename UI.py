@@ -48,7 +48,7 @@ class coin_counter():
         self.count += 1
     
     def draw(self,screen):
-        #
+        #pour le mettre sur l'ecran
         texte = self.font.render(str(self.count),False,(255,255,255))
         w, h = texte.get_size()                                             #pour le placement  
         screen.blit(texte,(self.position[0]-(w/2),self.position[1]))

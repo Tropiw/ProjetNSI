@@ -85,13 +85,6 @@ class map1(Map):
         self.tile_set1.blit_tile(self.screen,(7,3),(480,0)) #mur cassé
         
         
-        
-
-
-
-        coin1 = item.AnimatedCoin( (1145, 575))
-        coin2 = item.AnimatedCoin( (1100, 575))
-        coin3 = item.AnimatedCoin( (1055, 575))
     
         torch_paths = []
         for i in range(1,5):
@@ -100,12 +93,6 @@ class map1(Map):
         torch1 = image.animated_sprite(torch_paths, (1125, 45))
         torch2 = image.animated_sprite(torch_paths, (80, 45))
         torch3 = image.animated_sprite(torch_paths, (730, 0))
-
-        box1 = image.ImageStatique(r'Graphic\2D Pixel Dungeon - Asset Pack\items and trap_animation\box_1\box_1_3.png', (1120,240), zoom = 5)
-        box2 = image.ImageStatique(r'Graphic\2D Pixel Dungeon - Asset Pack\items and trap_animation\box_1\box_1_3.png', (1065,240), zoom = 5)
-        box3 = image.ImageStatique(r'Graphic\2D Pixel Dungeon - Asset Pack\items and trap_animation\box_1\box_1_3.png', (1120,291), zoom = 5)
-        box4 = image.ImageStatique(r'Graphic\2D Pixel Dungeon - Asset Pack\items and trap_animation\box_1\box_1_3.png', (255,47), zoom = 5)
-        box5 = image.ImageStatique(r'Graphic\2D Pixel Dungeon - Asset Pack\items and trap_animation\box_1\box_1_3.png', (315,47), zoom = 5)
 
     
         # OBSTACLE
@@ -118,16 +105,12 @@ class map1(Map):
        
         self.map_assets = pygame.sprite.Group()
         
-        for _ in range(3):  # Générer 3 pièces animées
-            x = random.randint(100, 1150)  # Générer une coordonnée x aléatoire entre 650 et 1150
-            y = random.randint(100, 575)     # Générer une coordonnée y aléatoire entre 0 et 575
-            coin = item.AnimatedCoin((x, y))
-            self.map_assets.add(coin)
+
+
         
         # Remplissage du groupe d'asset de la map
         self.map_assets.add(obstacle1,obstacle2,obstacle3)
         self.map_assets.add(torch1,torch2,torch3)
-        self.map_assets.add(box1,box2,box3,box4,box5)
        
 
 
@@ -143,7 +126,13 @@ class map1(Map):
         potion = image.animated_sprite(potion_paths, (1125, 100))
         
         
-        self.item_group.add(sword1, sword2, potion,coin1,coin2,coin3)
+        self.item_group.add(sword1, sword2, potion)
+
+        for _ in range(3):  # Générer 3 pièces animées
+            x = random.randint(100, 1150)  # Générer une coordonnée x aléatoire entre 650 et 1150
+            y = random.randint(100, 575)     # Générer une coordonnée y aléatoire entre 0 et 575
+            coin = item.AnimatedCoin((x, y))
+            self.item_group.add(coin)
         
         
         
@@ -207,7 +196,7 @@ class map2(Map):
             x = random.randint(100, 1150)  # Générer une coordonnée x aléatoire entre 650 et 1150
             y = random.randint(100, 575)     # Générer une coordonnée y aléatoire entre 0 et 575
             coin = item.AnimatedCoin((x, y))
-            self.map_assets.add(coin)
+            self.item_group.add(coin)
 
 class map3(Map):
     def __init__(self,width,height):
@@ -332,7 +321,7 @@ class map3(Map):
             x = random.randint(100, 1150)  # Générer une coordonnée x aléatoire entre 650 et 1150
             y = random.randint(100, 575)     # Générer une coordonnée y aléatoire entre 0 et 575
             coin = item.AnimatedCoin((x, y))
-            self.map_assets.add(coin)
+            self.item_group.add(coin)
 
 class map4(Map):
     def __init__(self,width,height):
@@ -448,7 +437,7 @@ class map4(Map):
             x = random.randint(100, 1150)  # Générer une coordonnée x aléatoire entre 650 et 1150
             y = random.randint(100, 575)     # Générer une coordonnée y aléatoire entre 0 et 575
             coin = item.AnimatedCoin((x, y))
-            self.map_assets.add(coin)
+            self.item_group.add(coin)
 
 
 
@@ -688,7 +677,7 @@ class map6(Map):
             x = random.randint(100, 1150)  # Générer une coordonnée x aléatoire entre 650 et 1150
             y = random.randint(100, 575)     # Générer une coordonnée y aléatoire entre 0 et 575
             coin = item.AnimatedCoin((x, y))
-            self.map_assets.add(coin)
+            self.item_group.add(coin)
 
 
 class Dongeon:
