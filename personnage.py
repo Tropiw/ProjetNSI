@@ -60,7 +60,7 @@ class Player(pygame.sprite.Sprite):
         self.sfx_attack.set_volume(0.1)
         
         # GESTION DE LA VIE
-        self.collision_cooldown = 500
+        self.collision_cooldown = 2000
         self.last_collision_time = 0
         self.current_health = 1
         self.health_bar.current_health = self.current_health
@@ -280,10 +280,12 @@ class Player(pygame.sprite.Sprite):
             if collision_enemy:  # Si une collision est détectée
                 if self.current_health > 0:  # Vérifie que le joueur a encore des vies restantes
                     self.current_health -= 1  # Retire une vie au joueur
+                    print('-1 vie')
                     #Mise à jour de la barre de vie du joueur
                     self.health_bar.update_health(self.current_health)
                     if self.current_health == 0:
                         self.kill()
+                        print('mort')
                 self.last_collision_time = current_time  # Met à jour le temps de la dernière détection de collision
                 
 
