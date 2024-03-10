@@ -5,11 +5,12 @@ import math
 import UI as ui
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, position, player, enemies_group = None, item_group = None):
+    def __init__(self, position, player, enemies_group = None, item_group = None, compteur = None):
         super().__init__()
         self.tile_size = (16,17)
         self.rect = pygame.Rect(position[0], position[1], self.tile_size[0]*5, self.tile_size[1]*5)
         self.player = player
+        self.compteur = compteur
         
         # GESTION DES 2 JOUEURS
         if player == 1:
@@ -318,10 +319,18 @@ class Player(pygame.sprite.Sprite):
                             self.sword = object
                             self.item_group.remove(object)
                             self.health_bar.sword_status = object
-                if not isinstance(object, item.AnimatedSword): # Vérifie si l'élément est pas une épée
+
+                if  isinstance(object, item.AnimatedCoin): # Vérifie si l'élément est pas une épée
+                    self.compteur.update_counting()
+                    self.take_item_sfx.play()
+                    self.item_group.remove(object)
+
+                if not isinstance(object, (item.AnimatedSword,item.AnimatedCoin)): # Vérifie si l'élément est pas une épée
                     self.health_bar.current_health += 1
                     self.take_item_sfx.play()
                     self.item_group.remove(object)
+
+
 class DeathAnimation(pygame.sprite.Sprite):
     def __init__(self, position, zoom=8):
         super().__init__()

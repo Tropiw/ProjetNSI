@@ -84,6 +84,14 @@ class map1(Map):
         self.tile_set1.blit_tile(self.screen,(3,3),(880,0)) #mur trou2
         self.tile_set1.blit_tile(self.screen,(7,3),(480,0)) #mur cassé
         
+        
+        
+
+
+
+        coin1 = item.AnimatedCoin( (1145, 575))
+        coin2 = item.AnimatedCoin( (1100, 575))
+        coin3 = item.AnimatedCoin( (1055, 575))
     
         torch_paths = []
         for i in range(1,5):
@@ -134,8 +142,8 @@ class map1(Map):
         
         potion = image.animated_sprite(potion_paths, (1125, 100))
         
-        chest = item.Chest((100, 100))
-        self.item_group.add(sword1, sword2, potion)
+        
+        self.item_group.add(sword1, sword2, potion,coin1,coin2,coin3)
         
         
         
