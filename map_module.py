@@ -1,6 +1,6 @@
 import pygame
 import item as item
-import imagesetter as image
+import Imagesetter as image
 import enemy_module as enemy
 import random
 
@@ -32,6 +32,7 @@ class map1(Map):
         #Designe les tile sets utiliser
         self.tile_set1 = image.tile(r'Graphic\Dungeon Gathering - map asset (light)\Set 1.1.png')
         self.tile_structure = image.tile(r'Graphic\Dungeon Gathering - map asset (light)\Structure.png',0,0)
+    
 
         #load les tiles
         self.tile_structure.load(0,1)
@@ -96,12 +97,17 @@ class map1(Map):
         coin3 = image.animated_sprite(coin_paths, (1055, 575))
     
         torch_paths = []
-        for i in range(1,5): # Chemin des image étapes d'animations de la pièce
-            torch_paths.append(rf'Graphic\2D Pixel Dungeon - Asset Pack\items and trap_animation\torch\torch_{i}.png')
+        torch_paths.append(rf'Graphic\2D Pixel Dungeon - Asset Pack\items and trap_animation\torch\torch_{i}.png')
 
         torch1 = image.animated_sprite(torch_paths, (1125, 45))
         torch2 = image.animated_sprite(torch_paths, (80, 45))
         torch3 = image.animated_sprite(torch_paths, (730, 0))
+
+        box1 = image.ImageStatique(r'Graphic\2D Pixel Dungeon - Asset Pack\items and trap_animation\box_1\box_1_3.png', (1120,240), zoom = 5)
+        box2 = image.ImageStatique(r'Graphic\2D Pixel Dungeon - Asset Pack\items and trap_animation\box_1\box_1_3.png', (1065,240), zoom = 5)
+        box3 = image.ImageStatique(r'Graphic\2D Pixel Dungeon - Asset Pack\items and trap_animation\box_1\box_1_3.png', (1120,291), zoom = 5)
+        box4 = image.ImageStatique(r'Graphic\2D Pixel Dungeon - Asset Pack\items and trap_animation\box_1\box_1_3.png', (255,47), zoom = 5)
+        box5 = image.ImageStatique(r'Graphic\2D Pixel Dungeon - Asset Pack\items and trap_animation\box_1\box_1_3.png', (315,47), zoom = 5)
 
     
         # OBSTACLE
@@ -117,6 +123,7 @@ class map1(Map):
         # Remplissage du groupe d'asset de la map
         self.map_assets.add(coin1,coin2,coin3,obstacle1,obstacle2,obstacle3)
         self.map_assets.add(torch1,torch2,torch3)
+        self.map_assets.add(box1,box2,box3,box4,box5)
        
 
 
@@ -316,13 +323,13 @@ class map4(Map):
     def __init__(self,width,height):
         #designe les monstre present sur la map
         self.enemies_group = pygame.sprite.Group()
-        enemy1 = enemy.Enemy(r"Graphic\Slime - Enemy\slime-Sheet.png", (160,80), (32,25), speed = 20, player_group=pygame.sprite.Group(), enemies_group=self.enemies_group)
-        enemy2 = enemy.Enemy(r"Graphic\Slime - Enemy\slime-Sheet.png", (500,80), (32,25), speed = 20, player_group=pygame.sprite.Group(), enemies_group=self.enemies_group)
-        enemy3 = enemy.Enemy(r"Graphic\Slime - Enemy\slime-Sheet.png", (800,80), (32,25), speed = 20, player_group=pygame.sprite.Group(), enemies_group=self.enemies_group)
-        enemy4 = enemy.Enemy(r"Graphic\Slime - Enemy\slime-Sheet.png", (1024,80), (32,25), speed = 20, player_group=pygame.sprite.Group(), enemies_group=self.enemies_group)
-        enemy5 = enemy.Enemy(r"Graphic\Slime - Enemy\slime-Sheet.png", (1120,80), (32,25), speed = 20, player_group=pygame.sprite.Group(), enemies_group=self.enemies_group)
+        enemy1 = enemy.Enemy(r"Graphic\Slime - Enemy\slime-Sheet.png", (160,80), (32,25), speed = 10, player_group=pygame.sprite.Group(), enemies_group=self.enemies_group)
+        enemy2 = enemy.Enemy(r"Graphic\Slime - Enemy\slime-Sheet.png", (500,80), (32,25), speed = 10, player_group=pygame.sprite.Group(), enemies_group=self.enemies_group)
+        enemy3 = enemy.Enemy(r"Graphic\Slime - Enemy\slime-Sheet.png", (800,80), (32,25), speed = 10, player_group=pygame.sprite.Group(), enemies_group=self.enemies_group)
+        enemy4 = enemy.Enemy(r"Graphic\Slime - Enemy\slime-Sheet.png", (1024,80), (32,25), speed = 10, player_group=pygame.sprite.Group(), enemies_group=self.enemies_group)
         
-        self.enemies_group.add(enemy1, enemy2, enemy3, enemy4, enemy5)
+        
+        self.enemies_group.add(enemy1, enemy2, enemy3, enemy4)
 
 
         #Designe les tile sets utiliser
@@ -635,7 +642,7 @@ class map6(Map):
         for i in range(1,5): # Chemin des image étapes d'animations de la pièce
             torch_paths.append(rf'Graphic\2D Pixel Dungeon - Asset Pack\items and trap_animation\torch\torch_{i}.png')
 
-        torch1 = image.animated_sprite(torch_paths, (1125, 45))
+        
         torch2 = image.animated_sprite(torch_paths, (720, 0))
         
 
@@ -650,7 +657,7 @@ class map6(Map):
         flag5 = image.animated_sprite(flag_paths, (480, 10))
         flag6 = image.animated_sprite(flag_paths, (720, 470))
         
-        self.map_assets.add(torch1,torch2)
+        self.map_assets.add(torch2)
 
         self.map_assets.add(side_torch1,side_torch2)
         
