@@ -318,6 +318,13 @@ class map3(Map):
         potion = image.animated_sprite(potion_paths, (1100, 300))
         potion1 = image.animated_sprite(potion_paths, (1100, 500))
         self.map_assets.add(potion,potion1)
+        
+        
+        for _ in range(1):  # Générer 3 pièces animées
+            x = random.randint(100, 1150)  # Générer une coordonnée x aléatoire entre 650 et 1150
+            y = random.randint(100, 575)     # Générer une coordonnée y aléatoire entre 0 et 575
+            coin = item.AnimatedCoin((x, y))
+            self.map_assets.add(coin)
 
 class map4(Map):
     def __init__(self,width,height):
@@ -428,6 +435,12 @@ class map4(Map):
         self.map_assets.add(torch1,torch2,torch3,torch4)
 
         self.map_assets.add(side_torch1,side_torch2)
+        
+        for _ in range(5):  # Générer 3 pièces animées
+            x = random.randint(100, 1150)  # Générer une coordonnée x aléatoire entre 650 et 1150
+            y = random.randint(100, 575)     # Générer une coordonnée y aléatoire entre 0 et 575
+            coin = item.AnimatedCoin((x, y))
+            self.map_assets.add(coin)
 
 
 
@@ -663,6 +676,11 @@ class map6(Map):
         
         self.map_assets.add(flag1,flag2,flag3,flag4,flag5,flag6)
         
+        for _ in range(2):  # Générer 3 pièces animées
+            x = random.randint(100, 1150)  # Générer une coordonnée x aléatoire entre 650 et 1150
+            y = random.randint(100, 575)     # Générer une coordonnée y aléatoire entre 0 et 575
+            coin = item.AnimatedCoin((x, y))
+            self.map_assets.add(coin)
 
 
 class Dongeon:
