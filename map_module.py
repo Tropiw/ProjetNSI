@@ -393,6 +393,17 @@ class map4(Map):
         side_torch1 = image.animated_sprite(side_torch_paths, (1137, 240), zoom = 6, reverse=True)
         side_torch2 = image.animated_sprite(side_torch_paths, (1137, 400), zoom = 6, reverse=True)
 
+        torch_paths = []
+        for i in range(1,5): # Chemin des image étapes d'animations de la pièce
+            torch_paths.append(rf'Graphic\2D Pixel Dungeon - Asset Pack\items and trap_animation\torch\torch_{i}.png')
+
+        torch1 = image.animated_sprite(torch_paths, (1125, 45))
+        torch2 = image.animated_sprite(torch_paths, (80, 45))
+        torch3 = image.animated_sprite(torch_paths, (80, 520))
+        torch4 = image.animated_sprite(torch_paths, (1125, 520))
+
+        self.map_assets.add(torch1,torch2,torch3,torch4)
+
         self.map_assets.add(side_torch1,side_torch2)
 
 
