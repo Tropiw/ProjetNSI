@@ -214,6 +214,7 @@ class Player(pygame.sprite.Sprite):
             if now - self.last_update > self.animation_cooldown: # Vérification cooldown animation pour éviter une animation top rapide
                 self.frame = (self.frame + 1) % self.animation_step # Si l'on arrive à la dernière image, on boucle l'animation
                 self.last_update = now # Remettre à jour pour le cooldown
+                
 
 
         else:
@@ -306,15 +307,18 @@ class Player(pygame.sprite.Sprite):
             self.is_dying = True
             
     def bring_item(self):
-        if self.sword == None:  # Verifie si le joueur à un item
-            for item in self.item_group:
-                dist = self.distance(item.rect)
-                if dist < 75:
-                    self.take_item_sfx.play()
-                    self.sword = item  # Attribuer l'épée du sol au joueur
-                    self.item_group.remove(item) # Retirer l'épée du sol
-                    self.health_bar.sword_status = item
-
+        for object in self.item_group:
+            dist = self.distance(object.rect)
+            if dist < 75:
+                self.take_item_sfx.play()
+                if isinstance(object, item.AnimatedSword):  # Vérifie si l'élément est une épée
+                    self.sword = object
+                    self.item_group.remove(object)
+                    self.health_bar.sword_status = object
+                else:
+                    self.health_bar.current_health += 1
+                    print('vie + 1')
+                    self.item_group.remove(object)
 class DeathAnimation(pygame.sprite.Sprite):
     def __init__(self, position, zoom=8):
         super().__init__()
