@@ -131,7 +131,7 @@ class map1(Map):
         
         potion = image.animated_sprite(potion_paths, (1125, 100))
         
-        
+        chest = item.Chest((100, 100))
         self.item_group.add(sword1, sword2, potion)
         
         
@@ -303,6 +303,14 @@ class map3(Map):
 
         self.map_assets.add(torch1,torch2,torch3)
         self.map_assets.add(side_torch1,side_torch2)
+        
+        potion_paths = []
+        for i in range(1,5): # Chemin des image étapes d'animations de la pièce
+            potion_paths.append(rf'Graphic\2D Pixel Dungeon - Asset Pack\items and trap_animation\flasks\flasks_1_{i}.png')
+        
+        potion = image.animated_sprite(potion_paths, (1100, 300))
+        potion1 = image.animated_sprite(potion_paths, (1100, 500))
+        self.map_assets.add(potion,potion1)
 
 class map4(Map):
     def __init__(self,width,height):
@@ -647,6 +655,7 @@ class map6(Map):
         self.map_assets.add(side_torch1,side_torch2)
         
         self.map_assets.add(flag1,flag2,flag3,flag4,flag5,flag6)
+        
 
 
 class Dongeon:

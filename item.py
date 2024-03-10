@@ -29,49 +29,42 @@ class AnimatedSword(pygame.sprite.Sprite):
         
         
 class Chest(pygame.sprite.Sprite):
-    def __init__(self, position, zoom=2):
+    # A terminer
+    def __init__(self, position):
         super().__init__()
         self.position = position
-        self.zoom = zoom
-        self.is_open = False  # Indique si le coffre est ouvert ou fermé
+        
+        # Charger les images d'animation du coffre fermé
+        chest_close_paths = []
+        for i in range(1, 5): 
+            chest_close_paths.append(rf'Graphic\2D Pixel Dungeon - Asset Pack\items and trap_animation\chest\chest_{i}.png')
+        self.chest_close = image.animated_sprite(chest_close_paths, position)
+        
+        # Charger les images d'animation du coffre ouvert
+        chest_open_paths = []
+        for i in range(1, 5): 
+            chest_open_paths.append(rf'Graphic\2D Pixel Dungeon - Asset Pack\items and trap_animation\chest\chest_open_{i}.png')
+        self.chest_open = image.animated_sprite(chest_open_paths, position)
+        
+        # Indicateur pour savoir si le coffre est ouvert ou fermé
+        self.is_open = False  
 
-        # Chargement des chemins des images pour l'animation du coffre fermé
-        chest_close_paths = [rf'Graphic\2D Pixel Dungeon - Asset Pack\items and trap_animation\chest\chest_{i}.png' for i in range(1, 5)]
-        # Chargement des chemins des images pour l'animation du coffre ouvert
-        chest_open_paths = [rf'Graphic\2D Pixel Dungeon - Asset Pack\items and trap_animation\chest\chest_open_{i}.png' for i in range(1, 5)]
+        # Obtenir le rectangle encadrant du coffre
+        self.rect = self.chest_close.rect  # Utiliser le rectangle du coffre fermé par défaut
 
-        # Création de l'animation pour le coffre fermé
-        self.chest_close_animation = image.animated_sprite(chest_close_paths, position)
-        # Création de l'animation pour le coffre ouvert
-        self.chest_open_animation = image.animated_sprite(chest_open_paths, position)
-
-    def open_chest(self):
-        # Change l'état du coffre à ouvert et lance l'animation du coffre ouvert
+    def open(self):
         self.is_open = True
-        self.chest_close_animation.stop()  # Arrête l'animation du coffre fermé
-        self.chest_open_animation.start()  # Lance l'animation du coffre ouvert
-
-    def close_chest(self):
-        # Change l'état du coffre à fermé et lance l'animation du coffre fermé
-        self.is_open = False
-        self.chest_open_animation.stop()  # Arrête l'animation du coffre ouvert
-        self.chest_close_animation.start()  # Lance l'animation du coffre fermé
-
+        
     def update(self):
-        # Met à jour les animations du coffre
         if self.is_open:
-            self.chest_open_animation.update()
+            self.chest_open
         else:
-            self.chest_close_animation.update()
+            self.chest_close
+
 
     def draw(self, screen):
-        # Dessine le coffre sur l'écran en fonction de son état (ouvert ou fermé)
         if self.is_open:
-            self.chest_open_animation.draw(screen)
+            self.chest_open.draw(screen)
         else:
-            self.chest_close_animation.draw(screen)
-            
-        
-            
-            
-            
+            self.chest_close.draw(screen)
+
