@@ -310,13 +310,15 @@ class Player(pygame.sprite.Sprite):
         for object in self.item_group:
             dist = self.distance(object.rect)
             if dist < 75:
-                self.take_item_sfx.play()
-                if isinstance(object, item.AnimatedSword):  # Vérifie si l'élément est une épée
-                    self.sword = object
-                    self.item_group.remove(object)
-                    self.health_bar.sword_status = object
-                else:
+                if self.sword == None: 
+                    if isinstance(object, item.AnimatedSword): # Vérifie si l'élément est une épée
+                            self.take_item_sfx.play()
+                            self.sword = object
+                            self.item_group.remove(object)
+                            self.health_bar.sword_status = object
+                if not isinstance(object, item.AnimatedSword): # Vérifie si l'élément est pas une épée
                     self.health_bar.current_health += 1
+                    self.take_item_sfx.play()
                     self.item_group.remove(object)
 class DeathAnimation(pygame.sprite.Sprite):
     def __init__(self, position, zoom=8):
