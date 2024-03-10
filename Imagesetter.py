@@ -46,10 +46,12 @@ class tile:
 class ImageStatique(pygame.sprite.Sprite):
     def __init__(self, image_path, position=(0, 0), zoom=3):
         super().__init__()
+    
         self.image = pygame.image.load(image_path).convert_alpha()
         self.rect = self.image.get_rect(topleft=position)
         w, h = self.image.get_size()
         self.image_upscaled = pygame.transform.scale(self.image, (w * zoom, h * zoom))  # Redimensionner l'image
+        self.reverse = reverse
 
     def draw(self, screen):
         screen.blit(self.image_upscaled, self.rect)
@@ -85,8 +87,9 @@ class Obstacle(pygame.sprite.Sprite): # Outil pour afficher une image à partir 
 
 
 class animated_sprite(pygame.sprite.Sprite): # Outil pour animer des image si on en a plusieurs
-    def __init__(self, image_paths, position, zoom = 4):
+    def __init__(self, image_paths, position, zoom = 4, reverse = False):
         super().__init__()
+        self.reverse = reverse
         self.images = [pygame.image.load(path).convert_alpha() for path in image_paths]
         self.rect = pygame.Rect(position[0], position[1], self.images[0].get_width(), self.images[0].get_height())
         self.animation_step = len(self.images)
@@ -104,14 +107,23 @@ class animated_sprite(pygame.sprite.Sprite): # Outil pour animer des image si on
 
     def draw(self, screen):
         # Obtenir l'image actuelle de l'animation de rotation
-        current_image = self.images[self.frame]
+        if self.reverse == True:
+            current_image = pygame.transform.flip(self.images[self.frame], True, False)
 
-        # Redimensionner l'image
-        w,h = current_image.get_width(), current_image.get_height()
-        image_upscaled = pygame.transform.scale(current_image, (w * self.zoom, h * self.zoom))
+            # Redimensionner l'image
+            w,h = current_image.get_width(), current_image.get_height()
+            image_upscaled = pygame.transform.scale(current_image, (w * (self.zoom - 2), h * (self.zoom - 2)))
+            
+        else :
+            current_image = self.images[self.frame]
+
+            # Redimensionner l'image
+            w,h = current_image.get_width(), current_image.get_height()
+            image_upscaled = pygame.transform.scale(current_image, (w * self.zoom, h * self.zoom))
+
         
+
         # Dessiner l'image à la position de la l'élément sur l'écran
         screen.blit(image_upscaled, self.rect.topleft)
 
 
-    
