@@ -92,6 +92,7 @@ class map1(Map):
         for i in range(1,5): # Chemin des image étapes d'animations de la pièce
             coin_paths.append(rf'Graphic\2D Pixel Dungeon - Asset Pack\items and trap_animation\coin\coin_{i}.png')
 
+
         coin1 = image.animated_sprite(coin_paths, (1145, 575))
         coin2 = image.animated_sprite(coin_paths, (1100, 575))
         coin3 = image.animated_sprite(coin_paths, (1055, 575))
