@@ -1,5 +1,5 @@
 import pygame
-import Imagesetter as image
+import imagesetter as image
 import item as item
 import math
 import UI as ui
@@ -53,7 +53,7 @@ class Player(pygame.sprite.Sprite):
         self.sword = None
         self.attack_cooldown = 500  # Cooldown en millisecondes
         self.last_attack_time = 0  # Temps du dernière attaque
-        self.attack_range = 150
+        self.attack_range = 175
         self.enemies = enemies_group
         self.is_attacking = False
         self.sfx_attack = pygame.mixer.Sound(r"SFX\Knife Shing SFX.mp3")
@@ -72,6 +72,7 @@ class Player(pygame.sprite.Sprite):
         self.item_group = item_group
         self.take_item_sfx = pygame.mixer.Sound(r'SFX\pop_item.mp3')
         self.take_item_sfx.set_volume(0.3)
+        
         
 
 
@@ -260,16 +261,17 @@ class Player(pygame.sprite.Sprite):
             self.sfx_attack.play()
             if self.sword != None:
                 self.is_attacking = True
+        keys = pygame.key.get_pressed()
+        if keys[self.movement[4]]:
+            # Parcourir les ennemis
+            for enemy in self.enemies:
+                # Calculer la distance entre le joueur et l'ennemi
+                dist = self.distance(enemy.rect)
                 
-                # Parcourir les ennemis
-                for enemy in self.enemies:
-                    # Calculer la distance entre le joueur et l'ennemi
-                    dist = self.distance(enemy.rect)
-                    
-                    # Vérifier si l'ennemi est dans la zone d'attaque
-                    if dist <= self.attack_range:
-                        # L'ennemi est dans la zone d'attaque, effectuer des actions d'attaque
-                        enemy.kill()
+                # Vérifier si l'ennemi est dans la zone d'attaque
+                if dist <= self.attack_range:
+                    # L'ennemi est dans la zone d'attaque, effectuer des actions d'attaque
+                    enemy.kill()
                     
     def detect_enemy_collision(self):
         # Vérifie la collision avec les ennemis

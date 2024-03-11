@@ -1,6 +1,6 @@
 import pygame
 import item as item
-import Imagesetter as image
+import imagesetter as image
 import enemy_module as enemy
 import random
 
@@ -24,11 +24,8 @@ class map1(Map):
         self.enemies_group = pygame.sprite.Group()
         enemy1 = enemy.Enemy(r"Graphic\Slime - Enemy\slime-Sheet.png", (150,80), (32,25), speed = 5, player_group=pygame.sprite.Group(), enemies_group=self.enemies_group, sens = 1)
         self.enemies_group.add(enemy1)
-
         
-    
         
-
         #Designe les tile sets utiliser
         self.tile_set1 = image.tile(r'Graphic\Dungeon Gathering - map asset (light)\Set 1.1.png')
         self.tile_structure = image.tile(r'Graphic\Dungeon Gathering - map asset (light)\Structure.png',0,0)
@@ -104,8 +101,6 @@ class map1(Map):
        
         self.map_assets = pygame.sprite.Group()
         
-
-
         
         # Remplissage du groupe d'asset de la map
         self.map_assets.add(obstacle1,obstacle2,obstacle3)
@@ -243,6 +238,13 @@ class map2(Map):
         flag4 = image.animated_sprite(flag_paths, (1125, 480))
         flag5 = image.animated_sprite(flag_paths, (480, 10))
 
+        potion_paths = []
+        for i in range(1,5): # Chemin des image étapes d'animations de la pièce
+            potion_paths.append(rf'Graphic\2D Pixel Dungeon - Asset Pack\items and trap_animation\flasks\flasks_1_{i}.png')
+        
+        potion = image.animated_sprite(potion_paths, (367, 200))
+        self.item_group.add(potion)
+
         self.map_assets.add(flag1,flag2,flag3,flag4,flag5)
 
 class map3(Map):
@@ -361,7 +363,7 @@ class map3(Map):
         
         potion = image.animated_sprite(potion_paths, (1100, 300))
         potion1 = image.animated_sprite(potion_paths, (1100, 500))
-        self.map_assets.add(potion,potion1)
+        self.item_group.add(potion,potion1)
         
         
         for _ in range(1):  # Générer 3 pièces animées
@@ -378,10 +380,7 @@ class map4(Map):
         enemy2 = enemy.Enemy(r"Graphic\Slime - Enemy\slime-Sheet.png", (500,80), (32,25), speed = 10, player_group=pygame.sprite.Group(), enemies_group=self.enemies_group)
         enemy3 = enemy.Enemy(r"Graphic\Slime - Enemy\slime-Sheet.png", (800,80), (32,25), speed = 10, player_group=pygame.sprite.Group(), enemies_group=self.enemies_group)
         enemy4 = enemy.Enemy(r"Graphic\Slime - Enemy\slime-Sheet.png", (1024,80), (32,25), speed = 10, player_group=pygame.sprite.Group(), enemies_group=self.enemies_group)
-        
-        
         self.enemies_group.add(enemy1, enemy2, enemy3, enemy4)
-
 
         #Designe les tile sets utiliser
         self.tile_set1 = image.tile(r'Graphic\Dungeon Gathering - map asset (light)\Set 1.1.png')
@@ -478,6 +477,12 @@ class map4(Map):
 
         self.map_assets.add(torch1,torch2,torch3,torch4)
 
+        potion_paths = []
+        for i in range(1,5): # Chemin des image étapes d'animations de la pièce
+            potion_paths.append(rf'Graphic\2D Pixel Dungeon - Asset Pack\items and trap_animation\flasks\flasks_1_{i}.png')
+        
+        potion = image.animated_sprite(potion_paths, (340, 560))
+        
         self.map_assets.add(side_torch1,side_torch2)
         
         for _ in range(5):  # Générer 3 pièces animées
@@ -485,6 +490,8 @@ class map4(Map):
             y = random.randint(100, 575)     # Générer une coordonnée y aléatoire entre 0 et 575
             coin = item.AnimatedCoin((x, y))
             self.item_group.add(coin)
+            
+        self.item_group.add(potion)
 
 
 
@@ -498,8 +505,8 @@ class map5(Map):
         enemy3 = enemy.Enemy(r"Graphic\Slime - Enemy\slime-Sheet.png", (800,240), (32,25), speed = 7, player_group=pygame.sprite.Group(), enemies_group=self.enemies_group)
         enemy4 = enemy.Enemy(r"Graphic\Slime - Enemy\slime-Sheet.png", (1024,480), (32,25), speed = 7, player_group=pygame.sprite.Group(), enemies_group=self.enemies_group)
         enemy5 = enemy.Enemy(r"Graphic\Slime - Enemy\slime-Sheet.png", (1120,920), (32,25), speed = 7, player_group=pygame.sprite.Group(), enemies_group=self.enemies_group)
-        
         self.enemies_group.add(enemy1, enemy2, enemy3, enemy4, enemy5)
+        
         #Designe les tile sets utiliser
         self.tile_set1 = image.tile(r'Graphic\Dungeon Gathering - map asset (light)\Set 1.1.png')
         self.tile_set2 = image.tile(r'Graphic\Dungeon Gathering - map asset (light)\Set 1.2.png')
@@ -714,6 +721,13 @@ class map6(Map):
         flag5 = image.animated_sprite(flag_paths, (480, 10))
         flag6 = image.animated_sprite(flag_paths, (720, 470))
         
+        
+        potion_paths = []
+        for i in range(1,5): # Chemin des image étapes d'animations de la pièce
+            potion_paths.append(rf'Graphic\2D Pixel Dungeon - Asset Pack\items and trap_animation\flasks\flasks_1_{i}.png')
+        
+        potion = image.animated_sprite(potion_paths, (170, 450))
+        
         self.map_assets.add(torch2)
 
         self.map_assets.add(side_torch1,side_torch2)
@@ -725,6 +739,8 @@ class map6(Map):
             y = random.randint(100, 575)     # Générer une coordonnée y aléatoire entre 0 et 575
             coin = item.AnimatedCoin((x, y))
             self.item_group.add(coin)
+            
+        self.item_group.add(potion)
 
 
 class Dongeon:
